@@ -1,0 +1,171 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/LoggedIn.master" AutoEventWireup="true" CodeBehind="Dashboard.master.cs" Inherits="Pyramid.MasterPages.Dashboard" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <style type="text/css">
+        #divNavPills {
+            width: 100%;
+        }
+
+        #divSideNav {
+            padding: 0px;
+        }
+
+        .btn-group > .btn {
+            flex: 0;
+            padding: 5px;
+        }
+
+        .count-link {
+            cursor: help;
+        }
+
+        @media (min-width: 768px) {
+            #divSideNavContainer {
+                border-right: 1px solid #dee2e6 !important;
+            }
+
+            #hrNavDivider {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #hrNavDivider {
+                display: block;
+            }
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="server">
+    <script>
+        $(document).ready(function () {
+            //Initialize the master page on page load
+            initializeDashboardMasterPage();
+
+            //Initialize the master page and check for server errors on AJAX postbacks
+            var requestManager = Sys.WebForms.PageRequestManager.getInstance();
+            requestManager.add_endRequest(initializeDashboardMasterPage);
+        });
+
+        function initializeDashboardMasterPage() {
+            $('.count-link').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        }
+    </script>
+
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="row mt-2">
+        <div id="divSideNavContainer" class="col-md-3 col-lg-2 col-xl-2">
+            <nav id="divSideNav" class="navbar navbar-expand-md">
+                <button id="btnSideNavToggle" class="btn btn-outline-dark navbar-toggler mb-2" type="button" data-toggle="collapse" data-target="#divSideNavCollapsible">
+                    <i id="iMenuIcon" class="fas fa-bars"></i>&nbsp;Dashboard Options
+                </button>
+                <div id="divSideNavCollapsible" class="collapse navbar-collapse">
+                    <div id="divNavPills" class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                        <a id="lnkHomeDashboard" class="nav-link mb-2 p-1 btn btn-loader btn-outline-primary" href="/Default.aspx">Home</a>
+                        <!-- ASQSE -->
+                        <div class="btn-group mb-2" role="group">
+                            <a id="lnkASQSEDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ASQSEDashboard.aspx">ASQ:SE Screenings</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes ASQ:SE screenings performed in the past year.">
+                                <span id="spanASQSECount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Other SE Screens -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkOtherSEScreenDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/OtherSEScreenDashboard.aspx">Other Social Emotional Screenings</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes other social emotional screenings performed in the past year.">
+                                <span id="spanOtherSEScreenCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Behavior Incidents Reports -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkBehaviorIncidentDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/BehaviorIncidentDashboard.aspx">Behavior Incident Reports</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Behavior Incident Reports that occurred during the past year.">
+                                <span id="spanBehaviorIncidentCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Benchmarks of quality 2.0 -->
+                        <div id="divBOQDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkBOQDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/BOQDashboard.aspx">Benchmarks Of Quality 2.0 Forms</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Benchmarks of Quality 2.0 forms from the past year.">
+                                <span id="spanBOQCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Benchmarks of quality FCC -->
+                        <div id="divBOQFCCDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkBOQFCCDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/BOQFCCDashboard.aspx">Benchmarks Of Quality FCC Forms</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Benchmarks of Quality FCC forms from the past year.">
+                                <span id="spanBOQFCCCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Children -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkChildrenDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ChildrenDashboard.aspx">Children</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all active children as of today.  (Active means that the child has not been discharged)">
+                                <span id="spanChildCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Classrooms -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkClassroomDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ClassroomDashboard.aspx">Classrooms</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all classrooms.">
+                                <span id="spanClassroomCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Classroom Coaching Logs -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkCoachingLogDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/CoachingLogDashboard.aspx">Classroom Coaching Logs</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Classroom Coaching Logs that were performed in the past year.">
+                                <span id="spanCoachingLogCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Employees -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkEmployeeDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ProgramEmployeeDashboard.aspx">Employees</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all currently active employees.">
+                                <span id="spanEmployeeCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- TPITOS -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkTPITOSDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/TPITOSDashboard.aspx">TPITOS Observations</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes TPITOS Observations performed in the past year.">
+                                <span id="spanTPITOSCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- TPOTs -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkTPOTDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/TPOTDashboard.aspx">TPOT Observations</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes TPOT Observations performed in the past year.">
+                                <span id="spanTPOTCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                        <!-- Uploaded Files -->
+                        <div class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkUploadedFileDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/UploadedFiles.aspx">Uploaded Files</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes files uploaded in the past year.">
+                                <span id="spanFileUploadCount" runat="server" class="badge badge-pill badge-dark"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <hr id="hrNavDivider" />
+        </div>
+        <div class="col-md-9 col-lg-10 col-xl-10">
+            <div id="divMasterPageTitle" runat="server">
+                <h2><%: Page.Title %></h2>
+                <hr />
+            </div>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+</asp:Content>

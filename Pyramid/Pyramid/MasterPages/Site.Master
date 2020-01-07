@@ -1,0 +1,557 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Pyramid.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+    <title><%: Page.Title %> - Pyramid</title>
+
+    <!-- Load the CSS files that are declared in Bundle.config -->
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <!-- Link to the favicon -->
+    <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
+
+    <!-- Allow controls that have this master page to access head content -->
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager ID="AllScriptManager" runat="server" OnAsyncPostBackError="AllScriptManager_AsyncPostBackError">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <asp:ScriptReference Name="DataTables" />
+                <asp:ScriptReference Name="Inputmask" />
+                <asp:ScriptReference Name="DevExpress" />
+                <asp:ScriptReference Name="DevExpressAdditional" />
+                <asp:ScriptReference Name="SiteSpecific" />
+            </Scripts>
+        </asp:ScriptManager>
+        <asp:UpdatePanel ID="dummyPanel" runat="server"></asp:UpdatePanel>
+        <asp:Panel ID="pnlMainContent" runat="server" DefaultButton="btnDoNothing">
+            <asp:HiddenField ID="hfCustomizationOptionCookieName" runat="server" Value="" />
+            <asp:HiddenField ID="hfCustomizationOptionCookieSection" runat="server" Value="" />
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            <div id="divLoadingBlocker" class="hidden"></div>
+            <div id="divLoadingText" class="hidden card">
+                <div class="card-body">
+                    <span class="spinner-border spinner-border-sm"></span>&nbsp;Loading...
+                </div>
+            </div>
+            <asp:Button ID="btnDoNothing" runat="server" CssClass="hidden"></asp:Button>
+        </asp:Panel>
+        <!-- The following div only shows if the user is using IE -->
+        <div id="divRestrictedBrowser" class="alert alert-danger text-center hidden">
+            <h3 style="padding-top: 15%; padding-bottom:25%;"><i class="fas fa-exclamation-triangle"></i>&nbsp;You are using Internet Explorer as your browser!
+                <br />
+                <br />
+                Internet Explorer is not allowed when accessing this system!
+                <br />
+                <br />
+                Please use Google Chrome or another modern browser!
+            </h3>
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Initialize the master page on page load
+            initializeSiteMasterPage();
+
+            //Initialize the master page and check for server errors on AJAX postbacks
+            var requestManager = Sys.WebForms.PageRequestManager.getInstance();
+            requestManager.add_endRequest(initializeSiteMasterPage);
+            requestManager.add_endRequest(checkForErrors);
+
+            //Before the AJAX postback begins, show an overlay over any bootstrap gridviews
+            requestManager.add_beginRequest(showGridviewLoadingDivs);
+        });
+
+        //This function shows an error notifiction if a server error occurred
+        function checkForErrors(sender, args) {
+            //Get the error
+            var error = args.get_error();
+
+            //If the error exists and the status code is a server error
+            if (error != null && error != undefined && error.httpStatusCode == 500) {
+                //Tell the user that an error occurred
+                showNotification('danger', 'Error', 'An error occurred!<br/>Please try again, and if that doesn\'t work, contact support via the support ticket link in the navigation bar.', 20000);
+            }
+        }
+
+        //This method fires after every page load and AJAX postback
+        function initializeSiteMasterPage() {
+            //Check to see if the browser is restricted
+            if (isBrowserRestricted()) {
+                //The browser is restricted
+                //Get the body content
+                var divBodyContent = $(".body-content");
+
+                //Get the restriction div
+                var divRestricted = $('#divRestrictedBrowser').clone();
+
+                //Hide the body content
+                divBodyContent.addClass('hidden');
+
+                //Show the restriction div
+                divRestricted.removeClass('hidden');
+                divBodyContent.after(divRestricted);
+            }
+
+            //Initialize popovers
+            $('[data-toggle="popover"]').popover();
+
+            //Create phone masks
+            $('.phone-textbox').inputmask('999-999-9999', {
+                clearIncomplete: true
+            });
+
+            //Create datepickers
+            $('.datepicker-textbox').inputmask('99/99/9999').datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true,
+                clearBtn: true
+            });
+
+            //Create selectpickers
+            $('.custom-dropdown').selectpicker({
+                liveSearch: false,
+                dropupAuto: false,
+                style: '',
+                styleBase: 'form-control custom-dropdown-control',
+                selectOnTab: true
+            });
+
+            $('.custom-dropdown-live').selectpicker({
+                liveSearch: true,
+                dropupAuto: false,
+                style: '',
+                styleBase: 'form-control custom-dropdown-control',
+                selectOnTab: true
+            });
+
+            //Create click event for selectpickers
+            $('.custom-dropdown-control').off('keyup').on('keyup', function (e) {
+                //If the user clicks the space key, open the dropdown
+                if (e.which == 32) {
+                    e.preventDefault();
+                    $(this).click();
+                }
+            });
+
+            //Hide loading buttons and show the loader buttons
+            $('.btn-loading').hide();
+            $('.btn-loader').show();
+
+            //Create a click event for the loader buttons
+            $('.btn-loader').off('click').on('click', function () {
+                //Get this button
+                var button = $(this);
+
+                //Create the loading button based on this button
+                var loadingButton = button.clone();
+
+                //Set the loading button's attributes, content, and click event
+                loadingButton.attr('id', this.id + '_loading');
+                loadingButton.removeClass('btn-loader');
+                loadingButton.addClass('btn-loading');
+                loadingButton.html('<span class="spinner-border spinner-border-sm"></span>&nbsp;Loading...');
+                loadingButton.off('click').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
+                //Put the loading button after this button
+                button.after(loadingButton);
+
+                //Hide this button
+                button.hide();
+
+                //Show the loading button
+                loadingButton.show();
+            });
+
+            //Prevent a click event
+            $('[ID$="btnDoNothing"]').on('click', function (e) {
+                e.preventDefault();
+            });
+
+            //Initialize the submit controls
+            initializeSubmitControls();
+
+            //Initialize the messaging controls
+            initializeMessagingControls();
+
+            //Add click events for the delete buttons in the gridviews
+            $('.delete-gridview').off('click').on('click', function (e) {
+                //Prevent the click event
+                e.preventDefault();
+
+                //Get the button
+                var thisButton = $(this);
+
+                //Get the pk of the program to delete
+                var deletePK = thisButton.data('pk');
+                var hiddenField = thisButton.data('hf');
+                var modal = thisButton.data('target');
+
+                //Set the hidden field value
+                $('[ID$="' + hiddenField + '"]').val(deletePK);
+
+                //Open the modal
+                $(modal).modal();
+            });
+
+            //Add click events for the delete buttons in the modals
+            $('.modal-delete').off('click').on('click', function () {
+                $($(this).data('target')).modal('hide');
+            });
+
+            //Remove any gridview loading divs
+            $('.loading-gridview-blocker').remove();
+            $('.loading-gridview-text').remove();
+        }
+
+        //This function shows loading divs over any gridviews on the page
+        function showGridviewLoadingDivs() {
+            //Get the gridview divs
+            var gridviews = $('.dxbs-gridview');
+
+            //Loop through the gridviews
+            $.each(gridviews, function () {
+                //Get this gridview div
+                var divGridview = $(this);
+
+                //Get the gridview div's height, width, and position on the page
+                var gridviewHeight = divGridview.height();
+                var gridviewWidth = divGridview.width();
+                var gridviewPosition = divGridview.position();
+
+                //Create a clone of the overlay div
+                var divLoadingBlocker = $('#divLoadingBlocker').clone();
+                
+                //Modify  the attributes of the overlay div so that it is in the
+                //right position and it displays properly
+                divLoadingBlocker.removeAttr('id');
+                divLoadingBlocker.removeClass('hidden');
+                divLoadingBlocker.addClass('loading-gridview-blocker');
+                divLoadingBlocker.css({
+                    'top': gridviewPosition.top + 'px',
+                    'left': gridviewPosition.left + 'px',
+                    'height': gridviewHeight + 'px',
+                    'width': gridviewWidth + 'px'
+                });
+
+                //Create a clone of the text div
+                var divLoadingText = $('#divLoadingText').clone();
+
+                
+                //Modify  the attributes of the text div so that it is in the
+                //right position and it displays properly
+                divLoadingText.removeAttr('id');
+                divLoadingText.removeClass('hidden');
+                divLoadingText.addClass('loading-gridview-text');
+                divLoadingText.css({
+                    'top': ((gridviewPosition.top + gridviewHeight / 2) - 35) + 'px',
+                    'left': ((gridviewPosition.left + gridviewWidth / 2) - 65) + 'px'
+                });
+
+                //Add the cloned overlay and text divs to the DOM inside of the gridview div
+                divGridview.append(divLoadingBlocker);
+                divGridview.append(divLoadingText);
+            });
+        }
+        
+        //This function initializes the messaging controls
+        function initializeMessagingControls() {
+            //Get the messaging systems
+            var messagingSystems = $('.messaging-system');
+
+            //Loop through each messaging system
+            $.each(messagingSystems, function () {
+                //Get the messaging system div
+                var divMessagingSystem = $(this);
+
+                //Get the message, type, title, and duration
+                var hfMessage = divMessagingSystem.find('[ID$="hfMessage"]');
+                var hfMessageType = divMessagingSystem.find('[ID$="hfMessageType"]');
+                var hfMessageTitle = divMessagingSystem.find('[ID$="hfMessageTitle"]');
+                var hfMessageDuration = divMessagingSystem.find('[ID$="hfMessageDuration"]');
+
+                //Get an array of all the messages, types, titles, and durations
+                var messageArray = hfMessage.val().split('*sep*');
+                var messageTypeArray = hfMessageType.val().split('*sep*');
+                var messageTitleArray = hfMessageTitle.val().split('*sep*');
+                var messageDurationArray = hfMessageDuration.val().split('*sep*');
+
+                //Loop through all the messages
+                $.each(messageArray, function (index, value) {
+                    //Show the messages
+                    showNotification(messageTypeArray[index], messageTitleArray[index], messageArray[index], messageDurationArray[index]);
+                });
+
+                //Clear the hidden fields
+                hfMessage.val('');
+                hfMessageType.val('');
+                hfMessageTitle.val('');
+                hfMessageDuration.val('');
+            });
+        }
+
+        //This function is used to initialize the submit controls
+        function initializeSubmitControls() {
+            //Show the submit buttons
+            $('[ID$="btnSubmit"]').show();
+
+            //Hide the submitting buttons
+            $('[ID$="lbSubmitting"]').hide();
+
+            //Get the submit controls
+            var submitControls = $('.submit-control');
+
+            //Loop through each submit control
+            $.each(submitControls, function (index, value) {
+                //Get the submit control div
+                var divSubmitControl = $(this);
+
+                //Get the button for this submit control
+                var btnSubmit = divSubmitControl.find('[ID$="btnSubmit"]');
+
+                //Only continue if the submit button exists
+                if (btnSubmit.length > 0) {
+                    //Set the click event for the submit button
+                    btnSubmit.off('click').on('click', function () {
+                        //Get the validation group
+                        var validationGroup = divSubmitControl.find('[ID$="hfValidationGroup"]').val();
+
+                        if (ASPxClientEdit.ValidateGroup(validationGroup)) {
+                            //If the validation succeeds, prevent clicks on the submit button
+                            btnSubmit.off('click').on('click', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+
+                            //Hide the submit buttons for ALL submit controls
+                            $('[ID$="btnSubmit"]').hide();
+
+                            //Show the submitting buttons for ALL submit controls and prevent clicks on them
+                            $('[ID$="lbSubmitting"]').show().off('click').on('click', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                        }
+                        else {
+                            //Call the client validation failed method
+                            clientValidationFailed();
+                        }
+                    });
+                }
+            });
+        }
+
+        //This function shows a validation failed notification and focuses the first invalid control
+        function clientValidationFailed() {
+            //Validation failed, show a message
+            showNotification("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+
+            //Focus on the first invalid control (after 100ms to ensure that focus changes)
+            setTimeout(function () {
+                //Get the first invalid control
+                var firstInvalid = $('.is-invalid').first();
+
+                //Focus that control
+                firstInvalid.focus();
+            }, 100);
+
+        }
+
+        //This function returns a customization option value
+        function getCustomizationOptionValue(optionTypeDescription) {
+            //Get the cookie name and section
+            var cookieName = $('[ID$="hfCustomizationOptionCookieName"]').val();
+            var cookieSection = $('[ID$="hfCustomizationOptionCookieSection"]').val();
+
+            //Get the customization option cookie value
+            var customizationCookieValue = Cookies.get(cookieName);
+
+            //Get the customization options index (index of item + length of item text + 1 for equal sign)
+            var customizationOptionsIndex = customizationCookieValue.toLowerCase().indexOf(cookieSection.toLowerCase()) + cookieSection.length + 1;
+            
+            //Get the customization options
+            var customizationOptions = customizationCookieValue.substring(customizationOptionsIndex);
+            
+            //Split the options into an array
+            var optionList = customizationOptions.split('|');
+
+            //Get the index of the option type
+            var optionIndex = optionList.indexOf(optionTypeDescription.toLowerCase());
+
+            //Get the value for the option type
+            var optionValue = optionList[(optionIndex + 1)];
+
+            //Return the option value
+            return optionValue;
+        }
+
+        //This function will allow the system to show notifications
+        function showNotification(type, title, message, duration) {
+            //Get the fireworks option value
+            var fireworksOption = getCustomizationOptionValue('fireworks');
+
+            //Only show if the message has value
+            if (message != null && message != '') {
+                //Get the icon in the notification div
+                var icon = '';
+                var isSuccessMessage = false;
+
+                //Determine what type of notification it is and add the appropriate classes
+                switch (type.toLowerCase()) {
+                    case 'success':
+                        icon = 'fas fa-check-circle';
+                        isSuccessMessage = true;
+                        break;
+                    case 'info':
+                        icon = 'fas fa-info-circle';
+                        break;
+                    case 'primary':
+                        icon = 'fas fa-info-circle';
+                        break;
+                    case 'warning':
+                        icon = 'fas fa-exclamation-circle';
+                        break;
+                    case 'danger':
+                        icon = 'fas fa-exclamation-triangle';
+                        break;
+                    default:
+                        icon = 'fas fa-check-circle';
+                }
+
+                $.notify({
+                    // options
+                    icon: icon,
+                    title: title,
+                    message: message + '<div class="d-flex justify-content-end"><span class="mt-1" style="font-size: 0.7rem">' + new Date().toLocaleTimeString() + '</span></div>'
+                }, {
+                        // settings
+                        element: 'body',
+                        position: null,
+                        type: type,
+                        allow_dismiss: true,
+                        newest_on_top: true,
+                        showProgressbar: false,
+                        placement: {
+                            from: "bottom",
+                            align: "right"
+                        },
+                        offset: 20,
+                        spacing: 10,
+                        z_index: 1031,
+                        delay: duration,
+                        timer: 1000,
+                        animate: {
+                            enter: 'animated bounceIn',
+                            exit: 'animated bounceOut'
+                        },
+                        icon_type: 'class',
+                        template: '<div data-notify="container" class="col-sm-5 col-md-5 col-lg-4 col-xl-3 alert alert-{0} notification" role="alert">' +
+                            '<div data-notify="dismiss" class="pyro">' +
+                            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                            '<i data-notify="icon"></i> ' +
+                            '<span class="font-weight-bold" data-notify="title">{1}</span> ' +
+                            '<div class="before"></div>' +
+                            '<div class="notification-content" data-notify="message">{2}</div>' +
+                            '<div class="after"></div>' +
+                            '<div class="progress" data-notify="progressbar">' +
+                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                            '</div>'
+                    });
+
+                //Show fireworks if the user has it enabled and this is a success message
+                if (isSuccessMessage && fireworksOption == 'true') {
+                    setTimeout(function () {
+                        $('.notification .pyro').removeClass('pyro');
+                    }, 1000)
+                }
+                else {
+                    $('.notification .pyro').removeClass('pyro');
+                }
+            }
+        }
+
+        /**
+         * This function retrieves a named parameter's value from the page's query string.
+         * @param name The name of the query string parameter to retrieve a value for.
+         */
+        function getQueryStringParameter(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+
+        //This function returns the tooltip for the chart
+        function customizeTooltip(args) {
+            //Get the html to return
+            var HTMLToReturn = '';
+            HTMLToReturn += '<div class="chart-tooltip"><span class="font-weight-bold">';
+            HTMLToReturn += args.argument + ':</span> ' + args.value + ' ';
+            HTMLToReturn += '(' + args.percentText + ')</div>';
+
+            //Return the html
+            return {
+                html: HTMLToReturn
+            };
+        }
+
+        //This function returns the label for the chart (not used currently, but kept for example)
+        function customizeChartLabel(args) {
+            return (args.argument + ": "
+                    + args.value + " (" + args.percentText + ")");
+        }
+
+        //This function creates the legend for the chart in a separate div
+        //so that the chart will not shrink because of the legend
+        function createCustomLegend(items) {
+            if (items) {
+                var HTMLToAppend = '';
+
+                //Loop through each item
+                $.each(items, function (index, value) {
+                    //Add the necessary html
+                    HTMLToAppend += '<div class="col-lg-12 col-md-6 col-sm-12"><div class="chart-legend-item">';
+                    HTMLToAppend += '<div class="chart-legend-item-color" style="background-color: ' + items[index].states.normal.fill + '"></div>';
+                    HTMLToAppend += '<div class="chart-legend-item-text">' + items[index].argument + '</div></div></div>';
+                });
+
+                //Add the items' html to the page
+                $('#divLegend').append(HTMLToAppend);
+            }
+        }
+
+        //This function returns true if the browser is restricted and false otherwise
+        //Source: https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser?rq=1
+        function isBrowserRestricted() {
+            // Internet Explorer 6-11
+            var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+            // Edge 20+
+            //var isEdge = !isIE && !!window.StyleMedia;
+
+            return isIE;
+        }
+    </script>
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server"></asp:ContentPlaceHolder>
+</body>
+</html>

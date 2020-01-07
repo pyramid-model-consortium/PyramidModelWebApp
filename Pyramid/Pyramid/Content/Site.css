@@ -1,0 +1,318 @@
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-bottom: 20px;
+}
+
+#navMain {
+    background-image: linear-gradient(to right, #8c8c8c, 15%, #2e3133, #343a40);
+}
+
+@media screen and (max-width: 768px) {
+    #navMain {
+        background-image: linear-gradient(to bottom, #8c8c8c, 50px, #2e3133, #343a40);
+    }
+
+    #navMain, #navMain .nav-link, #navMain .navbar-toggler, #navMain .navbar-toggler-icon {
+        color: #e8e8e8;
+    }
+
+    #navMain .navbar-toggler {
+        border-color: #e8e8e8;
+    }
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+.disclaimer {
+    font-style: oblique;
+    font-size: .9rem;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Display font-awesome icons inline */
+.fa, .fas {
+    display: inline;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="select"],
+select {
+    max-width: 280px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        margin-top: 20px;
+    }
+
+    .body-content {
+        padding: 0;
+    }
+}
+
+
+.center {
+    display: table;
+    margin: 0 auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Override bootstrap's table width because we use DataTables */
+.table {
+    width: 100% !important;
+}
+
+.custom-dropdown, .custom-dropdown-live {
+    display: block !important;
+    width: 100% !important;
+    max-width: 280px;
+}
+
+.custom-dropdown .filter-option-inner-inner, .custom-dropdown-live .filter-option-inner-inner {
+    color: #495057;
+}
+
+.dxbs-textbox, .dxbs-listbox, .dx-dropdown-menu, .dxbs-input-cntr, .dxbs-inputs, .dxbs-button-edit {
+    max-width: 280px;
+}
+
+.dxbs-dropdown-area .dropdown-item {
+    white-space: normal !important;
+    overflow-wrap: break-word;
+}
+
+label {
+    font-weight: 500;
+}
+
+.card-header {
+    font-weight: 500;
+}
+
+.text-custom-warning {
+    color: #d6a000;
+}
+
+.container-fluid {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.section {
+    background-color: #f7f7f7;
+    padding: 5px;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.section .section {
+    background-color: white;
+}
+
+div[class ^= 'col-'] {
+    margin-bottom: 10px;
+}
+
+.section-title, .sub-section-title {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.2;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sub-section-title {
+    text-align: left;
+}
+
+.card-body .card-footer {
+    background-color: white;
+}
+
+.page-footer, .center-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-top: 10px;
+}
+
+.dataTables_wrapper {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    background-color: white;
+}
+
+.dataTables_filter {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.dataTables_paginate {
+    display: flex;
+    margin: 20px !important;
+}
+
+.dataTable thead .sorting, .dataTable thead .sorting_asc, .dataTable thead .sorting_desc {
+    font-weight: bold;
+    color: #007bff;
+}
+
+@media (max-width: 600px) {
+    .notification {
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 500px) {
+    .notification {
+        max-width: 80%;
+    }
+}
+
+.large-logo {
+    min-height: 150px;
+    min-width: 300px;
+}
+
+.text-wrap {
+    overflow-wrap: normal;
+    white-space: normal;
+}
+
+.chart-legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.chart-legend-item-color {
+    height: 1em;
+    width: 1em;
+    min-height: 1em;
+    min-width: 1em;
+    border-radius: 50%;
+}
+
+.chart-legend-item-text {
+    margin-left: .5em;
+    overflow: auto;
+}
+
+.notification .notification-content {
+    max-height: 450px;
+    overflow: auto;
+}
+
+@media (max-height: 600px) {
+    .notification .notification-content {
+        max-height: 350px;
+    }
+}
+
+.loading-gridview-blocker {
+    position: absolute;
+    z-index: 990;
+    opacity: .5;
+    background-color: #D3D3D3;
+    border-radius: 0.25rem;
+}
+
+.loading-gridview-text {
+    width: 130px;
+    height: 70px;
+    position: absolute;
+    z-index: 999;
+}
+
+.collapse-module .collapse.collapse-preview, .collapse-module .collapsing.collapse-preview {
+    height: 15rem;
+}
+
+.collapse-module .collapse.collapse-preview {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+.collapse-module .collapse.collapse-preview:before {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.collapse-module .collapse.collapse-preview.show {
+    height: auto;
+}
+
+.collapse-module .collapse.collapse-preview.show:before {
+    display: none;
+}
+
+/*.collapse-module .collapse-module-button.collapsed:after {
+    content: '+ Show More';
+}
+
+.collapse-module .collapse-module-button:not(.collapsed):after {
+    content: '- Show Less';
+}*/
+
+.collapse-module-button {
+    font-weight: bold;
+}
+
+.collapse-module-button:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.collapse-module-icon {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 900;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.collapse-module .collapse-module-button .collapse-module-icon:after {
+    content: '\f146';
+}
+
+.collapse-module .collapse-module-button.collapsed .collapse-module-icon:after {
+    content: '\f0fe';
+}

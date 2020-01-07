@@ -1,0 +1,61 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/Site.Master" AutoEventWireup="true" CodeBehind="NotLoggedIn.master.cs" Inherits="Pyramid.NotLoggedIn" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <nav id="navMain" class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <a class="navbar-brand text-wrap" href="/Default.aspx" title="Return to default page">
+            <img src="/content/images/GenericLogo.png" width="100" height="50" class="d-inline-block align-top" alt="Site logo on navigation bar">
+            Pyramid Model Implementation Data System
+        </a>
+            <asp:LoginView runat="server" ViewStateMode="Disabled">
+                <AnonymousTemplate>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Login.aspx">Login</a>
+                        </li>
+                    </ul>
+                </AnonymousTemplate>
+                <LoggedInTemplate>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" CssClass="nav-link" />
+                        </li>
+                    </ul>
+                </LoggedInTemplate>
+            </asp:LoginView>
+        </nav>
+        <div class="container body-content">
+            <div id="divTestSiteMessage" runat="server" class="alert alert-primary mt-2 text-center" visible="false">
+                <i class="fas fa-info-circle"></i>&nbsp;This is a testing site, any information entered is subject to change or deletion without notice.
+            </div>
+            <div id="divMasterPageTitle" runat="server" class="mt-2">
+                <h2><%: Page.Title %></h2>
+                <hr />
+            </div>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <div id="divMasterPageFooter" runat="server">
+                <hr />
+                <footer>
+                    <div class="row">
+                        <div class="col text-center">
+                            <p class="disclaimer"><asp:Literal ID="ltlStateDisclaimer" runat="server"></asp:Literal></p>
+                            <p>
+                                <a href="/SupportTicket.aspx" class="btn btn-loader btn-link w-100">
+                                    <i class="fas fa-headset"></i>
+                                    Submit a Support Ticket
+                                </a>
+                            </p>
+                            <p>&copy; <%: DateTime.Now.Year %> - Center for Human Services Research</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+</asp:Content>

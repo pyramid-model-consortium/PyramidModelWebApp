@@ -1,0 +1,1660 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7E1EF2B6-9514-4063-8F8A-92ECF29C6ECF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pyramid</RootNamespace>
+    <AssemblyName>Pyramid</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>64567</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AspNet.ScriptManager.bootstrap, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.bootstrap.4.3.1\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.4.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.Designer.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.CodeParser.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.DataAccess.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Office.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Pdf.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v19.1.Export, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxThemes.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.Resources.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGauges.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v19.1.Core, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v19.1.Extensions, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v19.1.Web, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v19.1.Web.WebForms, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.9.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.5\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=3.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.3.0.4\lib\net461\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.5.5.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.5.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.5.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.20\lib\net461\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime.Azure, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.Azure.3.3.19\lib\net461\Microsoft.Rest.ClientRuntime.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.9.3.3\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="SendGrid, Version=9.12.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sendgrid.9.12.0\lib\net452\SendGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.5.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio, Version=5.31.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.5.31.3\lib\net451\Twilio.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.2.0.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\AccountCreated.aspx" />
+    <Content Include="Account\Confirm.aspx" />
+    <Content Include="Account\CreatePassword.aspx" />
+    <Content Include="Account\CreatePasswordConfirmation.aspx" />
+    <Content Include="Account\CreatePasswordLink.aspx" />
+    <Content Include="Account\Forgot.aspx" />
+    <Content Include="Account\Lockout.aspx" />
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Account\Manage.aspx" />
+    <Content Include="Account\ManagePassword.aspx" />
+    <Content Include="Account\ResetPassword.aspx" />
+    <Content Include="Account\ResetPasswordConfirmation.aspx" />
+    <Content Include="Account\SelectRole.aspx" />
+    <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
+    <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="Admin\BulkTraining.aspx" />
+    <Content Include="Admin\CreateNewUser.aspx" />
+    <Content Include="Admin\EditUser.aspx" />
+    <Content Include="Admin\ProgramManagement.aspx" />
+    <Content Include="Admin\ReportCatalogItem.aspx" />
+    <Content Include="Admin\ReportCatalogMaintenance.aspx" />
+    <Content Include="Admin\UserManagement.aspx" />
+    <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-select.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fireworks.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\images\GenericLogo%28old%29.png" />
+    <Content Include="Content\images\GenericLogo%28square%29.png" />
+    <Content Include="Content\images\GenericLogo.png" />
+    <Content Include="Content\images\NYSLogo.png" />
+    <Content Include="Content\images\tick.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\datatables.css" />
+    <Content Include="Pages\ASQSE.aspx" />
+    <Content Include="Pages\ASQSEDashboard.aspx" />
+    <Content Include="Pages\BehaviorIncident.aspx" />
+    <Content Include="Pages\BehaviorIncidentDashboard.aspx" />
+    <Content Include="Pages\BOQ.aspx" />
+    <Content Include="Pages\BOQDashboard.aspx" />
+    <Content Include="Pages\BOQFCC.aspx" />
+    <Content Include="Pages\BOQFCCDashboard.aspx" />
+    <Content Include="Pages\Child.aspx" />
+    <Content Include="Pages\ChildrenDashboard.aspx" />
+    <Content Include="Pages\Classroom.aspx" />
+    <Content Include="Pages\ClassroomDashboard.aspx" />
+    <Content Include="Pages\CoachingLog.aspx" />
+    <Content Include="Pages\CoachingLogDashboard.aspx" />
+    <Content Include="Pages\DownloadFile.aspx" />
+    <Content Include="Pages\Help.aspx" />
+    <Content Include="Pages\News.aspx" />
+    <Content Include="Pages\NewsManagement.aspx" />
+    <Content Include="Pages\OtherSEScreen.aspx" />
+    <Content Include="Pages\OtherSEScreenDashboard.aspx" />
+    <Content Include="Pages\ProgramEmployee.aspx" />
+    <Content Include="Pages\ProgramEmployeeDashboard.aspx" />
+    <Content Include="Pages\TPITOS.aspx" />
+    <Content Include="Pages\TPITOSDashboard.aspx" />
+    <Content Include="Pages\TPOT.aspx" />
+    <Content Include="Pages\TPOTDashboard.aspx" />
+    <Content Include="Pages\UploadedFiles.aspx" />
+    <Content Include="Pages\ViewFile.aspx" />
+    <Content Include="Reports\Reports.aspx" />
+    <Content Include="Reports\UserReports\ReportDesigner.aspx" />
+    <Content Include="Scripts\ace.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-select.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\cldr.js" />
+    <Content Include="Scripts\currency.js" />
+    <Content Include="Scripts\datatables-moment-plugin.js" />
+    <Content Include="Scripts\date.js" />
+    <Content Include="Scripts\event.js" />
+    <Content Include="Scripts\ext-language_tools.js" />
+    <Content Include="Scripts\globalize.js" />
+    <Content Include="Reports\PreBuiltReports\ExcelReports\BIR_Report.xlsm" />
+    <Content Include="Reports\Documentation\RptLoginHistory_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptLoginHistory_Documentation.pdf" />
+    <Content Include="Reports\Documentation\Template\Original.docx" />
+    <Content Include="Reports\Documentation\Template\Template_USE_THIS.dotx" />
+    <Content Include="Reports\Documentation\RptInvalidForms_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBOQChange_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptChildInactivity_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptChildInactivity_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptICLDuration_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptICLDuration_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptInvalidForms_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptEmployeeTraining_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptEmployeeTraining_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBOQChange_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBOQFCCChange_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptBOQFCCChange_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBOQTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptBOQTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSRedFlagCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPITOSRedFlagCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPOTRedFlagCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTRedFlagCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBIRCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptBIRCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptBOQFCCTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptBOQFCCTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptChildDemographics_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptChildDemographics_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTrainingsInTimePeriod_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTrainingsInTimePeriod_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPOTTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPITOSTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSKeyPracticeCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPITOSKeyPracticeCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPOTKeyPracticeCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTKeyPracticeCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPOTRedFlagTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTRedFlagTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptICLCounts_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptICLCounts_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSRedFlagTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSRedFlagTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptICLTrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptICLTrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptASQSEPercentByMonth_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptASQSEPercentByMonth_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTChange_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPOTChange_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptASQSETrend_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptASQSETrend_Documentation.pdf" />
+    <Content Include="Reports\Documentation\RptTPITOSChange_Documentation.docx" />
+    <Content Include="Reports\Documentation\RptTPITOSChange_Documentation.pdf" />
+    <None Include="Properties\PublishProfiles\PIDS - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\pids-staging - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\PyramidTesting - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\pyramidtesting-staging - Web Deploy.pubxml" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\js.cookie-2.2.0.min.js" />
+    <Content Include="Scripts\knockout.js" />
+    <Content Include="Scripts\message.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\number.js" />
+    <Content Include="Scripts\reports-page.js" />
+    <Content Include="Scripts\supplemental.js" />
+    <Content Include="Scripts\theme-ambiance.js" />
+    <Content Include="Scripts\theme-dreamweaver.js" />
+    <Content Include="Scripts\unresolved.js" />
+    <Content Include="SessionExpired.aspx" />
+    <Content Include="User_Controls\Child.ascx" />
+    <Content Include="User_Controls\Classroom.ascx" />
+    <Content Include="User_Controls\MessagingSystem.ascx" />
+    <Content Include="User_Controls\Submit.ascx" />
+    <Content Include="webfonts\fa-brands-400.svg" />
+    <Content Include="webfonts\fa-regular-400.svg" />
+    <Content Include="webfonts\fa-solid-900.svg" />
+    <Content Include="Error.aspx" />
+    <Content Include="Models\PyramidModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+      <LastGenOutput>PyramidModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PyramidModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+      <LastGenOutput>PyramidModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\bootstrap-notify.js" />
+    <Content Include="Scripts\bootstrap-notify.min.js" />
+    <Content Include="Scripts\datatables.js" />
+    <Content Include="Content\datatables.min.css" />
+    <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Account\Web.config" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\AutoLogoff.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <EntityDeploy Include="Models\PyramidModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PyramidModel2.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PyramidModel.edmx.diagram">
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="webfonts\fa-brands-400.eot" />
+    <Content Include="webfonts\fa-brands-400.ttf" />
+    <Content Include="webfonts\fa-brands-400.woff" />
+    <Content Include="webfonts\fa-brands-400.woff2" />
+    <Content Include="webfonts\fa-regular-400.eot" />
+    <Content Include="webfonts\fa-regular-400.ttf" />
+    <Content Include="webfonts\fa-regular-400.woff" />
+    <Content Include="webfonts\fa-regular-400.woff2" />
+    <Content Include="webfonts\fa-solid-900.eot" />
+    <Content Include="webfonts\fa-solid-900.ttf" />
+    <Content Include="webfonts\fa-solid-900.woff" />
+    <Content Include="webfonts\fa-solid-900.woff2" />
+    <Content Include="MasterPages\NotLoggedIn.master" />
+    <Content Include="MasterPages\LoggedIn.master" />
+    <Content Include="Admin\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Pages\Web.config" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
+    <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="Scripts\bootstrap-select.js.map" />
+    <Content Include="Scripts\bootstrap-select.min.js.map" />
+    <Content Include="Reports\UserReports\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MasterPages\Dashboard.master" />
+    <Content Include="Scripts\jquery.inputmask.bundle.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="MasterPages\Site.Master" />
+    <Content Include="SupportTicket.aspx" />
+    <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Bundle.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MasterPages\Site.Mobile.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\AccountCreated.aspx.cs">
+      <DependentUpon>AccountCreated.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\AccountCreated.aspx.designer.cs">
+      <DependentUpon>AccountCreated.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Confirm.aspx.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Confirm.aspx.designer.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\CreatePassword.aspx.cs">
+      <DependentUpon>CreatePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\CreatePassword.aspx.designer.cs">
+      <DependentUpon>CreatePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\CreatePasswordConfirmation.aspx.cs">
+      <DependentUpon>CreatePasswordConfirmation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\CreatePasswordConfirmation.aspx.designer.cs">
+      <DependentUpon>CreatePasswordConfirmation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\CreatePasswordLink.aspx.cs">
+      <DependentUpon>CreatePasswordLink.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\CreatePasswordLink.aspx.designer.cs">
+      <DependentUpon>CreatePasswordLink.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Forgot.aspx.cs">
+      <DependentUpon>Forgot.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Forgot.aspx.designer.cs">
+      <DependentUpon>Forgot.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Lockout.aspx.cs">
+      <DependentUpon>Lockout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Lockout.aspx.designer.cs">
+      <DependentUpon>Lockout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ManagePassword.aspx.cs">
+      <DependentUpon>ManagePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ManagePassword.aspx.designer.cs">
+      <DependentUpon>ManagePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\ResetPasswordConfirmation.aspx.cs">
+      <DependentUpon>ResetPasswordConfirmation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\ResetPasswordConfirmation.aspx.designer.cs">
+      <DependentUpon>ResetPasswordConfirmation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\SelectRole.aspx.cs">
+      <DependentUpon>SelectRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\SelectRole.aspx.designer.cs">
+      <DependentUpon>SelectRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\TwoFactorAuthenticationSignIn.aspx.cs">
+      <DependentUpon>TwoFactorAuthenticationSignIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\TwoFactorAuthenticationSignIn.aspx.designer.cs">
+      <DependentUpon>TwoFactorAuthenticationSignIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\VerifyPhoneNumber.aspx.cs">
+      <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\VerifyPhoneNumber.aspx.designer.cs">
+      <DependentUpon>VerifyPhoneNumber.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\BulkTraining.aspx.cs">
+      <DependentUpon>BulkTraining.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\BulkTraining.aspx.designer.cs">
+      <DependentUpon>BulkTraining.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\CreateNewUser.aspx.cs">
+      <DependentUpon>CreateNewUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CreateNewUser.aspx.designer.cs">
+      <DependentUpon>CreateNewUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\EditUser.aspx.cs">
+      <DependentUpon>EditUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EditUser.aspx.designer.cs">
+      <DependentUpon>EditUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ProgramManagement.aspx.cs">
+      <DependentUpon>ProgramManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ProgramManagement.aspx.designer.cs">
+      <DependentUpon>ProgramManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReportCatalogItem.aspx.cs">
+      <DependentUpon>ReportCatalogItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReportCatalogItem.aspx.designer.cs">
+      <DependentUpon>ReportCatalogItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\ReportCatalogMaintenance.aspx.cs">
+      <DependentUpon>ReportCatalogMaintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ReportCatalogMaintenance.aspx.designer.cs">
+      <DependentUpon>ReportCatalogMaintenance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserManagement.aspx.cs">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\UserManagement.aspx.designer.cs">
+      <DependentUpon>UserManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Code\Utilities.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages\Dashboard.master.cs">
+      <DependentUpon>Dashboard.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\Dashboard.master.designer.cs">
+      <DependentUpon>Dashboard.master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages\LoggedIn.master.cs">
+      <DependentUpon>LoggedIn.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\LoggedIn.master.designer.cs">
+      <DependentUpon>LoggedIn.master</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ASQSE.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BehaviorIncident.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BenchmarkOfQuality.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BenchmarkOfQualityFCC.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Child.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChildClassroom.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChildNote.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChildProgram.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChildStatus.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classroom.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CoachingLog.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeActivity.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeAdminFollowUp.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeASQSEInterval.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeChildLeaveReason.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeChildStatus.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeCoachingLog.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeCustomizationOptionType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeCustomizationOptionValue.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeDischargeReason.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeEmployeeLeaveReason.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeEssentialStrategiesUsed.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeEthnicity.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeFileUploadType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeGender.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeJobType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeNewsEntryType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeOthersInvolved.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeParticipantType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodePossibleMotivation.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeProblemBehavior.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeProgramRole.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeProgramType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeRace.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeReportCriteriaDefault.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeReportCriteriaOption.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeScoreType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeScreenType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeStrategyResponse.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTermReason.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTPITOSKeyPractice.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTPITOSRedFlag.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTPOTBehaviorResponse.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTPOTKeyPractice.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTPOTRedFlag.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CodeTraining.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cohort.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ELMAH_Error.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeClassroom.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Hub.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JobFunction.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginHistory.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewsEntry.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewsItem.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OtherSEScreen.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Program.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProgramEmployee.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProgramType.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PyramidModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PyramidModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PyramidModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PyramidModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages\NotLoggedIn.master.cs">
+      <DependentUpon>NotLoggedIn.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\NotLoggedIn.master.designer.cs">
+      <DependentUpon>NotLoggedIn.master</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PyramidModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PyramidModel2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PyramidModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportCatalog.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\rspBIRExcel_ChildrenAndBIRs_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\rspBIRExcel_ProgramInfo_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScoreASQSE.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetAllCoaches_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetAllFileUploads_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetAllObservers_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetAllTeachersTAs_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetASQSEsByScoreType_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetBehaviorIncidentCountByProblemBehavior_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetChildrenCountByRace_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetChildStatusHistory_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetClassroomCountBySubstituteStatus_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetCountsForDashboardMaster_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetOtherSEScreensByScoreType_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetUserCustomizationOptions_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spValidateEnrollmentDischargeDates_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spValidateHireTermDates_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spValidateTPITOSParticipants_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spValidateTPOTParticipants_Result.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\State.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPITOS.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPITOSParticipant.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPITOSRedFlags.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPOT.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPOTBehaviorResponses.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPOTParticipant.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TPOTRedFlags.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Training.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserCustomizationOption.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserFileUpload.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserProgramRole.cs">
+      <DependentUpon>PyramidModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ASQSE.aspx.cs">
+      <DependentUpon>ASQSE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ASQSE.aspx.designer.cs">
+      <DependentUpon>ASQSE.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ASQSEDashboard.aspx.cs">
+      <DependentUpon>ASQSEDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ASQSEDashboard.aspx.designer.cs">
+      <DependentUpon>ASQSEDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BehaviorIncident.aspx.cs">
+      <DependentUpon>BehaviorIncident.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BehaviorIncident.aspx.designer.cs">
+      <DependentUpon>BehaviorIncident.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BehaviorIncidentDashboard.aspx.cs">
+      <DependentUpon>BehaviorIncidentDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BehaviorIncidentDashboard.aspx.designer.cs">
+      <DependentUpon>BehaviorIncidentDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BOQ.aspx.cs">
+      <DependentUpon>BOQ.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BOQ.aspx.designer.cs">
+      <DependentUpon>BOQ.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BOQDashboard.aspx.cs">
+      <DependentUpon>BOQDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BOQDashboard.aspx.designer.cs">
+      <DependentUpon>BOQDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BOQFCC.aspx.cs">
+      <DependentUpon>BOQFCC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BOQFCC.aspx.designer.cs">
+      <DependentUpon>BOQFCC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BOQFCCDashboard.aspx.cs">
+      <DependentUpon>BOQFCCDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\BOQFCCDashboard.aspx.designer.cs">
+      <DependentUpon>BOQFCCDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Child.aspx.cs">
+      <DependentUpon>Child.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Child.aspx.designer.cs">
+      <DependentUpon>Child.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChildrenDashboard.aspx.cs">
+      <DependentUpon>ChildrenDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ChildrenDashboard.aspx.designer.cs">
+      <DependentUpon>ChildrenDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Classroom.aspx.cs">
+      <DependentUpon>Classroom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Classroom.aspx.designer.cs">
+      <DependentUpon>Classroom.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ClassroomDashboard.aspx.cs">
+      <DependentUpon>ClassroomDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ClassroomDashboard.aspx.designer.cs">
+      <DependentUpon>ClassroomDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CoachingLog.aspx.cs">
+      <DependentUpon>CoachingLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CoachingLog.aspx.designer.cs">
+      <DependentUpon>CoachingLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CoachingLogDashboard.aspx.cs">
+      <DependentUpon>CoachingLogDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CoachingLogDashboard.aspx.designer.cs">
+      <DependentUpon>CoachingLogDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DownloadFile.aspx.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\DownloadFile.aspx.designer.cs">
+      <DependentUpon>DownloadFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Help.aspx.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Help.aspx.designer.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\News.aspx.cs">
+      <DependentUpon>News.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\News.aspx.designer.cs">
+      <DependentUpon>News.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NewsManagement.aspx.cs">
+      <DependentUpon>NewsManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\NewsManagement.aspx.designer.cs">
+      <DependentUpon>NewsManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OtherSEScreen.aspx.cs">
+      <DependentUpon>OtherSEScreen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OtherSEScreen.aspx.designer.cs">
+      <DependentUpon>OtherSEScreen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OtherSEScreenDashboard.aspx.cs">
+      <DependentUpon>OtherSEScreenDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OtherSEScreenDashboard.aspx.designer.cs">
+      <DependentUpon>OtherSEScreenDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ProgramEmployee.aspx.cs">
+      <DependentUpon>ProgramEmployee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ProgramEmployee.aspx.designer.cs">
+      <DependentUpon>ProgramEmployee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ProgramEmployeeDashboard.aspx.cs">
+      <DependentUpon>ProgramEmployeeDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ProgramEmployeeDashboard.aspx.designer.cs">
+      <DependentUpon>ProgramEmployeeDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TPITOS.aspx.cs">
+      <DependentUpon>TPITOS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TPITOS.aspx.designer.cs">
+      <DependentUpon>TPITOS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TPITOSDashboard.aspx.cs">
+      <DependentUpon>TPITOSDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TPITOSDashboard.aspx.designer.cs">
+      <DependentUpon>TPITOSDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TPOT.aspx.cs">
+      <DependentUpon>TPOT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TPOT.aspx.designer.cs">
+      <DependentUpon>TPOT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TPOTDashboard.aspx.cs">
+      <DependentUpon>TPOTDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TPOTDashboard.aspx.designer.cs">
+      <DependentUpon>TPOTDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UploadedFiles.aspx.cs">
+      <DependentUpon>UploadedFiles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\UploadedFiles.aspx.designer.cs">
+      <DependentUpon>UploadedFiles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ViewFile.aspx.cs">
+      <DependentUpon>ViewFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ViewFile.aspx.designer.cs">
+      <DependentUpon>ViewFile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MasterPages\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPages\Site.Mobile.Master.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\Site.Mobile.Master.designer.cs">
+      <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\MasterReports\RptLogoMaster.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\MasterReports\RptLogoMaster.Designer.cs">
+      <DependentUpon>RptLogoMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptASQSEPercentByMonth.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptASQSEPercentByMonth.Designer.cs">
+      <DependentUpon>RptASQSEPercentByMonth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptASQSETrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptASQSETrend.Designer.cs">
+      <DependentUpon>RptASQSETrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBIRCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBIRCounts.Designer.cs">
+      <DependentUpon>RptBIRCounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQFCCChange.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQFCCChange.Designer.cs">
+      <DependentUpon>RptBOQFCCChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQFCCTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQFCCTrend.Designer.cs">
+      <DependentUpon>RptBOQFCCTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptChildDemographics.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptChildDemographics.Designer.cs">
+      <DependentUpon>RptChildDemographics.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptEmployeeTrainingReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptEmployeeTrainingReport.Designer.cs">
+      <DependentUpon>RptEmployeeTrainingReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQChange.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQChange.Designer.cs">
+      <DependentUpon>RptBOQChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptBOQTrend.Designer.cs">
+      <DependentUpon>RptBOQTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptExample.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptExample.Designer.cs">
+      <DependentUpon>RptExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLCounts.Designer.cs">
+      <DependentUpon>RptICLCounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLDuration.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLDuration.Designer.cs">
+      <DependentUpon>RptICLDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptICLTrend.Designer.cs">
+      <DependentUpon>RptICLTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptInvalidForms.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptInvalidForms.Designer.cs">
+      <DependentUpon>RptInvalidForms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptLoginHistory.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptLoginHistory.Designer.cs">
+      <DependentUpon>RptLoginHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptChildInactivityReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptChildInactivityReport.Designer.cs">
+      <DependentUpon>RptChildInactivityReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSChange.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSChange.Designer.cs">
+      <DependentUpon>RptTPITOSChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSKeyPracticeCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSRedFlagCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSRedFlagCounts.Designer.cs">
+      <DependentUpon>RptTPITOSRedFlagCounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSRedFlagTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSRedFlagTrend.Designer.cs">
+      <DependentUpon>RptTPITOSRedFlagTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPITOSTrend.Designer.cs">
+      <DependentUpon>RptTPITOSTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTChange.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTChange.Designer.cs">
+      <DependentUpon>RptTPOTChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTKeyPracticeCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTKeyPracticeCounts.Designer.cs">
+      <DependentUpon>RptTPOTKeyPracticeCounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTRedFlagCounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTRedFlagCounts.Designer.cs">
+      <DependentUpon>RptTPOTRedFlagCounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTRedFlagTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTRedFlagTrend.Designer.cs">
+      <DependentUpon>RptTPOTRedFlagTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTTrend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTPOTTrend.Designer.cs">
+      <DependentUpon>RptTPOTTrend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTrainingsInTimePeriod.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PreBuiltReports\RptTrainingsInTimePeriod.Designer.cs">
+      <DependentUpon>RptTrainingsInTimePeriod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Reports.aspx.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Reports.aspx.designer.cs">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UserReports\PyramidReportConnectionStringProvider.cs" />
+    <Compile Include="Reports\UserReports\PyramidReportStorage.cs" />
+    <Compile Include="Reports\UserReports\ReportDesigner.aspx.cs">
+      <DependentUpon>ReportDesigner.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\UserReports\ReportDesigner.aspx.designer.cs">
+      <DependentUpon>ReportDesigner.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionExpired.aspx.cs">
+      <DependentUpon>SessionExpired.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SessionExpired.aspx.designer.cs">
+      <DependentUpon>SessionExpired.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="SupportTicket.aspx.cs">
+      <DependentUpon>SupportTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SupportTicket.aspx.designer.cs">
+      <DependentUpon>SupportTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User_Controls\Child.ascx.cs">
+      <DependentUpon>Child.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User_Controls\Child.ascx.designer.cs">
+      <DependentUpon>Child.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="User_Controls\Classroom.ascx.cs">
+      <DependentUpon>Classroom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User_Controls\Classroom.ascx.designer.cs">
+      <DependentUpon>Classroom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="User_Controls\MessagingSystem.ascx.cs">
+      <DependentUpon>MessagingSystem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User_Controls\MessagingSystem.ascx.designer.cs">
+      <DependentUpon>MessagingSystem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="User_Controls\Submit.ascx.cs">
+      <DependentUpon>Submit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User_Controls\Submit.ascx.designer.cs">
+      <DependentUpon>Submit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewSwitcher.ascx.designer.cs">
+      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\PreBuiltReports\MasterReports\RptLogoMaster.resx">
+      <DependentUpon>RptLogoMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptASQSEPercentByMonth.resx">
+      <DependentUpon>RptASQSEPercentByMonth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptASQSETrend.resx">
+      <DependentUpon>RptASQSETrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptBIRCounts.resx">
+      <DependentUpon>RptBIRCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptBOQFCCChange.resx">
+      <DependentUpon>RptBOQFCCChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptBOQFCCTrend.resx">
+      <DependentUpon>RptBOQFCCTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptChildDemographics.resx">
+      <DependentUpon>RptChildDemographics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptEmployeeTrainingReport.resx">
+      <DependentUpon>RptEmployeeTrainingReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptBOQChange.resx">
+      <DependentUpon>RptBOQChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptBOQTrend.resx">
+      <DependentUpon>RptBOQTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptExample.resx">
+      <DependentUpon>RptExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptICLCounts.resx">
+      <DependentUpon>RptICLCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptICLDuration.resx">
+      <DependentUpon>RptICLDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptICLTrend.resx">
+      <DependentUpon>RptICLTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptInvalidForms.resx">
+      <DependentUpon>RptInvalidForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptLoginHistory.resx">
+      <DependentUpon>RptLoginHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptChildInactivityReport.resx">
+      <DependentUpon>RptChildInactivityReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPITOSChange.resx">
+      <DependentUpon>RptTPITOSChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPITOSKeyPracticeCounts.resx">
+      <DependentUpon>RptTPITOSKeyPracticeCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPITOSRedFlagCounts.resx">
+      <DependentUpon>RptTPITOSRedFlagCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPITOSRedFlagTrend.resx">
+      <DependentUpon>RptTPITOSRedFlagTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPITOSTrend.resx">
+      <DependentUpon>RptTPITOSTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPOTChange.resx">
+      <DependentUpon>RptTPOTChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPOTKeyPracticeCounts.resx">
+      <DependentUpon>RptTPOTKeyPracticeCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPOTRedFlagCounts.resx">
+      <DependentUpon>RptTPOTRedFlagCounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPOTRedFlagTrend.resx">
+      <DependentUpon>RptTPOTRedFlagTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTPOTTrend.resx">
+      <DependentUpon>RptTPOTTrend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PreBuiltReports\RptTrainingsInTimePeriod.resx">
+      <DependentUpon>RptTrainingsInTimePeriod.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64567</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64567/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
