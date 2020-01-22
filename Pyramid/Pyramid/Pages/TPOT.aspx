@@ -497,10 +497,10 @@
                                                     <td><%# Item.CodeParticipantType.Description %></td>
                                                     <td class="text-center">
                                                         <div class="btn-group">
-                                                            <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <button type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 Actions
                                                             </button>
-                                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                            <div class="dropdown-menu dropdown-menu-right">
                                                                 <asp:LinkButton ID="lbEditTPOTParticipant" runat="server" CssClass="dropdown-item" OnClick="lbEditTPOTParticipant_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                                 <button class="dropdown-item delete-gridview" data-pk='<%# Item.TPOTParticipantPK %>' data-hf="hfDeleteTPOTParticipantPK" data-target="#divDeleteTPOTParticipantModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                             </div>

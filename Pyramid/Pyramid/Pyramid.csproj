@@ -424,7 +424,6 @@
     <Content Include="Reports\Documentation\RptASQSETrend_Documentation.pdf" />
     <Content Include="Reports\Documentation\RptTPITOSChange_Documentation.docx" />
     <Content Include="Reports\Documentation\RptTPITOSChange_Documentation.pdf" />
-    <None Include="Properties\PublishProfiles\PIDS - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\pids-staging - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PyramidTesting - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\pyramidtesting-staging - Web Deploy.pubxml" />

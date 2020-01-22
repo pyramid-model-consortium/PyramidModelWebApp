@@ -482,8 +482,10 @@ namespace Pyramid.Code
                 //Set the section value
                 cookie[cookieSection] = cookieSectionValue;
 
-                //Set the cookie expiration
+                //Set the cookie properties
                 cookie.Expires = DateTime.Now.AddDays(expirationDays);
+                cookie.SameSite = SameSiteMode.Lax;
+                cookie.Secure = HttpContext.Current.Request.IsSecureConnection;
 
                 //Add the cookie to the response
                 HttpContext.Current.Response.Cookies.Set(cookie);
@@ -533,6 +535,8 @@ namespace Pyramid.Code
                 //Set the customization cookie
                 customizationCookie[CustomizationOptionCookieSection] = customizationOptions.ToString();
                 customizationCookie.Expires = DateTime.Now.AddDays(1);
+                customizationCookie.SameSite = SameSiteMode.Lax;
+                customizationCookie.Secure = HttpContext.Current.Request.IsSecureConnection;
                 HttpContext.Current.Response.Cookies.Set(customizationCookie);
 
                 //Return true

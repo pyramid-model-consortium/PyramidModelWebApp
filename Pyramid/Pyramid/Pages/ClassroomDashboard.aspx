@@ -85,10 +85,10 @@
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">
-                                                <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Actions
                                                 </button>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="/Pages/Classroom?ClassroomPK=<%# Eval("ClassroomPK") %>&Action=View"><i class="fas fa-list"></i>&nbsp;View Details</a>
                                                     <a class="dropdown-item hide-on-view" href="/Pages/Classroom?ClassroomPK=<%# Eval("ClassroomPK") %>&Action=Edit"><i class="fas fa-edit"></i>&nbsp;Edit</a>
                                                     <button class="dropdown-item delete-gridview hide-on-view" data-pk='<%# Eval("ClassroomPK") %>' data-hf="hfDeleteClassroomPK" data-target="#divDeleteClassroomModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>

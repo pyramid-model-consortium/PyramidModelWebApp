@@ -153,10 +153,10 @@
                                             <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                                 <DataItemTemplate>
                                                     <div class="btn-group">
-                                                        <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             Actions
                                                         </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                        <div class="dropdown-menu dropdown-menu-right">
                                                             <a class="dropdown-item" target="_blank" href="/Pages/ViewFile?UserFileUploadPK=<%# Eval("UserFileUploadPK") %>"><i class="fas fa-file-download"></i>&nbsp;View/Download</a>
                                                             <button class="dropdown-item delete-gridview hide-on-view" data-pk='<%# Eval("UserFileUploadPK") %>' data-hf="hfDeleteUserFileUploadPK" data-target="#divDeleteUserFileUploadModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                         </div>

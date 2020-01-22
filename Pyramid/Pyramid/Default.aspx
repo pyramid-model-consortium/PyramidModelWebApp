@@ -53,7 +53,7 @@
                 var dateString = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
 
                 //Set the news cookie and hide the news
-                Cookies.set('newsHidden', dateString, { expires: 365 });
+                Cookies.set('newsHidden', dateString, { expires: 365, sameSite: 'lax' });
                 jQuery("#divNews").slideUp(400, "linear", function () {
                     jQuery("#btnShowNews").fadeIn();
                 });

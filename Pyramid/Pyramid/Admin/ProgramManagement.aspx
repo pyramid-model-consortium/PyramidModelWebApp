@@ -121,10 +121,10 @@
                                             <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="0" CssClasses-DataCell="text-center">
                                                 <DataItemTemplate>
                                                     <div class="btn-group">
-                                                        <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             Actions
                                                         </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                        <div class="dropdown-menu dropdown-menu-right">
                                                             <asp:LinkButton ID="lbEditHub" runat="server" CssClass="dropdown-item" OnClick="lbEditHub_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                             <button class="dropdown-item delete-gridview" data-pk='<%# Eval("HubPK") %>' data-hf="hfDeleteHubPK" data-target="#divDeleteHubModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                         </div>
@@ -209,10 +209,10 @@
                                             <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="0" CssClasses-DataCell="text-center">
                                                 <DataItemTemplate>
                                                     <div class="btn-group">
-                                                        <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             Actions
                                                         </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                        <div class="dropdown-menu dropdown-menu-right">
                                                             <asp:LinkButton ID="lbEditCohort" runat="server" CssClass="dropdown-item" OnClick="lbEditCohort_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                             <button class="dropdown-item delete-gridview" data-pk='<%# Eval("CohortPK") %>' data-hf="hfDeleteCohortPK" data-target="#divDeleteCohortModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                         </div>
@@ -329,21 +329,18 @@
                                             <dx:BootstrapGridViewDataColumn FieldName="CohortName" Caption="Cohort" AdaptivePriority="2" />
                                             <dx:BootstrapGridViewDataColumn FieldName="HubName" Caption="Hub" AdaptivePriority="3" />
                                             <dx:BootstrapGridViewDataColumn FieldName="StateName" Caption="State" AdaptivePriority="1" />
-                                            <dx:BootstrapGridViewDataColumn FieldName="ProgramTypes" Caption="Type(s)" AdaptivePriority="4">
+                                            <dx:BootstrapGridViewDataColumn FieldName="ProgramTypes" Caption="Type(s)" AdaptivePriority="4" Settings-AllowFilterBySearchPanel="False" Settings-AllowSort="False">
                                                 <DataItemTemplate>
                                                     <%# string.Join(", ", (IEnumerable<string>)Eval("ProgramTypes")) %>
                                                 </DataItemTemplate>
-                                                <FilterTemplate>
-                                                    <%# string.Join(", ", (IEnumerable<string>)Eval("ProgramTypes")) %>
-                                                </FilterTemplate>
                                             </dx:BootstrapGridViewDataColumn>
                                             <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="0" CssClasses-DataCell="text-center">
                                                 <DataItemTemplate>
                                                     <div class="btn-group">
-                                                        <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             Actions
                                                         </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                        <div class="dropdown-menu dropdown-menu-right">
                                                             <asp:LinkButton ID="lbEditProgram" runat="server" CssClass="dropdown-item" OnClick="lbEditProgram_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                             <button class="dropdown-item delete-gridview" data-pk='<%# Eval("ProgramPK") %>' data-hf="hfDeleteProgramPK" data-target="#divDeleteProgramModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                         </div>

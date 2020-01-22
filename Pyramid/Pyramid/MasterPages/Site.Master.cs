@@ -38,7 +38,7 @@ namespace Pyramid
                     HttpOnly = true,
                     Value = _antiXsrfTokenValue
                 };
-                if (FormsAuthentication.RequireSSL && Request.IsSecureConnection)
+                if (Request.IsSecureConnection)
                 {
                     responseCookie.Secure = true;
                 }

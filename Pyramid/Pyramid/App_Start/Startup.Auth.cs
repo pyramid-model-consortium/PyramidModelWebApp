@@ -27,6 +27,8 @@ namespace Pyramid
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
                 SlidingExpiration = true,
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                CookieHttpOnly = true,
                 ExpireTimeSpan = TimeSpan.FromMinutes(40),
                 Provider = new CookieAuthenticationProvider
                 {

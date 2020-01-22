@@ -64,10 +64,10 @@
                             <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="0">
                                 <DataItemTemplate>
                                     <div class="btn-group">
-                                        <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Actions
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                        <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="/Admin/ReportCatalogItem?ReportCatalogPK=<%# Eval("ReportCatalogPK") %>&Action=View"><i class="fas fa-list"></i>&nbsp;View Details</a>
                                             <a class="dropdown-item" target="_blank" href="/Pages/ViewFile.aspx?ReportCatalogPK=<%# Eval("ReportCatalogPK") %>"><i class="fas fa-file-download"></i>&nbsp;View/Download Documentation</a>
                                             <a class="dropdown-item hide-on-view" href="/Admin/ReportCatalogItem?ReportCatalogPK=<%# Eval("ReportCatalogPK") %>&Action=Edit"><i class="fas fa-edit"></i>&nbsp;Edit</a>

@@ -74,10 +74,10 @@
                                 <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="0" CssClasses-DataCell="text-center">
                                     <DataItemTemplate>
                                         <div class="btn-group">
-                                            <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Actions
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                            <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" href="/Admin/EditUser?Id=<%# Eval("Id") %>"><i class="fas fa-edit"></i> Edit</a>
                                                 <asp:LinkButton ID="lbDisableUser" runat="server" CssClass="dropdown-item disable-user" data-toggle="modal" data-target="#divDisableModal" data-pk='<%#Eval("Id") %>'><i class="fas fa-toggle-on"></i> Disable</asp:LinkButton>
                                                 <asp:LinkButton ID="lbEnableUser" runat="server" 

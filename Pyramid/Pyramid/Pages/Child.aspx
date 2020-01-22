@@ -231,10 +231,10 @@
                                                             <td><%# Item.Contents %></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group">
-                                                                    <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <button type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         Actions
                                                                     </button>
-                                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                                    <div class="dropdown-menu dropdown-menu-right">
                                                                         <asp:LinkButton ID="lbEditChildNote" runat="server" CssClass="dropdown-item" OnClick="lbEditChildNote_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildNotePK %>' data-hf="hfDeleteChildNotePK" data-target="#divDeleteChildNoteModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
@@ -334,10 +334,10 @@
                                                             <td><%# Item.StatusDescription %></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group">
-                                                                    <button id="btnActions" runat="server" visible='<%# Item.ChildStatusPK != null %>' type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <button runat="server" visible='<%# Item.ChildStatusPK != null %>' type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         Actions
                                                                     </button>
-                                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                                    <div class="dropdown-menu dropdown-menu-right">
                                                                         <asp:LinkButton ID="lbEditChildStatus" runat="server" CssClass="dropdown-item" OnClick="lbEditChildStatus_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildStatusPK %>' data-hf="hfDeleteChildStatusPK" data-target="#divDeleteChildStatusModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
@@ -445,10 +445,10 @@
                                                             <td><%# (Item.CodeChildLeaveReason != null ? Item.CodeChildLeaveReason.Description +  (!String.IsNullOrWhiteSpace(Item.LeaveReasonSpecify) ? " (" + Item.LeaveReasonSpecify + ")" :"") : "") %></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group">
-                                                                    <button id="btnActions" type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <button type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                         Actions
                                                                     </button>
-                                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnActions">
+                                                                    <div class="dropdown-menu dropdown-menu-right">
                                                                         <asp:LinkButton ID="lbEditClassroomAssignment" runat="server" CssClass="dropdown-item" OnClick="lbEditClassroomAssignment_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildClassroomPK %>' data-hf="hfDeleteClassroomAssignmentPK" data-target="#divDeleteClassroomAssignmentModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
