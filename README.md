@@ -1,7 +1,7 @@
 # Pyramid Model Web Application
 This web application aims to allow users to more effeciently implement the Pyramid Model by providing one place for data-entry and analysis.
 
-##Third-Party Content (click each for license)
+## Third-Party Content (click each for license)
 
 1. [Bootstrap](https://github.com/twbs/bootstrap/blob/v4.0.0/LICENSE)
 2. [JQuery and related JS libraries](https://jquery.org/license/)
