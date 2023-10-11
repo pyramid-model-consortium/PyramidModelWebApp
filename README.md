@@ -21,6 +21,10 @@ This web application aims to allow users to more effeciently implement the Pyram
 16. [ELMAH error logging](http://www.apache.org/licenses/LICENSE-2.0)
 17. [Newtonsoft JSON](https://licenses.nuget.org/MIT)
 18. [Bootstrap Notify JS](https://github.com/mouse0270/bootstrap-notify/blob/master/LICENSE)
+19. [CsvHelper](https://joshclose.github.io/CsvHelper/)
+20. [RestSharp](https://restsharp.dev/)
+21. [libphonenumber-csharp](https://github.com/twcclegg/libphonenumber-csharp)
+22. [Entity Framework Extensions](https://entityframework-extensions.net/)
 
 ## Database Repositories
 [Identity Database](https://github.com/CHSR/PyramidModelWebAppIdentityDatabase)
