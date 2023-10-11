@@ -7,17 +7,27 @@ body {
     background-image: linear-gradient(to right, #8c8c8c, 15%, #2e3133, #343a40);
 }
 
+#navMain .nav-link {
+    color: rgba(255, 255, 255, .75);
+}
+
+#navMain .nav-link:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+#navMain .navbar-toggler {
+    color: rgba(255, 255, 255, .75);
+    border: none;
+}
+
+#navMain .navbar-toggler:hover {
+    color: rgba(255, 255, 255, 1);
+    border: none;
+}
+
 @media screen and (max-width: 768px) {
     #navMain {
         background-image: linear-gradient(to bottom, #8c8c8c, 50px, #2e3133, #343a40);
-    }
-
-    #navMain, #navMain .nav-link, #navMain .navbar-toggler, #navMain .navbar-toggler-icon {
-        color: #e8e8e8;
-    }
-
-    #navMain .navbar-toggler {
-        border-color: #e8e8e8;
     }
 }
 
@@ -61,7 +71,17 @@ input[type="email"],
 input[type="tel"],
 input[type="select"],
 select {
-    max-width: 280px;
+    max-width: 360px;
+}
+
+.dxbs-textbox, .dxbs-listbox, .dx-dropdown-menu, .dxbs-input-cntr, .dxbs-inputs, .dxbs-button-edit {
+    max-width: 360px;
+}
+
+.custom-dropdown, .custom-dropdown-live {
+    display: block !important;
+    width: 100% !important;
+    max-width: 360px;
 }
 
 /* Responsive: Portrait tablets and up */
@@ -90,18 +110,8 @@ select {
     width: 100% !important;
 }
 
-.custom-dropdown, .custom-dropdown-live {
-    display: block !important;
-    width: 100% !important;
-    max-width: 280px;
-}
-
 .custom-dropdown .filter-option-inner-inner, .custom-dropdown-live .filter-option-inner-inner {
     color: #495057;
-}
-
-.dxbs-textbox, .dxbs-listbox, .dx-dropdown-menu, .dxbs-input-cntr, .dxbs-inputs, .dxbs-button-edit {
-    max-width: 280px;
 }
 
 .dxbs-dropdown-area .dropdown-item {
@@ -291,11 +301,12 @@ div[class ^= 'col-'] {
 }*/
 
 .collapse-module-button {
+    color: #3d3d3d;
     font-weight: bold;
 }
 
 .collapse-module-button:hover {
-    color: black;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -315,4 +326,87 @@ div[class ^= 'col-'] {
 
 .collapse-module .collapse-module-button.collapsed .collapse-module-icon:after {
     content: '\f0fe';
+}
+
+.font-size-1-1 {
+    font-size: 1.1rem;
+}
+
+.font-size-1-2 {
+    font-size: 1.2rem;
+}
+
+.font-size-1-3 {
+    font-size: 1.3rem;
+}
+
+.font-size-1-4 {
+    font-size: 1.4rem;
+}
+
+.font-size-1-5 {
+    font-size: 1.5rem;
+}
+
+tr.alert-danger td {
+    border-color: rgb(245, 198, 203) !important;
+}
+
+tr.alert-warning td {
+    border-color: #ffeeba !important;
+}
+
+tr.alert-success td {
+    border-color: #c3e6cb !important;
+}
+
+.green-text {
+    color: #155724;
+}
+
+.red-text {
+    color: #721c24;
+}
+
+.font-size-80 {
+    font-size: 80%;
+}
+
+.popover {
+    max-width: 400px;
+}
+
+.bold-border {
+    border-width: 2px;
+    border-color: #636363;
+}
+
+@media (max-width: 1000px) {
+    .popover {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 800px) {
+    .popover {
+        max-width: 200px;
+    }
+}
+
+.popover-body {
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+@media (max-height: 1000px) {
+    .popover-body {
+        max-height: 300px;
+    }
+}
+
+@media (max-height: 600px) {
+    .popover-body {
+        max-height: 200px;
+    }
 }

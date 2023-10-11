@@ -1,0 +1,9 @@
+﻿First Name*,Last Name*,ID Number*,Gender*,Specify Gender,Ethnicity*,Specify Ethnicity,Race*,Specify Race,Professional Start Date*,Email Address*,Is this Person an Employee of this Program?*,Professional Separation Date,Professional Separation Reason,Specify Professional Separation Reason,Job Function,Job Function Start Date,Job Function End Date,Assigned Classroom ID,Classroom Assign Date,Classroom Leave Date,Classroom Leave Reason,Specify Clasroom Leave Reason
+Valid,Person 1,EM123,male,,hispanic or latino of any race,,alaskan native,,1/1/2020,person1@example.com,Yes,,,,teacher,1/1/2020,,,,,,
+Valid,Person 2,EM234,female,,not hispanic or latino,,black or african-american,,2/1/2020,person2@example.com,Yes,9/10/2021,Left the program,,teaching assistant,2/1/2020,5/10/2020,100,2/1/2020,,,
+Valid,Person 3,EM987,other,specify gender,other,specify ethnicity,other,specify race,3/1/2020,person3@example.com,No,10/10/2020,other,example reason,,,,,,,,
+Invalid,Person 1,,prefer not to report,,prefer not to report,,prefer not to report,,4/1/2020,,No,,,,invalid,1/1/2020,,,,,,
+Invalid,Person 2,EM874,other,,other,,other,,5/1/2020,person5@example.com,Yes,7/1/2020,other,,,,,,,,,
+Invalid,Person 3,EM384T,,,,,,,6/1/2020,person6@example.com,Yes,5/1/2020,,,,,,101,6/1/2020,,,
+Duplicate,Person 1,EM123a,prefer not to report,,prefer not to report,,prefer not to report,,7/1/2020,person7@example.com,Yes,,,,,,,,,,,
+Duplicate,Person 1,EM123a,prefer not to report,,prefer not to report,,prefer not to report,,7/1/2020,person7@example.com,Yes,,,,,,,,,,,

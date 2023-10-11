@@ -7,20 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid {
-    
-    
-    public partial class _Default {
-        
+namespace Pyramid
+{
+
+
+    public partial class _Default
+    {
+
         /// <summary>
-        /// upDefault control.
+        /// hfDashboardLoaded control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upDefault;
-        
+        protected global::System.Web.UI.WebControls.HiddenField hfDashboardLoaded;
+
+        /// <summary>
+        /// upMessaging control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upMessaging;
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -29,7 +40,34 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
+        /// <summary>
+        /// upWelcomeSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upWelcomeSection;
+
+        /// <summary>
+        /// divAccountUpdateAlert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAccountUpdateAlert;
+
+        /// <summary>
+        /// divWelcomeSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWelcomeSection;
+
         /// <summary>
         /// divFireworks control.
         /// </summary>
@@ -38,7 +76,16 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFireworks;
-        
+
+        /// <summary>
+        /// bsImgLargeThumbnailLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapImage bsImgLargeThumbnailLogo;
+
         /// <summary>
         /// bsImgLargeLogo control.
         /// </summary>
@@ -47,7 +94,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapImage bsImgLargeLogo;
-        
+
         /// <summary>
         /// lbEnableFireworks control.
         /// </summary>
@@ -56,7 +103,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbEnableFireworks;
-        
+
         /// <summary>
         /// lbDisableFireworks control.
         /// </summary>
@@ -65,7 +112,142 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbDisableFireworks;
-        
+
+        /// <summary>
+        /// upDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upDashboard;
+
+        /// <summary>
+        /// btnRefreshDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRefreshDashboard;
+
+        /// <summary>
+        /// divInvalidForms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divInvalidForms;
+
+        /// <summary>
+        /// btnRefreshInvalidForms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnRefreshInvalidForms;
+
+        /// <summary>
+        /// lblInvalidFormsWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblInvalidFormsWarning;
+
+        /// <summary>
+        /// upInvalidForms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upInvalidForms;
+
+        /// <summary>
+        /// repeatInvalidForms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repeatInvalidForms;
+
+        /// <summary>
+        /// divFormsDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFormsDue;
+
+        /// <summary>
+        /// hfFormsDueMonthsOverdue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfFormsDueMonthsOverdue;
+
+        /// <summary>
+        /// hfFormsDueMonthsUpcoming control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfFormsDueMonthsUpcoming;
+
+        /// <summary>
+        /// hfFormsDueDaysUntilWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfFormsDueDaysUntilWarning;
+
+        /// <summary>
+        /// btnRefreshFormsDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnRefreshFormsDue;
+
+        /// <summary>
+        /// upFormsDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upFormsDue;
+
+        /// <summary>
+        /// bsGRFormsDue control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView bsGRFormsDue;
+
+        /// <summary>
+        /// sqlFormsDueDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlFormsDueDataSource;
+
         /// <summary>
         /// ltlNews control.
         /// </summary>

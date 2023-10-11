@@ -1,0 +1,9 @@
+﻿First Name*,Last Name*,DOB*,ID Number*,Program Enrollment Date*,Gender*,Specify Gender,Ethnicity*,Specify Ethnicity,Race*,Specify Race,Dual Language Learner (yes/no)*,Individualized Education Program (yes/no)*,Parent Or Guardian Permission (yes/no)*,Program Discharge Date,Program Discharge Reason,Specify Program Discharge Reason,Assigned Classroom ID,Classroom Assign Date,Classroom Leave Date,Classroom Leave Reason,Specify Clasroom Leave Reason
+Valid,Child 1,1/12/2020,MN12V,1/12/2022,male,,Hispanic or latino of any race,,native hawaiian,,yes,no,Yes,,,,C1,1/12/2022,,,
+Valid,Child 2,2/12/2020,MN23V,2/12/2022,FEMALE,,NOT HISPANIC OR LATINO,,TWO OR MORE RACES,,NO,NO,yes,4/15/2022,aged out of program,,C2,2/12/2022,4/15/2022,No longer at the program,
+Valid,Child 3,3/12/2020,MN45V,3/12/2022,other,example gender,other,example ethnicity,other,example race,YES,no,YES,,,,C3,3/12/2022,4/12/2022,OTHER,Example leave reason
+Invalid,Child 1,4/12/2020,MN67I,4/12/2022,MALE,,Hispanic or latino of any race,,INVALID,,no,yes,YES,,,,C2,4/12/2022,4/1/2022,OTHER,
+Invalid,Child 2,5/12/2020,MN89I,5/12/2022,OTHER,,OTHER,,OTHER,,no,no,YES,5/1/2022,OTHER,,,,,,
+Invalid,Child 3,6/12/2020,MN90I,6/12/2022,INVALID,,Hispanic or latino of any race,,alaskan native,,yes,yes,YES,4/12/2022,OTHER,Example discharge reason,C4,5/11/2022,5/1/2022,,
+Duplicate,Child 1,7/12/2019,MN09D,7/12/2021,male,,HISPANIC OR LATINO OF ANY RACE,,AMERICAN INDIAN,,YES,YES,NO,,,,,,,,
+Duplicate,Child 1,7/12/2019,MN09D,7/12/2021,male,,HISPANIC OR LATINO OF ANY RACE,,AMERICAN INDIAN,,YES,YES,no,,,,,,,,
