@@ -11,36 +11,95 @@ using System.IO;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using System.Collections.Generic;
 
 namespace Pyramid.Pages
 {
-    public partial class UserFileUploads : System.Web.UI.Page
+    public partial class UserFileUploads : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "ULF";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Init(object sender, EventArgs e)
         {
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {            
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToViewDashboard == false)
+            {
+                Response.Redirect("/Default.aspx?messageType=PageNotAuthorized");
+            }
+
+            //Get the necessary values from the program role object
+            string programFKs = string.Join(",", currentProgramRole.ProgramFKs);
+            string hubFKs = string.Join(",", currentProgramRole.HubFKs);
+            string cohortFKs = string.Join(",", currentProgramRole.CohortFKs);
+            string stateFKs = string.Join(",", currentProgramRole.StateFKs);
+
             //-------- This page uses a SqlDataSource configured in both the .aspx file and this file to populate the gridview ---------
             //Set the values for the sql data source
             sqlUserFileUploadDataSource.ConnectionString = ConfigurationManager.ConnectionStrings["Pyramid"].ConnectionString;
-            sqlUserFileUploadDataSource.SelectParameters["ProgramFKs"].DefaultValue = string.Join(",", currentProgramRole.ProgramFKs);
-            sqlUserFileUploadDataSource.SelectParameters["HubFK"].DefaultValue = currentProgramRole.HubFK.Value.ToString();
-            sqlUserFileUploadDataSource.SelectParameters["StateFK"].DefaultValue = currentProgramRole.StateFK.Value.ToString();
-            sqlUserFileUploadDataSource.SelectParameters["CohortFKs"].DefaultValue = string.Join(",", currentProgramRole.CohortFKs);
+            sqlUserFileUploadDataSource.SelectParameters["ProgramFKs"].DefaultValue = programFKs;
+            sqlUserFileUploadDataSource.SelectParameters["HubFKs"].DefaultValue = hubFKs;
+            sqlUserFileUploadDataSource.SelectParameters["CohortFKs"].DefaultValue = cohortFKs;
+            sqlUserFileUploadDataSource.SelectParameters["StateFKs"].DefaultValue = stateFKs;
+            sqlUserFileUploadDataSource.SelectParameters["RoleFK"].DefaultValue = currentProgramRole.CodeProgramRoleFK.Value.ToString();
+            sqlUserFileUploadDataSource.SelectParameters["Username"].DefaultValue = User.Identity.Name;
 
             if (!IsPostBack)
             {
                 //Set the view only value
-                if (currentProgramRole.AllowedToEdit.Value || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+                if (FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
+
+                    //Hide the submit button
+                    submitFileUpload.ShowSubmitButton = false;
+
+                    //Don't use cancel confirmations
+                    submitFileUpload.UseCancelConfirm = false;
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
+
+                    //Show the submit button
+                    submitFileUpload.ShowSubmitButton = true;
+
+                    //Use cancel confirmation if the customization option for cancel confirmation is true (default to true)
+                    bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+                    bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+
+                    submitFileUpload.UseCancelConfirm = areConfirmationsEnabled;
                 }
 
                 //Bind the dropdowns
@@ -73,13 +132,15 @@ namespace Pyramid.Pages
             using (PyramidContext context = new PyramidContext())
             {
                 //Get all the file types
-                var allFileTypes = context.CodeFileUploadType.AsNoTracking()
-                                    .Where(cfut => cfut.RolesAuthorizedToModify.Contains((currentProgramRole.RoleFK.Value.ToString() + ",")))
+                List<CodeFileUploadType> allFileTypes = context.CodeFileUploadType.AsNoTracking()
                                     .OrderBy(cfut => cfut.OrderBy)
                                     .ToList();
 
+                //Get all the authorized file types
+                List<CodeFileUploadType> filteredFileTypes = allFileTypes.Where(aft => aft.RolesAuthorizedToModify.Split(',').ToList().Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString())).ToList();
+
                 //Bind the file type dropdown
-                ddFileType.DataSource = allFileTypes;
+                ddFileType.DataSource = filteredFileTypes;
                 ddFileType.DataBind();
 
                 //Get all the programs
@@ -152,11 +213,10 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteUserFileUpload_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value 
-                || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+            if (FormPermissions.AllowedToDelete)
             {
                 //Get the PK from the hidden field
-                int? removeUserFileUploadPK = (String.IsNullOrWhiteSpace(hfDeleteUserFileUploadPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteUserFileUploadPK.Value));
+                int? removeUserFileUploadPK = (string.IsNullOrWhiteSpace(hfDeleteUserFileUploadPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteUserFileUploadPK.Value));
 
                 //Remove the role if the PK is not null
                 if (removeUserFileUploadPK != null)
@@ -166,16 +226,16 @@ namespace Pyramid.Pages
                         using (PyramidContext context = new PyramidContext())
                         {
                             //Get the UserFileUpload program row to remove
-                            Models.UserFileUpload fileToRemove = context.UserFileUpload
+                            UserFileUpload fileToRemove = context.UserFileUpload
                                                                     .Include(ufu => ufu.CodeFileUploadType)
                                                                     .Where(ufu => ufu.UserFileUploadPK == removeUserFileUploadPK)
                                                                     .FirstOrDefault();
 
+                            //Get the roles authorized to delete
+                            List<string> rolesAuthorized = fileToRemove.CodeFileUploadType.RolesAuthorizedToModify.Split(',').ToList();
+
                             //Ensure the user is allowed to delete this file
-                            if (!fileToRemove.CodeFileUploadType.RolesAuthorizedToModify.Contains((currentProgramRole.RoleFK.Value.ToString() + ","))
-                                || (fileToRemove.TypeCodeFK == (int)Utilities.FileTypeFKs.PROGRAM_WIDE 
-                                        && currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER
-                                        && fileToRemove.Creator != User.Identity.Name))
+                            if (!rolesAuthorized.Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString()))
                             {
                                 msgSys.ShowMessageToUser("danger", "Delete Failed", "You are not authorized to delete this file!", 10000);
                             }
@@ -186,8 +246,19 @@ namespace Pyramid.Pages
                                 Utilities.DeleteFileFromAzureStorage(fileToRemove.FileName,
                                                 Utilities.ConstantAzureStorageContainerName.UPLOADED_FILES.ToString());
 
-                                //Remove the UserFileUpload
+                                //Remove the file record in the database
                                 context.UserFileUpload.Remove(fileToRemove);
+
+                                //Save the deletion to the database
+                                context.SaveChanges();
+
+                                //Get the delete change row and set the deleter
+                                context.UserFileUploadChanged
+                                        .OrderByDescending(ufuc => ufuc.UserFileUploadChangedPK)
+                                        .Where(ufuc => ufuc.UserFileUploadPK == fileToRemove.UserFileUploadPK)
+                                        .FirstOrDefault().Deleter = User.Identity.Name;
+
+                                //Save the delete change row to the database
                                 context.SaveChanges();
 
                                 //Show a success message
@@ -217,7 +288,7 @@ namespace Pyramid.Pages
                         }
 
                         //Log the error
-                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
+                        Utilities.LogException(dbUpdateEx);
                     }
 
                     //Rebind the UserFileUpload controls
@@ -243,8 +314,7 @@ namespace Pyramid.Pages
         protected void submitFileUpload_Click(object sender, EventArgs e)
         {
             //Allow editors and hub data viewers to add files
-            if (currentProgramRole.AllowedToEdit.Value
-                    || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+            if (FormPermissions.AllowedToAdd)
             {
                 //Get the file to upload
                 UploadedFile file = bucUploadFile.UploadedFiles[0];
@@ -277,6 +347,7 @@ namespace Pyramid.Pages
                             break;
                         case ".xls":
                         case ".xlsx":
+                        case ".xlsm":
                             fileType = "excel";
                             break;
                         case ".jpeg":
@@ -391,6 +462,37 @@ namespace Pyramid.Pages
         {
             //Tell the user that validation failed
             msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+        }
+
+        /// <summary>
+        /// This method executes for each row created in the bsGRUserFileUploads BootstrapGridView
+        /// and it sets the visibility of the delete button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void bsGRUserFileUploads_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+        {
+            //Only work on data rows
+            if (e.RowType == DevExpress.Web.GridViewRowType.Data)
+            {
+                //Get the necessary controls
+                LinkButton lbDeleteFile = (LinkButton)bsGRUserFileUploads.FindRowCellTemplateControl(e.VisibleIndex, (GridViewDataColumn)bsGRUserFileUploads.Columns["ActionColumn"], "lbDeleteFile");
+                
+                //Get the authorized roles for the file
+                string strAuthorizedRoles = Convert.ToString(e.GetValue("RolesAuthorizedToModify"));
+                List<string> authorizedRoles = strAuthorizedRoles.Split(',').ToList();
+
+                //Show/hide the delete button
+                if (FormPermissions.AllowedToDelete &&
+                    authorizedRoles.Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString()))
+                {
+                    lbDeleteFile.Visible = true;
+                }
+                else
+                {
+                    lbDeleteFile.Visible = false;
+                }
+            }
         }
 
         #region Custom Validation

@@ -3,20 +3,52 @@ using System.Linq;
 using Pyramid.Code;
 using Pyramid.Models;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Data.Entity.Infrastructure;
 
 namespace Pyramid.Pages
 {
-    public partial class ASQSEDashboard : System.Web.UI.Page
+    public partial class ASQSEDashboard : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "ASQSE";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+            
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToViewDashboard == false)
+            {
+                Response.Redirect("/Default.aspx?messageType=PageNotAuthorized");
+            }
 
             //Don't allow aggregate viewers to see the action column
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 //Get the action column index (the farthest right column)
                 int actionColumnIndex = (bsGRASQSE.Columns.Count - 1);
@@ -25,16 +57,19 @@ namespace Pyramid.Pages
                 bsGRASQSE.Columns[actionColumnIndex].Visible = false;
             }
 
+            //Show/hide the state column based on the number of states accessible to the user
+            bsGRASQSE.Columns["StateNameColumn"].Visible = (currentProgramRole.StateFKs.Count > 1);
+
             if (!IsPostBack)
             {
                 //Set the view only value
-                if (currentProgramRole.AllowedToEdit.Value)
+                if (FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
                 }
 
                 //Populate the chart
@@ -97,30 +132,75 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteASQSE_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (FormPermissions.AllowedToDelete)
             {
                 //Get the PK from the hidden field
                 int? removeASQSEPK = String.IsNullOrWhiteSpace(hfDeleteASQSEPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteASQSEPK.Value);
 
                 if (removeASQSEPK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the ASQSE to remove
-                        var ASQSEToRemove = context.ASQSE.Where(x => x.ASQSEPK == removeASQSEPK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the ASQSE to remove
+                            Models.ASQSE ASQSEToRemove = context.ASQSE.Where(a => a.ASQSEPK == removeASQSEPK).FirstOrDefault();
 
-                        //Remove the ASQSE from the database
-                        context.ASQSE.Remove(ASQSEToRemove);
-                        context.SaveChanges();
+                            //Remove the ASQSE
+                            context.ASQSE.Remove(ASQSEToRemove);
 
-                        //Show a delete success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted the ASQ:SE screening!", 1000);
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Bind the gridview
-                        bsGRASQSE.DataBind();
+                            //Get the delete change row and set the deleter
+                            context.ASQSEChanged
+                                    .OrderByDescending(ac => ac.ASQSEChangedPK)
+                                    .Where(ac => ac.ASQSEPK == ASQSEToRemove.ASQSEPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
 
-                        //Bind the chart
-                        BindScoreTypeChart();
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Show a delete success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted the ASQ:SE screening!", 1000);
+
+                            //Bind the gridview
+                            bsGRASQSE.DataBind();
+
+                            //Bind the chart
+                            BindScoreTypeChart();
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+                                
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the ASQSE, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the ASQSE!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the ASQSE!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -150,6 +230,7 @@ namespace Pyramid.Pages
             PyramidContext context = new PyramidContext();
             e.QueryableSource = from a in context.ASQSE.AsNoTracking()
                                     .Include(a => a.Program)
+                                    .Include(a => a.Program.State)
                                     .Include(a => a.Child)
                                     .Include(a => a.CodeASQSEInterval)
                                 join cp in context.ChildProgram on a.ChildFK equals cp.ChildFK
@@ -164,8 +245,12 @@ namespace Pyramid.Pages
                                     a.ASQSEPK,
                                     a.FormDate,
                                     a.TotalScore,
-                                    ChildIdAndName = "(" + cp.ProgramSpecificID + ") " + a.Child.FirstName + " " + a.Child.LastName,
+                                    ChildID = cp.ProgramSpecificID,
+                                    ChildIDAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                        "(" + cp.ProgramSpecificID + ") " + a.Child.FirstName + " " + a.Child.LastName :
+                                                        cp.ProgramSpecificID),
                                     a.Program.ProgramName,
+                                    StateName = a.Program.State.Name,
                                     Interval = a.CodeASQSEInterval.Description,
                                     ScoreType = (a.TotalScore > sa.CutoffScore ? "Above Cutoff" 
                                                     : a.TotalScore >= sa.MonitoringScoreStart && a.TotalScore <= sa.MonitoringScoreEnd ? "Monitor"

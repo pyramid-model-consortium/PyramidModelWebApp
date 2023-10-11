@@ -6,25 +6,60 @@ using Pyramid.Models;
 using System.Data.Entity;
 using Pyramid.MasterPages;
 using System.Data;
+using System.Collections.Generic;
 
 namespace Pyramid.Pages
 {
-    public partial class NewsManagement : System.Web.UI.Page
+    public partial class NewsManagement : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "NEWS";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.NewsEntry currentNewsEntry;
         private int currentNewsEntryPK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToView == false)
+            {
+                Response.Redirect(string.Format("/Pages/News.aspx?messageType={0}", "NotAuthorized"));
+            }
+
             //Get the News Entry PK from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["NewsEntryPK"]))
             {
                 int.TryParse(Request.QueryString["NewsEntryPK"], out currentNewsEntryPK);
             }
+
+            //Check to see if this is an edit
+            isEdit = currentNewsEntryPK > 0;
 
             using (PyramidContext context = new PyramidContext())
             {
@@ -42,23 +77,24 @@ namespace Pyramid.Pages
             }
 
             //Prevent users from viewing entries from other programs
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.DATA_COLLECTOR ||
-                (currentNewsEntry.NewsEntryPK > 0 
-                    && ((currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.PROGRAM_WIDE
-                            && !currentProgramRole.ProgramFKs.Contains(currentNewsEntry.ProgramFK.Value))
-                        || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.STATE_WIDE
-                            && currentProgramRole.StateFK.Value != currentNewsEntry.StateFK.Value)
-                        || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.HUB_WIDE
-                            && currentProgramRole.HubFK.Value != currentNewsEntry.HubFK.Value)
-                        || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.COHORT_WIDE
-                            && !currentProgramRole.CohortFKs.Contains(currentNewsEntry.CohortFK.Value))
-                        || !currentNewsEntry.CodeNewsEntryType.RolesAuthorizedToModify.Contains(currentProgramRole.RoleFK.Value.ToString() + ","))))
+            if (currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN
+                && ((FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
+                    || (currentNewsEntry.NewsEntryPK > 0 
+                        && ((currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.PROGRAM_WIDE
+                                && !currentProgramRole.ProgramFKs.Contains(currentNewsEntry.ProgramFK.Value))
+                            || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.STATE_WIDE
+                                && !currentProgramRole.StateFKs.Contains(currentNewsEntry.StateFK.Value))
+                            || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.HUB_WIDE
+                                && !currentProgramRole.HubFKs.Contains(currentNewsEntry.HubFK.Value))
+                            || (currentNewsEntry.NewsEntryTypeCodeFK == (int)Utilities.NewsTypeFKs.COHORT_WIDE
+                                && !currentProgramRole.CohortFKs.Contains(currentNewsEntry.CohortFK.Value))
+                            || !currentNewsEntry.CodeNewsEntryType.RolesAuthorizedToModify.Split(',').ToList().Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString())))))
             {
                 Response.Redirect(string.Format("/Pages/News.aspx?messageType={0}", "NotAuthorized"));
             }
 
             //Show certain divs based on whether this is an add or edit
-            if (currentNewsEntryPK > 0)
+            if (isEdit)
             {
                 divAddOnlyMessage.Visible = false;
                 divEditOnly.Visible = true;
@@ -70,7 +106,7 @@ namespace Pyramid.Pages
             }
 
             //Show the edit only div if this is an edit
-            divEditOnly.Visible = (currentNewsEntryPK > 0 ? true : false);
+            divEditOnly.Visible = isEdit;
 
             if (!IsPostBack)
             {
@@ -81,7 +117,7 @@ namespace Pyramid.Pages
                 BindDataBoundControls();
 
                 //Check to see if this is an edit
-                if (currentNewsEntryPK > 0)
+                if (isEdit)
                 {
                     //This is an edit
                     //Populate the page
@@ -120,13 +156,10 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentNewsEntry.NewsEntryPK == 0 
-                        && (currentProgramRole.AllowedToEdit.Value 
-                                || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER))
+                if (currentNewsEntry.NewsEntryPK == 0
+                        && action.ToLower() == "add"
+                        && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitNewsEntry.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
@@ -137,13 +170,9 @@ namespace Pyramid.Pages
                     lblPageTitle.Text = "Add New News Entry";
                 }
                 else if (currentNewsEntry.NewsEntryPK > 0 
-                            && action.ToLower() == "edit" 
-                            && (currentProgramRole.AllowedToEdit.Value
-                                || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER))
+                            && action.ToLower() == "edit"
+                            && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitNewsEntry.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
@@ -155,9 +184,6 @@ namespace Pyramid.Pages
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitNewsEntry.ShowSubmitButton = false;
-
                     //Hide certain controls
                     hfViewOnly.Value = "True";
 
@@ -189,11 +215,11 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden field with the PK for editing
-            HiddenField hfNewsItemPK = (HiddenField)item.FindControl("hfNewsItemPK");
+            //Get the label with the PK for editing
+            Label lblNewsItemPK = (Label)item.FindControl("lblNewsItemPK");
 
-            //Get the PK from the hidden field
-            int? itemPK = (String.IsNullOrWhiteSpace(hfNewsItemPK.Value) ? (int?)null : Convert.ToInt32(hfNewsItemPK.Value));
+            //Get the PK from the label
+            int? itemPK = (String.IsNullOrWhiteSpace(lblNewsItemPK.Text) ? (int?)null : Convert.ToInt32(lblNewsItemPK.Text));
 
             if (itemPK.HasValue)
             {
@@ -252,7 +278,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteNewsItem_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+            //Check if allowed to edit the news entry
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteNewsItemPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteNewsItemPK.Value));
@@ -295,7 +322,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitNewsItem_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+            //Check if allowed to edit the news entry
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the item pk
                 int itemPK = Convert.ToInt32(hfAddEditNewsItemPK.Value);
@@ -395,7 +423,7 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitNewsEntry_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value || currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER)
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
             {
                 //To hold the success message type
                 string successMessageType = null;
@@ -441,7 +469,7 @@ namespace Pyramid.Pages
                     currentNewsEntry.CohortFK = Convert.ToInt32(ddCohort.Value);
                 }
 
-                if (currentNewsEntryPK > 0)
+                if (isEdit)
                 {
                     //This is an edit
                     using (PyramidContext context = new PyramidContext())
@@ -524,12 +552,14 @@ namespace Pyramid.Pages
             {
                 //Get all the news entry types
                 var allNewsEntryTypes = context.CodeNewsEntryType.AsNoTracking()
-                                            .Where(cnet => cnet.RolesAuthorizedToModify.Contains(currentProgramRole.RoleFK.Value.ToString() + ","))
                                             .OrderBy(cnet => cnet.OrderBy)
                                             .ToList();
 
+                //Filter the news entry types by the user's current role
+                var filteredNewEntryTypes = allNewsEntryTypes.Where(anet => anet.RolesAuthorizedToModify.Split(',').ToList().Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString())).ToList();
+
                 //Bind the type dropdown
-                ddEntryType.DataSource = allNewsEntryTypes;
+                ddEntryType.DataSource = filteredNewEntryTypes;
                 ddEntryType.DataBind();
 
                 //Get all the programs
@@ -618,6 +648,18 @@ namespace Pyramid.Pages
             //Enable/disable the controls
             deEntryDate.ClientEnabled = enabled;
             ddEntryType.ClientEnabled = enabled;
+
+            //Show/hide the submit button
+            submitNewsEntry.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            bool useCancelConfirmations = enabled && areConfirmationsEnabled;
+
+            submitNewsEntry.UseCancelConfirm = useCancelConfirmations;
+            submitNewsItem.UseCancelConfirm = useCancelConfirmations;
         }
 
         #endregion

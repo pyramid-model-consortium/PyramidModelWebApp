@@ -36,7 +36,7 @@ namespace Pyramid.Pages
                         && programFKs.Except(currentProgramRole.ProgramFKs).ToList().Count < 1)
                     {
                         //Generate the Excel file to a byte array
-                        byte[] excel = Utilities.GenerateNCPMIExcelFile(programFKs, schoolYear);
+                        byte[] excel = Utilities.GenerateNCPMIExcelFile(programFKs, schoolYear, currentProgramRole.ViewPrivateChildInfo.Value, currentProgramRole.ViewPrivateEmployeeInfo.Value);
 
                         //Only continue if the byte array is not null
                         if (excel != null)

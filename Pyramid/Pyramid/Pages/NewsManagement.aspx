@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Manage News" Language="C#" MasterPageFile="~/MasterPages/LoggedIn.master" AutoEventWireup="true" CodeBehind="NewsManagement.aspx.cs" Inherits="Pyramid.Pages.NewsManagement" %>
 
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 
@@ -22,6 +22,9 @@
             //Allow date format for DataTables sorting
             $.fn.dataTable.moment('MM/DD/YYYY');
 
+            //Show/hide the view only fields
+            setViewOnlyVisibility();
+
             //Initialize the datatables
             if (!$.fn.dataTable.isDataTable('#tblNewsItems')) {
                 $('#tblNewsItems').DataTable({
@@ -35,6 +38,8 @@
                         { className: 'control', orderable: false, targets: 0 }
                     ],
                     order: [[1, 'asc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 25,
                     dom: 'frtp',
                     language: {
@@ -44,9 +49,17 @@
                 });
             }
             $('.dataTables_filter input').removeClass('form-control-sm');
+        }
 
-            //Show/hide the view only fields
-            setViewOnlyVisibility();
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
 
         //Show the proper entry type option
@@ -165,7 +178,7 @@
                     </dx:BootstrapComboBox>
                 </div>
                 <div id="divPrograms" class="col-lg-4 hidden entry-type-option">
-                    <dx:BootstrapComboBox ID="ddProgram" runat="server" Caption="Program" NullText="--Select--"
+                    <dx:BootstrapComboBox ID="ddProgram" runat="server" Caption="Program" NullText="--Select--" AllowNull="true"
                         TextField="ProgramName" ValueField="ProgramPK" ValueType="System.Int32"
                         IncrementalFilteringMode="Contains" AllowMouseWheel="false"
                         ClientInstanceName="ddProgram" OnValidation="NewsEntryTypeOption_Validation">
@@ -177,7 +190,7 @@
                     </dx:BootstrapComboBox>
                 </div>
                 <div id="divHubs" class="col-lg-4 hidden entry-type-option">
-                    <dx:BootstrapComboBox ID="ddHub" runat="server" Caption="Hub" NullText="--Select--"
+                    <dx:BootstrapComboBox ID="ddHub" runat="server" Caption="Hub" NullText="--Select--" AllowNull="true"
                         TextField="Name" ValueField="HubPK" ValueType="System.Int32"
                         IncrementalFilteringMode="Contains" AllowMouseWheel="false"
                         ClientInstanceName="ddHub" OnValidation="NewsEntryTypeOption_Validation">
@@ -189,7 +202,7 @@
                     </dx:BootstrapComboBox>
                 </div>
                 <div id="divStates" class="col-lg-4 hidden entry-type-option">
-                    <dx:BootstrapComboBox ID="ddState" runat="server" Caption="State" NullText="--Select--"
+                    <dx:BootstrapComboBox ID="ddState" runat="server" Caption="State" NullText="--Select--" AllowNull="true"
                         TextField="Name" ValueField="StatePK" ValueType="System.Int32"
                         IncrementalFilteringMode="Contains" AllowMouseWheel="false"
                         ClientInstanceName="ddState" OnValidation="NewsEntryTypeOption_Validation">
@@ -201,7 +214,7 @@
                     </dx:BootstrapComboBox>
                 </div>
                 <div id="divCohorts" class="col-lg-4 hidden entry-type-option">
-                    <dx:BootstrapComboBox ID="ddCohort" runat="server" Caption="Cohort" NullText="--Select--"
+                    <dx:BootstrapComboBox ID="ddCohort" runat="server" Caption="Cohort" NullText="--Select--" AllowNull="true"
                         TextField="CohortName" ValueField="CohortPK" ValueType="System.Int32"
                         IncrementalFilteringMode="Contains" AllowMouseWheel="false"
                         ClientInstanceName="ddCohort" OnValidation="NewsEntryTypeOption_Validation">
@@ -261,7 +274,8 @@
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.NewsItemPK %>' data-hf="hfDeleteNewsItemPK" data-target="#divDeleteNewsItemModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfNewsItemPK" runat="server" Value='<%# Item.NewsItemPK %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblNewsItemPK" runat="server" Visible="false" Text='<%# Item.NewsItemPK %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -306,7 +320,11 @@
                                                     <div class="card-footer">
                                                         <div class="center-content">
                                                             <asp:HiddenField ID="hfAddEditNewsItemPK" runat="server" Value="0" />
-                                                            <uc:Submit ID="submitNewsItem" runat="server" ValidationGroup="vgNewsItem" OnSubmitClick="submitNewsItem_Click" OnCancelClick="submitNewsItem_CancelClick" OnValidationFailed="submitNewsItem_ValidationFailed" />
+                                                            <uc:Submit ID="submitNewsItem" runat="server" ValidationGroup="vgNewsItem"
+                                                                ControlCssClass="center-content"
+                                                                OnSubmitClick="submitNewsItem_Click" 
+                                                                OnCancelClick="submitNewsItem_CancelClick" 
+                                                                OnValidationFailed="submitNewsItem_ValidationFailed" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -326,7 +344,10 @@
         </div>
     </div>
     <div class="page-footer">
-        <uc:Submit ID="submitNewsEntry" runat="server" ValidationGroup="vgNewsEntry" OnSubmitClick="submitNewsEntry_Click" OnCancelClick="submitNewsEntry_CancelClick" OnValidationFailed="submitNewsEntry_ValidationFailed" />
+        <uc:Submit ID="submitNewsEntry" runat="server" ValidationGroup="vgNewsEntry"
+            ControlCssClass="center-content"
+            OnSubmitClick="submitNewsEntry_Click" OnCancelClick="submitNewsEntry_CancelClick" 
+            OnValidationFailed="submitNewsEntry_ValidationFailed" />
     </div>
     <div class="modal" id="divDeleteNewsItemModal">
         <div class="modal-dialog">

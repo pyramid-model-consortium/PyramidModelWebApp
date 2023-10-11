@@ -7,16 +7,41 @@ using Pyramid.Models;
 
 namespace Pyramid.Pages
 {
-    public partial class BOQ : System.Web.UI.Page
+    public partial class BOQ : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "BOQ";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private BenchmarkOfQuality currentBOQ;
-        int BOQPK = 0;
+        private int BOQPK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
 
             //Get the BOQ PK from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["BOQPK"]))
@@ -24,8 +49,17 @@ namespace Pyramid.Pages
                 int.TryParse(Request.QueryString["BOQPK"], out BOQPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (BOQPK == 0 && !string.IsNullOrWhiteSpace(hfBOQPK.Value))
+            {
+                int.TryParse(hfBOQPK.Value, out BOQPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = BOQPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/BOQDashboard.aspx?messageType=NotAuthorized");
             }
@@ -59,7 +93,7 @@ namespace Pyramid.Pages
             }
 
             //Don't allow users to view BOQs from other programs
-            if (currentBOQ.BenchmarkOfQualityPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentBOQ.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentBOQ.ProgramFK))
             {
                 //Redirect the user to the dashboard with an error message
                 Response.Redirect(string.Format("/Pages/BOQDashboard.aspx?messageType={0}", "NoBOQ"));
@@ -71,7 +105,7 @@ namespace Pyramid.Pages
                 ((Dashboard)this.Master).HideTitle();
 
                 //If this is an edit or view, populate the page with values
-                if (BOQPK != 0)
+                if (isEdit)
                 {
                     PopulatePage(currentBOQ);
                 }
@@ -88,48 +122,51 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentBOQ.BenchmarkOfQualityPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitBOQ.ShowSubmitButton = true;
-
                     //Show other controls
                     hfViewOnly.Value = "False";
 
                     //Lock the controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New Benchmarks of Quality 2.0 Form";
                 }
-                else if (currentBOQ.BenchmarkOfQualityPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitBOQ.ShowSubmitButton = true;
-
                     //Show other controls
                     hfViewOnly.Value = "False";
 
                     //Lock the controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit Benchmarks of Quality 2.0 Form";
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitBOQ.ShowSubmitButton = false;
-
                     //Hide other controls
                     hfViewOnly.Value = "True";
 
                     //Lock the controls
                     EnableControls(false);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
+
                     //Set the page title
                     lblPageTitle.Text = "View Benchmarks of Quality 2.0 Form";
                 }
+
+                //Set the max value for the form date field
+                deFormDate.MaxDate = DateTime.Now;
 
                 //Set focus on the form date field
                 deFormDate.Focus();
@@ -144,105 +181,14 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitBOQ_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the success message
+            string successMessageType = SaveForm(true);
+
+            //Only redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the success message
-                string successMessageType = null;
-
-                //Fill the fields of the object from the form
-                currentBOQ.FormDate = deFormDate.Date;
-                currentBOQ.TeamMembers = txtTeamMembers.Text;
-                currentBOQ.Indicator1 = Convert.ToInt32(ddIndicator1.Value);
-                currentBOQ.Indicator2 = Convert.ToInt32(ddIndicator2.Value);
-                currentBOQ.Indicator3 = Convert.ToInt32(ddIndicator3.Value);
-                currentBOQ.Indicator4 = Convert.ToInt32(ddIndicator4.Value);
-                currentBOQ.Indicator5 = Convert.ToInt32(ddIndicator5.Value);
-                currentBOQ.Indicator6 = Convert.ToInt32(ddIndicator6.Value);
-                currentBOQ.Indicator7 = Convert.ToInt32(ddIndicator7.Value);
-                currentBOQ.Indicator8 = Convert.ToInt32(ddIndicator8.Value);
-                currentBOQ.Indicator9 = Convert.ToInt32(ddIndicator9.Value);
-                currentBOQ.Indicator10 = Convert.ToInt32(ddIndicator10.Value);
-                currentBOQ.Indicator11 = Convert.ToInt32(ddIndicator11.Value);
-                currentBOQ.Indicator12 = Convert.ToInt32(ddIndicator12.Value);
-                currentBOQ.Indicator13 = Convert.ToInt32(ddIndicator13.Value);
-                currentBOQ.Indicator14 = Convert.ToInt32(ddIndicator14.Value);
-                currentBOQ.Indicator15 = Convert.ToInt32(ddIndicator15.Value);
-                currentBOQ.Indicator16 = Convert.ToInt32(ddIndicator16.Value);
-                currentBOQ.Indicator17 = Convert.ToInt32(ddIndicator17.Value);
-                currentBOQ.Indicator18 = Convert.ToInt32(ddIndicator18.Value);
-                currentBOQ.Indicator19 = Convert.ToInt32(ddIndicator19.Value);
-                currentBOQ.Indicator20 = Convert.ToInt32(ddIndicator20.Value);
-                currentBOQ.Indicator21 = Convert.ToInt32(ddIndicator21.Value);
-                currentBOQ.Indicator22 = Convert.ToInt32(ddIndicator22.Value);
-                currentBOQ.Indicator23 = Convert.ToInt32(ddIndicator23.Value);
-                currentBOQ.Indicator24 = Convert.ToInt32(ddIndicator24.Value);
-                currentBOQ.Indicator25 = Convert.ToInt32(ddIndicator25.Value);
-                currentBOQ.Indicator26 = Convert.ToInt32(ddIndicator26.Value);
-                currentBOQ.Indicator27 = Convert.ToInt32(ddIndicator27.Value);
-                currentBOQ.Indicator28 = Convert.ToInt32(ddIndicator28.Value);
-                currentBOQ.Indicator29 = Convert.ToInt32(ddIndicator29.Value);
-                currentBOQ.Indicator30 = Convert.ToInt32(ddIndicator30.Value);
-                currentBOQ.Indicator31 = Convert.ToInt32(ddIndicator31.Value);
-                currentBOQ.Indicator32 = Convert.ToInt32(ddIndicator32.Value);
-                currentBOQ.Indicator33 = Convert.ToInt32(ddIndicator33.Value);
-                currentBOQ.Indicator34 = Convert.ToInt32(ddIndicator34.Value);
-                currentBOQ.Indicator35 = Convert.ToInt32(ddIndicator35.Value);
-                currentBOQ.Indicator36 = Convert.ToInt32(ddIndicator36.Value);
-                currentBOQ.Indicator37 = Convert.ToInt32(ddIndicator37.Value);
-                currentBOQ.Indicator38 = Convert.ToInt32(ddIndicator38.Value);
-                currentBOQ.Indicator39 = Convert.ToInt32(ddIndicator39.Value);
-                currentBOQ.Indicator40 = Convert.ToInt32(ddIndicator40.Value);
-                currentBOQ.Indicator41 = Convert.ToInt32(ddIndicator41.Value);
-
-                //Check to see if this is an add or edit
-                if (BOQPK > 0)
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //This is an edit
-                        successMessageType = "BOQEdited";
-
-                        //Fill the edit-specific fields
-                        currentBOQ.EditDate = DateTime.Now;
-                        currentBOQ.Editor = User.Identity.Name;
-
-                        //Get the existing database values
-                        BenchmarkOfQuality existingBOQ = context.BenchmarkOfQuality.Find(currentBOQ.BenchmarkOfQualityPK);
-
-                        //Set the BOQ object to the new values
-                        context.Entry(existingBOQ).CurrentValues.SetValues(currentBOQ);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard with the success message
-                    Response.Redirect(string.Format("/Pages/BOQDashboard.aspx?messageType={0}", successMessageType));
-                }
-                else
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //This is an add
-                        successMessageType = "BOQAdded";
-
-                        //Set the create-specific fields
-                        currentBOQ.CreateDate = DateTime.Now;
-                        currentBOQ.Creator = User.Identity.Name;
-                        currentBOQ.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
-
-                        //Add the Benchmark to the database and save
-                        context.BenchmarkOfQuality.Add(currentBOQ);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard with the success message
-                    Response.Redirect(string.Format("/Pages/BOQDashboard.aspx?messageType={0}", successMessageType));
-                }
-            }
-            else
-            {
-                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+                //Redirect the user to the dashboard with the success message
+                Response.Redirect(string.Format("/Pages/BOQDashboard.aspx?messageType={0}", successMessageType));
             }
         }
 
@@ -269,11 +215,42 @@ namespace Pyramid.Pages
         }
 
         /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitBOQ.ValidationGroup))
+            {
+                //Submit the form
+                SaveForm(false);
+
+                //Get the master page
+                MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                //Get the report
+                Reports.PreBuiltReports.FormReports.RptBOQ report = new Reports.PreBuiltReports.FormReports.RptBOQ();
+
+                //Display the report
+                masterPage.DisplayReport(currentProgramRole, report, "Benchmarks of Quality 2.0", BOQPK);
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
+        }
+
+        /// <summary>
         /// This method enables/disables the controls based on the passed boolean value
         /// </summary>
         /// <param name="enabled">True if the controls should be read only, false if not</param>
         private void EnableControls(bool enabled)
         {
+            //Enable/disable the controls
             ddIndicator1.ClientEnabled = enabled;
             ddIndicator2.ClientEnabled = enabled;
             ddIndicator3.ClientEnabled = enabled;
@@ -317,7 +294,15 @@ namespace Pyramid.Pages
             ddIndicator41.ClientEnabled = enabled;
             deFormDate.ClientEnabled = enabled;
             txtTeamMembers.ClientEnabled = enabled;
+
+            //Show/hide the submit button
             submitBOQ.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            submitBOQ.UseCancelConfirm = enabled && areConfirmationsEnabled;
         }
 
         /// <summary>
@@ -375,6 +360,121 @@ namespace Pyramid.Pages
 
             //Set the team members
             txtTeamMembers.Text = boq.TeamMembers;
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message
+            string successMessageType = null;
+
+            //Determine if the user is allowed to save the form
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Fill the fields of the object from the form
+                currentBOQ.FormDate = deFormDate.Date;
+                currentBOQ.TeamMembers = txtTeamMembers.Text;
+                currentBOQ.Indicator1 = Convert.ToInt32(ddIndicator1.Value);
+                currentBOQ.Indicator2 = Convert.ToInt32(ddIndicator2.Value);
+                currentBOQ.Indicator3 = Convert.ToInt32(ddIndicator3.Value);
+                currentBOQ.Indicator4 = Convert.ToInt32(ddIndicator4.Value);
+                currentBOQ.Indicator5 = Convert.ToInt32(ddIndicator5.Value);
+                currentBOQ.Indicator6 = Convert.ToInt32(ddIndicator6.Value);
+                currentBOQ.Indicator7 = Convert.ToInt32(ddIndicator7.Value);
+                currentBOQ.Indicator8 = Convert.ToInt32(ddIndicator8.Value);
+                currentBOQ.Indicator9 = Convert.ToInt32(ddIndicator9.Value);
+                currentBOQ.Indicator10 = Convert.ToInt32(ddIndicator10.Value);
+                currentBOQ.Indicator11 = Convert.ToInt32(ddIndicator11.Value);
+                currentBOQ.Indicator12 = Convert.ToInt32(ddIndicator12.Value);
+                currentBOQ.Indicator13 = Convert.ToInt32(ddIndicator13.Value);
+                currentBOQ.Indicator14 = Convert.ToInt32(ddIndicator14.Value);
+                currentBOQ.Indicator15 = Convert.ToInt32(ddIndicator15.Value);
+                currentBOQ.Indicator16 = Convert.ToInt32(ddIndicator16.Value);
+                currentBOQ.Indicator17 = Convert.ToInt32(ddIndicator17.Value);
+                currentBOQ.Indicator18 = Convert.ToInt32(ddIndicator18.Value);
+                currentBOQ.Indicator19 = Convert.ToInt32(ddIndicator19.Value);
+                currentBOQ.Indicator20 = Convert.ToInt32(ddIndicator20.Value);
+                currentBOQ.Indicator21 = Convert.ToInt32(ddIndicator21.Value);
+                currentBOQ.Indicator22 = Convert.ToInt32(ddIndicator22.Value);
+                currentBOQ.Indicator23 = Convert.ToInt32(ddIndicator23.Value);
+                currentBOQ.Indicator24 = Convert.ToInt32(ddIndicator24.Value);
+                currentBOQ.Indicator25 = Convert.ToInt32(ddIndicator25.Value);
+                currentBOQ.Indicator26 = Convert.ToInt32(ddIndicator26.Value);
+                currentBOQ.Indicator27 = Convert.ToInt32(ddIndicator27.Value);
+                currentBOQ.Indicator28 = Convert.ToInt32(ddIndicator28.Value);
+                currentBOQ.Indicator29 = Convert.ToInt32(ddIndicator29.Value);
+                currentBOQ.Indicator30 = Convert.ToInt32(ddIndicator30.Value);
+                currentBOQ.Indicator31 = Convert.ToInt32(ddIndicator31.Value);
+                currentBOQ.Indicator32 = Convert.ToInt32(ddIndicator32.Value);
+                currentBOQ.Indicator33 = Convert.ToInt32(ddIndicator33.Value);
+                currentBOQ.Indicator34 = Convert.ToInt32(ddIndicator34.Value);
+                currentBOQ.Indicator35 = Convert.ToInt32(ddIndicator35.Value);
+                currentBOQ.Indicator36 = Convert.ToInt32(ddIndicator36.Value);
+                currentBOQ.Indicator37 = Convert.ToInt32(ddIndicator37.Value);
+                currentBOQ.Indicator38 = Convert.ToInt32(ddIndicator38.Value);
+                currentBOQ.Indicator39 = Convert.ToInt32(ddIndicator39.Value);
+                currentBOQ.Indicator40 = Convert.ToInt32(ddIndicator40.Value);
+                currentBOQ.Indicator41 = Convert.ToInt32(ddIndicator41.Value);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //This is an edit
+                        successMessageType = "BOQEdited";
+
+                        //Fill the edit-specific fields
+                        currentBOQ.EditDate = DateTime.Now;
+                        currentBOQ.Editor = User.Identity.Name;
+
+                        //Get the existing database values
+                        BenchmarkOfQuality existingBOQ = context.BenchmarkOfQuality.Find(currentBOQ.BenchmarkOfQualityPK);
+
+                        //Set the BOQ object to the new values
+                        context.Entry(existingBOQ).CurrentValues.SetValues(currentBOQ);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfBOQPK.Value = currentBOQ.BenchmarkOfQualityPK.ToString();
+                        BOQPK = currentBOQ.BenchmarkOfQualityPK;
+                    }
+                }
+                else
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //This is an add
+                        successMessageType = "BOQAdded";
+
+                        //Set the create-specific fields
+                        currentBOQ.CreateDate = DateTime.Now;
+                        currentBOQ.Creator = User.Identity.Name;
+                        currentBOQ.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
+
+                        //Add the Benchmark to the database and save
+                        context.BenchmarkOfQuality.Add(currentBOQ);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfBOQPK.Value = currentBOQ.BenchmarkOfQualityPK.ToString();
+                        BOQPK = currentBOQ.BenchmarkOfQualityPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message type
+            return successMessageType;
         }
     }
 }

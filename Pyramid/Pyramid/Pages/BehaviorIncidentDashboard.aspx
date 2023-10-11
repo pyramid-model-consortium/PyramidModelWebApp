@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="Behavior Incident Report Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="BehaviorIncidentDashboard.aspx.cs" Inherits="Pyramid.Pages.BehaviorIncidentDashboard" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 
@@ -26,6 +26,17 @@
 
             //Show/hide the view only fields
             setViewOnlyVisibility();
+        }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
     </script>
 </asp:Content>
@@ -66,10 +77,11 @@
                                 <SettingsAdaptivity AdaptivityMode="HideDataCells" AllowOnlyOneAdaptiveDetailExpanded="true" AdaptiveColumnPosition="Left"></SettingsAdaptivity>
                                 <Columns>
                                     <dx:BootstrapGridViewDateColumn FieldName="IncidentDatetime" SortIndex="0" SortOrder="Descending" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy hh:mm tt" AdaptivePriority="0" />
-                                    <dx:BootstrapGridViewDataColumn FieldName="ChildName" Caption="Child" AdaptivePriority="2" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="ChildIDAndName" Caption="Child" AdaptivePriority="2" />
                                     <dx:BootstrapGridViewDataColumn FieldName="ProblemBehavior" Caption="Problem Behavior" AdaptivePriority="3" />
                                     <dx:BootstrapGridViewDataColumn FieldName="ClassroomName" Caption="Classroom" AdaptivePriority="4" />
                                     <dx:BootstrapGridViewDataColumn FieldName="ProgramName" Caption="Program" AdaptivePriority="5" />
+                                    <dx:BootstrapGridViewDataColumn Name="StateNameColumn" FieldName="StateName" Caption="State" AdaptivePriority="6" />
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">
@@ -151,7 +163,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <dx:BootstrapComboBox ID="ddSchoolYear" runat="server" Caption="School Year" NullText="--Select--"
-                                        ValueType="System.Int32"
+                                        ValueType="System.Int32" ValueField="ItemValue" TextField="ItemText"
                                         IncrementalFilteringMode="Contains" AllowMouseWheel="false">
                                         <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                         <ValidationSettings ValidationGroup="vgBIRExcel" ErrorDisplayMode="ImageWithText" CausesValidation="true">
@@ -169,8 +181,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <uc:Submit ID="submitGenerateDownloadLink" runat="server" ValidationGroup="vgBIRExcel" 
-                                        SubmitButtonIcon="fas fa-cogs" SubmitButtonText="Generate Download Link" SubmitButtonBootstrapType="Primary"
+                                    <uc:Submit ID="submitGenerateDownloadLink" runat="server" ValidationGroup="vgBIRExcel"
+                                        ControlCssClass="center-content"
+                                        SubmitButtonIcon="fas fa-cogs" SubmitButtonText="Generate Download Link" 
+                                        SubmitButtonBootstrapType="Primary"
                                         SubmittingButtonText="Generating..." 
                                         OnSubmitClick="submitGenerateDownloadLink_Click" ShowCancelButton="false" 
                                         OnValidationFailed="submitGenerateDownloadLink_ValidationFailed" />

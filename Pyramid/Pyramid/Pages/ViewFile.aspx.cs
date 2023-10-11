@@ -11,8 +11,10 @@ namespace Pyramid.Pages
         private ProgramAndRoleFromSession currentProgramRole;
         private UserFileUpload currentFile;
         private ReportCatalog currentReportCatalog;
+        private State currentState;
         private int filePK = 0;
         private int reportCatalogPK = 0;
+        private int statePK = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,6 +29,10 @@ namespace Pyramid.Pages
             else if (!string.IsNullOrWhiteSpace(Request.QueryString["ReportCatalogPK"]))
             {
                 int.TryParse(Request.QueryString["ReportCatalogPK"], out reportCatalogPK);
+            }
+            else if(!string.IsNullOrWhiteSpace(Request.QueryString["StatePK"]))
+            {
+                int.TryParse(Request.QueryString["StatePK"], out statePK);
             }
 
             //Get the file information from the database
@@ -53,6 +59,7 @@ namespace Pyramid.Pages
                 currentFile = new UserFileUpload();
             }
 
+            //Get the report catalog information from the database
             if(reportCatalogPK > 0)
             {
                 using (PyramidContext context = new PyramidContext())
@@ -75,17 +82,40 @@ namespace Pyramid.Pages
                 currentReportCatalog = new ReportCatalog();
             }
 
+            //Get the state information from the database
+            if (statePK > 0)
+            {
+                using (PyramidContext context = new PyramidContext())
+                {
+                    //Get the state record
+                    currentState = context.State.AsNoTracking()
+                                    .Where(s => s.StatePK == statePK)
+                                    .FirstOrDefault();
+
+                    //Check to see if the state record exists
+                    if (currentState == null)
+                    {
+                        //The state record doesn't exist, set to a default
+                        currentState = new State();
+                    }
+                }
+            }
+            else
+            {
+                currentState = new State();
+            }
+
             //Don't allow users to view files from other programs
             if (currentFile.UserFileUploadPK > 0)
             {
                 if (currentFile.TypeCodeFK == (int)Utilities.FileTypeFKs.STATE_WIDE 
-                        && currentProgramRole.StateFK.Value != currentFile.StateFK.Value)
+                        && !currentProgramRole.StateFKs.Contains(currentFile.StateFK.Value))
                 {
                     //This is a state-wide file and the user is not logged in under that state
                     lblMessage.Text = "No file found...";
                 }
                 else if (currentFile.TypeCodeFK == (int)Utilities.FileTypeFKs.HUB_WIDE && 
-                            currentProgramRole.HubFK.Value != currentFile.HubFK.Value)
+                            !currentProgramRole.HubFKs.Contains(currentFile.HubFK.Value))
                 {
                     //This is a hub-wide file and the user is not logged in under that hub
                     lblMessage.Text = "No file found...";
@@ -107,10 +137,18 @@ namespace Pyramid.Pages
                     //Get the file URL from Azure storage
                     string fileLink = Utilities.GetFileLinkFromAzureStorage(currentFile.FileName,
                         currentFile.FileName.Contains(".pdf"),
-                        Utilities.ConstantAzureStorageContainerName.UPLOADED_FILES.ToString());
+                        Utilities.ConstantAzureStorageContainerName.UPLOADED_FILES.ToString(), 2);
 
-                    //Redirect the user to the file link
-                    Response.Redirect(fileLink);
+                    //Make sure the file URL exists
+                    if (!string.IsNullOrWhiteSpace(fileLink))
+                    {
+                        //Redirect the user to the file link
+                        Response.Redirect(fileLink);
+                    }
+                    else
+                    {
+                        lblMessage.Text = "No file found...";
+                    }
                 }
             }
             else if(!string.IsNullOrWhiteSpace(currentReportCatalog.DocumentationLink))
@@ -121,6 +159,24 @@ namespace Pyramid.Pages
 
                 //Redirect the user to the file link
                 Response.Redirect(filePath);
+            }
+            else if(!string.IsNullOrWhiteSpace(currentState.ConfidentialityFilename))
+            {
+                //Get the file URL from Azure storage
+                string fileLink = Utilities.GetFileLinkFromAzureStorage(currentState.ConfidentialityFilename,
+                    true,
+                    Utilities.ConstantAzureStorageContainerName.CONFIDENTIALITY_AGREEMENTS.ToString(), 2);
+
+                //Make sure the file URL exists
+                if (!string.IsNullOrWhiteSpace(fileLink))
+                {
+                    //Redirect the user to the file link
+                    Response.Redirect(fileLink);
+                }
+                else
+                {
+                    lblMessage.Text = "No file found...";
+                }
             }
             else
             {

@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Child" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="Child.aspx.cs" Inherits="Pyramid.Pages.Child" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Child" Src="~/User_Controls/Child.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
@@ -25,16 +25,26 @@
             $('#lnkChildrenDashboard').addClass('active');
 
             //Allow date format for DataTables sorting
-            $.fn.dataTable.moment( 'MM/DD/YYYY' );
+            $.fn.dataTable.moment('MM/DD/YYYY');
+
+            //Show/hide the view only fields
+            setViewOnlyVisibility();
 
             //Initialize the datatables
             if (!$.fn.dataTable.isDataTable('#tblChildNotes')) {
                 $('#tblChildNotes').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [2] }
+                        { orderable: false, targets: [3] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 0, 'asc' ]],
+                    order: [[1, 'desc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -46,11 +56,18 @@
 
             if (!$.fn.dataTable.isDataTable('#tblChildStatuses')) {
                 $('#tblChildStatuses').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [2] }
+                        { orderable: false, targets: [3] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 0, 'asc' ]],
+                    order: [[1, 'desc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -62,11 +79,18 @@
 
             if (!$.fn.dataTable.isDataTable('#tblClassroomAssignments')) {
                 $('#tblClassroomAssignments').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [4] }
+                        { orderable: false, targets: [5] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 1, 'asc' ]],
+                    order: [[2, 'desc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -76,9 +100,17 @@
                 });
             }
             $('.dataTables_filter input').removeClass('form-control-sm');
+        }
 
-            //Show/hide the view only fields
-            setViewOnlyVisibility();
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
 
         //This function controls whether or not the specify field for the leave reason is shown
@@ -88,7 +120,7 @@
             var leaveReason = ddLeaveReason.GetText();
 
             //If the leave reason is other, show the specify div
-            if (leaveReason.toLowerCase().includes('other')) {
+            if (leaveReason.toLowerCase() == 'other') {
                 $('#divLeaveReasonSpecify').slideDown();
             }
             else {
@@ -117,7 +149,8 @@
             var reasonSpecify = e.value;
             var leaveReason = ddLeaveReason.GetText();
 
-            if ((reasonSpecify == null || reasonSpecify == ' ') && leaveReason.toLowerCase().includes('other')) {
+            if ((reasonSpecify == null || reasonSpecify == ' ')
+                    && leaveReason.toLowerCase() == 'other') {
                 e.isValid = false;
                 e.errorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";
             }
@@ -172,16 +205,30 @@
             <asp:AsyncPostBackTrigger ControlID="repeatClassroomAssignments" />
             <asp:AsyncPostBackTrigger ControlID="lbDeleteClassroomAssignment" EventName="Click" />
             <asp:AsyncPostBackTrigger ControlID="submitClassroomAssignment" />
-            <asp:AsyncPostBackTrigger ControlID="submitChild" />
+            <asp:AsyncPostBackTrigger ControlID="btnPrintPreview" EventName="Click" />
+            <asp:PostBackTrigger ControlID="submitChild" />
         </Triggers>
     </asp:UpdatePanel>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card bg-light">
-                <div class="card-header">Basic Information</div>
-                <div class="card-body">
-                    <asp:UpdatePanel ID="upBasicInfo" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                        <ContentTemplate>
+    <asp:UpdatePanel ID="upBasicInfo" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+        <ContentTemplate>
+            <asp:HiddenField ID="hfChildProgramPK" runat="server" Value="" />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    Basic Information
+                                </div>
+                                <div class="col-md-4">
+                                    <dx:BootstrapButton ID="btnPrintPreview" runat="server" Text="Save and Download/Print" OnClick="btnPrintPreview_Click"
+                                        SettingsBootstrap-RenderOption="primary" ValidationGroup="vgChild" data-validation-group="vgChild">
+                                        <CssClasses Icon="fas fa-print" Control="float-right btn-loader" />
+                                    </dx:BootstrapButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Program: </label>
@@ -189,15 +236,15 @@
                                 </div>
                             </div>
                             <uc:Child ID="childControl" runat="server"></uc:Child>
-                        </ContentTemplate>
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="submitChild" />
-                        </Triggers>
-                    </asp:UpdatePanel>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="submitChild" />
+        </Triggers>
+    </asp:UpdatePanel>
     <div id="divEditOnly" runat="server" visible="false">
         <div class="row">
             <div class="col-xl-6">
@@ -218,15 +265,17 @@
                                                 <table id="tblChildNotes" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Date</th>
+                                                            <th data-priority="1"></th>
+                                                            <th data-priority="2">Date</th>
                                                             <th>Contents</th>
-                                                            <th data-priority="2"></th>
+                                                            <th data-priority="3"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                         <tr>
+                                                            <td></td>
                                                             <td><%# Item.NoteDate.ToString("MM/dd/yyyy") %></td>
                                                             <td><%# Item.Contents %></td>
                                                             <td class="text-center">
@@ -239,7 +288,8 @@
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildNotePK %>' data-hf="hfDeleteChildNotePK" data-target="#divDeleteChildNoteModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfChildNotePK" runat="server" Value='<%# Item.ChildNotePK %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblChildNotePK" runat="server" Visible="false" Text='<%# Item.ChildNotePK %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                             </ItemTemplate>
@@ -289,7 +339,10 @@
                                             <div class="card-footer">
                                                 <div class="center-content">
                                                     <asp:HiddenField ID="hfAddEditNotePK" runat="server" Value="0" />
-                                                    <uc:Submit ID="submitNote" runat="server" ValidationGroup="vgNote" OnSubmitClick="submitNote_Click" OnCancelClick="submitNote_CancelClick" OnValidationFailed="submitNote_ValidationFailed" />
+                                                    <uc:Submit ID="submitNote" runat="server" ValidationGroup="vgNote"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitNote_Click" OnCancelClick="submitNote_CancelClick" 
+                                                        OnValidationFailed="submitNote_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -321,15 +374,17 @@
                                                 <table id="tblChildStatuses" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Date</th>
+                                                            <th data-priority="1"></th>
+                                                            <th data-priority="2">Date</th>
                                                             <th>Status</th>
-                                                            <th data-priority="2"></th>
+                                                            <th data-priority="3"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                         <tr>
+                                                            <td></td>
                                                             <td><%# Item.StatusDate.ToString("MM/dd/yyyy") %></td>
                                                             <td><%# Item.StatusDescription %></td>
                                                             <td class="text-center">
@@ -342,7 +397,8 @@
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildStatusPK %>' data-hf="hfDeleteChildStatusPK" data-target="#divDeleteChildStatusModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfChildStatusPK" runat="server" Value='<%# Item.ChildStatusPK %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblChildStatusPK" runat="server" Visible="false" Text='<%# Item.ChildStatusPK %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                             </ItemTemplate>
@@ -394,7 +450,10 @@
                                             <div class="card-footer">
                                                 <div class="center-content">
                                                     <asp:HiddenField ID="hfAddEditStatusPK" runat="server" Value="0" />
-                                                    <uc:Submit ID="submitStatus" runat="server" ValidationGroup="vgStatus" OnSubmitClick="submitStatus_Click" OnCancelClick="submitStatus_CancelClick" OnValidationFailed="submitStatus_ValidationFailed" />
+                                                    <uc:Submit ID="submitStatus" runat="server" ValidationGroup="vgStatus"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitStatus_Click" OnCancelClick="submitStatus_CancelClick" 
+                                                        OnValidationFailed="submitStatus_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -428,17 +487,19 @@
                                                 <table id="tblClassroomAssignments" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Classroom</th>
-                                                            <th data-priority="3">Assign Date</th>
+                                                            <th data-priority="1"></th>
+                                                            <th data-priority="2">Classroom</th>
+                                                            <th data-priority="4">Assign Date</th>
                                                             <th class="min-tablet-l">Leave Date</th>
                                                             <th class="min-tablet-l">Leave Reason</th>
-                                                            <th data-priority="2"></th>
+                                                            <th data-priority="3"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                         <tr>
+                                                            <td></td>
                                                             <td><%# "(" + Item.Classroom.ProgramSpecificID + ") " + Item.Classroom.Name %></td>
                                                             <td><%# Item.AssignDate.ToString("MM/dd/yyyy") %></td>
                                                             <td class="leave-date"><%# (Item.LeaveDate.HasValue ? Item.LeaveDate.Value.ToString("MM/dd/yyyy") : "") %></td>
@@ -453,7 +514,8 @@
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Item.ChildClassroomPK %>' data-hf="hfDeleteClassroomAssignmentPK" data-target="#divDeleteClassroomAssignmentModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfClassroomAssignmentPK" runat="server" Value='<%# Item.ChildClassroomPK %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblClassroomAssignmentPK" runat="server" Visible="false" Text='<%# Item.ChildClassroomPK %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                             </ItemTemplate>
@@ -504,7 +566,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <dx:BootstrapDateEdit ID="deLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date"
+                                                            <dx:BootstrapDateEdit ID="deLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date" AllowNull="true"
                                                                 EditFormatString="MM/dd/yyyy" UseMaskBehavior="true"
                                                                 ClientInstanceName="deLeaveDate" OnValidation="deLeaveDate_Validation" 
                                                                 AllowMouseWheel="false" PickerDisplayMode="Calendar" MinDate="01/01/1900">
@@ -518,11 +580,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <dx:BootstrapComboBox ID="ddLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--"
+                                                        <dx:BootstrapComboBox ID="ddLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--" AllowNull="true"
                                                             TextField="Description" ValueField="CodeChildLeaveReasonPK" ValueType="System.Int32"
                                                             IncrementalFilteringMode="Contains"  AllowMouseWheel="false"
                                                             OnValidation="ddLeaveReason_Validation" ClientInstanceName="ddLeaveReason" 
-                                                            AllowNull="true" ClearButton-DisplayMode="Always">
+                                                            ClearButton-DisplayMode="Always">
                                                             <ClientSideEvents Validation="validateLeaveReason" Init="showHideLeaveReasonSpecify" SelectedIndexChanged="showHideLeaveReasonSpecify" />
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <ValidationSettings ValidationGroup="vgClassroomAssignment" ErrorDisplayMode="ImageWithText" EnableCustomValidation="true">
@@ -544,7 +606,12 @@
                                             <div class="card-footer">
                                                 <div class="center-content">
                                                     <asp:HiddenField ID="hfAddEditClassroomAssignmentPK" runat="server" Value="0" />
-                                                    <uc:Submit ID="submitClassroomAssignment" runat="server" ValidationGroup="vgClassroomAssignment" OnSubmitClick="submitClassroomAssignment_Click" OnCancelClick="submitClassroomAssignment_CancelClick" OnValidationFailed="submitClassroomAssignment_ValidationFailed" />
+                                                    <uc:Submit ID="submitClassroomAssignment" runat="server" 
+                                                        ValidationGroup="vgClassroomAssignment"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitClassroomAssignment_Click" 
+                                                        OnCancelClick="submitClassroomAssignment_CancelClick" 
+                                                        OnValidationFailed="submitClassroomAssignment_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -561,7 +628,10 @@
         </div>
     </div>
     <div class="page-footer">
-        <uc:Submit ID="submitChild" runat="server" ValidationGroup="vgChild" OnSubmitClick="submitChild_Click" OnCancelClick="submitChild_CancelClick" OnValidationFailed="submitChild_ValidationFailed"></uc:Submit>
+        <uc:Submit ID="submitChild" runat="server" ValidationGroup="vgChild"
+            ControlCssClass="center-content"
+            OnSubmitClick="submitChild_Click" OnCancelClick="submitChild_CancelClick" 
+            OnValidationFailed="submitChild_ValidationFailed"></uc:Submit>
     </div>
     <div class="modal" id="divDeleteChildNoteModal">
         <div class="modal-dialog">

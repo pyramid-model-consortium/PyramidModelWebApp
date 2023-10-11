@@ -11,8 +11,29 @@ using DevExpress.Web;
 
 namespace Pyramid.Pages
 {
-    public partial class BehaviorIncidentDashboard : System.Web.UI.Page
+    public partial class BehaviorIncidentDashboard : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "BIR";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -20,8 +41,17 @@ namespace Pyramid.Pages
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToViewDashboard == false)
+            {
+                Response.Redirect("/Default.aspx?messageType=PageNotAuthorized");
+            }
+
             //Don't allow aggregate viewers to see the action column
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 //Get the action column index (the farthest right column)
                 int actionColumnIndex = (bsGRBehaviorIncidents.Columns.Count - 1);
@@ -30,16 +60,19 @@ namespace Pyramid.Pages
                 bsGRBehaviorIncidents.Columns[actionColumnIndex].Visible = false;
             }
 
+            //Show/hide the state column based on the number of states accessible to the user
+            bsGRBehaviorIncidents.Columns["StateNameColumn"].Visible = (currentProgramRole.StateFKs.Count > 1);
+
             if (!IsPostBack)
             {
                 //Set the view only value
-                if (currentProgramRole.AllowedToEdit.Value)
+                if (FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
                 }
 
                 //Check for messages in the query string
@@ -120,17 +153,42 @@ namespace Pyramid.Pages
             }
 
             //---------------- School Year dropdown -----------------
-            //To hold the last 10 years (inclusive of this year)
-            List<int> schoolYears = new List<int>();
+            //To hold the last 10 years
+            List<Utilities.CustomDropDownSourceItem> schoolYears = new List<Utilities.CustomDropDownSourceItem>();
 
-            //Get the current year and add it to the list
+            //Get the current year
             int currentYear = DateTime.Now.Year;
-            schoolYears.Add(currentYear);
+
+            //Check to see if it is currently on or after August
+            //If it is, add the current year to the list
+            if(DateTime.Now.Month >= 8)
+            {
+                //Get the text
+                string yearText = "August " + currentYear.ToString() + " - July " + (currentYear + 1).ToString();
+
+                //Create an object that hold the current year and text
+                Utilities.CustomDropDownSourceItem yearItem =
+                    new Utilities.CustomDropDownSourceItem(currentYear.ToString(), yearText);
+
+                //Add the object to the list
+                schoolYears.Add(yearItem);
+            }
 
             //Get the previous 9 years and add them to the list
             for (int i = 1; i <= 10; i++)
             {
-                schoolYears.Add(currentYear - i);
+                //Get the year value
+                int yearValue = currentYear - i;
+
+                //Get the year text
+                string yearText = "August " + yearValue.ToString() + " - July " + (yearValue + 1).ToString();
+
+                //Create an object that hold the year and text
+                Utilities.CustomDropDownSourceItem yearItem =
+                    new Utilities.CustomDropDownSourceItem(yearValue.ToString(), yearText);
+
+                //Add the object to the list
+                schoolYears.Add(yearItem);
             }
 
             //Bind the school year dropdown
@@ -155,6 +213,7 @@ namespace Pyramid.Pages
                                     .Include(bi => bi.Child)
                                     .Include(bi => bi.Classroom)
                                     .Include(bi => bi.Classroom.Program)
+                                    .Include(bi => bi.Classroom.Program.State)
                                     .Include(bi => bi.CodeProblemBehavior)
                                 join cp in context.ChildProgram on bi.ChildFK equals cp.ChildFK
                                 where currentProgramRole.ProgramFKs.Contains(bi.Classroom.ProgramFK)
@@ -167,10 +226,14 @@ namespace Pyramid.Pages
                                     bi.Creator,
                                     bi.CreateDate,
                                     bi.IncidentDatetime,
-                                    ChildName = "(" + cp.ProgramSpecificID + ") " + bi.Child.FirstName + " " + bi.Child.LastName,
+                                    ChildID = cp.ProgramSpecificID,
+                                    ChildIDAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                        "(" + cp.ProgramSpecificID + ") " + bi.Child.FirstName + " " + bi.Child.LastName :
+                                                        cp.ProgramSpecificID),
                                     ClassroomName = "(" + bi.Classroom.ProgramSpecificID + ") " + bi.Classroom.Name,
                                     ProblemBehavior = bi.CodeProblemBehavior.Description,
-                                    bi.Classroom.Program.ProgramName
+                                    bi.Classroom.Program.ProgramName,
+                                    StateName = bi.Classroom.Program.State.Name
                                 };
         }
 
@@ -182,7 +245,7 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteBehaviorIncident_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (FormPermissions.AllowedToDelete)
             {
                 //Get the PK from the hidden field
                 int? removeBehaviorIncidentPK = (String.IsNullOrWhiteSpace(hfDeleteBehaviorIncidentPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteBehaviorIncidentPK.Value));
@@ -199,6 +262,17 @@ namespace Pyramid.Pages
 
                             //Remove the Behavior Incident
                             context.BehaviorIncident.Remove(behaviorIncidentToRemove);
+
+                            //Save the deletion to the database
+                            context.SaveChanges();
+
+                            //Get the delete change row and set the deleter
+                            context.BehaviorIncidentChanged
+                                    .OrderByDescending(bic => bic.BehaviorIncidentChangedPK)
+                                    .Where(bic => bic.BehaviorIncidentPK == behaviorIncidentToRemove.BehaviorIncidentPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
                             context.SaveChanges();
 
                             //Show a success message
@@ -227,7 +301,7 @@ namespace Pyramid.Pages
                         }
 
                         //Log the error
-                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
+                        Utilities.LogException(dbUpdateEx);
                     }
 
                     //Rebind the Behavior Incident controls

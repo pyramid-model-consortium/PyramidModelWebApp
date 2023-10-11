@@ -5,20 +5,46 @@ using Pyramid.Code;
 using Pyramid.Models;
 using System.Data.Entity;
 using Pyramid.MasterPages;
+using DevExpress.Web;
 
 namespace Pyramid.Pages
 {
-    public partial class OtherSEScreen : System.Web.UI.Page
+    public partial class OtherSEScreen : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "OSES";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.OtherSEScreen currentOtherSEScreen;
         private int currentOtherSEScreenPK = 0;
         private int currentProgramFK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
 
             //Get the OtherSEScreen PK from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["OtherSEScreenPK"]))
@@ -26,8 +52,17 @@ namespace Pyramid.Pages
                 int.TryParse(Request.QueryString["OtherSEScreenPK"], out currentOtherSEScreenPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (currentOtherSEScreenPK == 0 && !string.IsNullOrWhiteSpace(hfOtherSEScreenPK.Value))
+            {
+                int.TryParse(hfOtherSEScreenPK.Value, out currentOtherSEScreenPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = currentOtherSEScreenPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/OtherSEScreenDashboard.aspx?messageType=NotAuthorized");
             }
@@ -56,16 +91,13 @@ namespace Pyramid.Pages
             }
 
             //Prevent users from viewing OtherSEScreens from other programs
-            if (currentOtherSEScreen.OtherSEScreenPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentOtherSEScreen.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentOtherSEScreen.ProgramFK))
             {
                 Response.Redirect(string.Format("/Pages/OtherSEScreenDashboard.aspx?messageType={0}", "NOOtherSEScreen"));
             }
 
             //Get the proper program fk
-            currentProgramFK = (currentOtherSEScreen.OtherSEScreenPK > 0 ? currentOtherSEScreen.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
-
-            //Set the max value for the form date
-            deScreenDate.MaxDate = DateTime.Now;
+            currentProgramFK = (isEdit ? currentOtherSEScreen.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
 
             if (!IsPostBack)
             {
@@ -76,11 +108,14 @@ namespace Pyramid.Pages
                 BindDropDowns();
 
                 //Check to see if this is an edit
-                if (currentOtherSEScreenPK > 0)
+                if (isEdit)
                 {
                     //This is an edit
                     //Populate the page
                     PopulatePage(currentOtherSEScreen);
+
+                    //Update the child age
+                    UpdateChildAge(currentOtherSEScreen.ChildFK, currentOtherSEScreen.ScreenDate);
                 }
 
                 //Get the action from the query string
@@ -95,48 +130,51 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentOtherSEScreen.OtherSEScreenPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitOtherSEScreen.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
+
                     //Set the page title
-                    lblPageTitle.Text = "Add New Other Social Emotional Screening";
+                    lblPageTitle.Text = "Add New Other Social Emotional Assessment";
                 }
-                else if (currentOtherSEScreen.OtherSEScreenPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitOtherSEScreen.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
+
                     //Set the page title
-                    lblPageTitle.Text = "Edit Other Social Emotional Screening";
+                    lblPageTitle.Text = "Edit Other Social Emotional Assessment";
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitOtherSEScreen.ShowSubmitButton = false;
-
                     //Hide certain controls
                     hfViewOnly.Value = "True";
 
                     //Disable page controls
                     EnableControls(false);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
+
                     //Set the page title
-                    lblPageTitle.Text = "View Other Social Emotional Screening";
+                    lblPageTitle.Text = "View Other Social Emotional Assessment";
                 }
+
+                //Set the max date for the screen date field
+                deScreenDate.MaxDate = DateTime.Now;
 
                 //Set focus on the screen date field
                 deScreenDate.Focus();
@@ -153,63 +191,16 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitOtherSEScreen_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the success message type
+            string successMessageType = SaveForm(true);
+
+            //Only redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the success message type
-                string successMessageType = null;
-
-                //Fill the OtherSEScreen fields from the form
-                currentOtherSEScreen.ScreenDate = deScreenDate.Date;
-                currentOtherSEScreen.ScreenTypeCodeFK = Convert.ToInt32(ddScreenType.Value);
-                currentOtherSEScreen.ChildFK = Convert.ToInt32(ddChild.Value);
-                currentOtherSEScreen.Score = Convert.ToInt32(txtScore.Value);
-                currentOtherSEScreen.ScoreTypeCodeFK = Convert.ToInt32(ddScoreType.Value);
-
-                if (currentOtherSEScreenPK > 0)
-                {
-                    //This is an edit
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the success message
-                        successMessageType = "OtherSEScreenEdited";
-
-                        //Set the edit-only fields
-                        currentOtherSEScreen.Editor = User.Identity.Name;
-                        currentOtherSEScreen.EditDate = DateTime.Now;
-
-                        //Get the existing OtherSEScreen record
-                        Models.OtherSEScreen existingASQ = context.OtherSEScreen.Find(currentOtherSEScreen.OtherSEScreenPK);
-
-                        //Overwrite the existing OtherSEScreen record with the values from the form
-                        context.Entry(existingASQ).CurrentValues.SetValues(currentOtherSEScreen);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the OtherSEScreen dashboard
-                    Response.Redirect(string.Format("/Pages/OtherSEScreenDashboard.aspx?messageType={0}", successMessageType));
-                }
-                else
-                {
-                    //This is an add
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the success message
-                        successMessageType = "OtherSEScreenAdded";
-
-                        //Set the create-only fields
-                        currentOtherSEScreen.Creator = User.Identity.Name;
-                        currentOtherSEScreen.CreateDate = DateTime.Now;
-                        currentOtherSEScreen.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
-
-                        //Add the OtherSEScreen to the database
-                        context.OtherSEScreen.Add(currentOtherSEScreen);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the OtherSEScreen dashboard
-                    Response.Redirect(string.Format("/Pages/OtherSEScreenDashboard.aspx?messageType={0}", successMessageType));
-                }
+                //Redirect the user to the OtherSEScreen dashboard
+                Response.Redirect(string.Format("/Pages/OtherSEScreenDashboard.aspx?messageType={0}", successMessageType));
             }
+
         }
 
         /// <summary>
@@ -284,7 +275,7 @@ namespace Pyramid.Pages
         private void BindDropDowns()
         {
             //Bind the child and interval dropdowns
-            if (currentOtherSEScreen.OtherSEScreenPK > 0)
+            if (isEdit)
             {
                 //If this is an edit, use the program fk from the behavior incident's classroom to filter
                 BindChildDropDown(currentOtherSEScreen.ScreenDate, currentProgramFK, currentOtherSEScreen.ChildFK);
@@ -332,8 +323,9 @@ namespace Pyramid.Pages
                                       select new
                                       {
                                           c.ChildPK,
-                                          IdAndName = "(" + cp.ProgramSpecificID + ") "
-                                            + c.FirstName + " " + c.LastName
+                                          IdAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                "(" + cp.ProgramSpecificID + ") " + c.FirstName + " " + c.LastName :
+                                                cp.ProgramSpecificID)
 
                                       };
 
@@ -395,7 +387,15 @@ namespace Pyramid.Pages
             ddChild.ClientEnabled = enabled;
             txtScore.ClientEnabled = enabled;
             ddScoreType.ClientEnabled = enabled;
+
+            //Show/hide the submit button
             submitOtherSEScreen.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            submitOtherSEScreen.UseCancelConfirm = enabled && areConfirmationsEnabled;
         }
 
         /// <summary>
@@ -419,8 +419,113 @@ namespace Pyramid.Pages
 
                 //Display the child's age
                 lblAge.Text = ageMonths.ToString("0.##") + " months old";
-                lblAge.Visible = true;
+                lblAge.Visible = currentProgramRole.ViewPrivateChildInfo.Value;
             }
+        }
+        
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitOtherSEScreen.ValidationGroup))
+            {
+                //Submit the form
+                SaveForm(false);
+
+                //Get the master page
+                MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                //Get the report
+                Reports.PreBuiltReports.FormReports.RptOtherSEScreen report = new Reports.PreBuiltReports.FormReports.RptOtherSEScreen();
+
+                //Display the report
+                masterPage.DisplayReport(currentProgramRole, report, "Other Social Emotional Assessment", currentOtherSEScreenPK);
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message type
+            string successMessageType = null;
+
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Fill the OtherSEScreen fields from the form
+                currentOtherSEScreen.ScreenDate = deScreenDate.Date;
+                currentOtherSEScreen.ScreenTypeCodeFK = Convert.ToInt32(ddScreenType.Value);
+                currentOtherSEScreen.ChildFK = Convert.ToInt32(ddChild.Value);
+                currentOtherSEScreen.Score = Convert.ToInt32(txtScore.Value);
+                currentOtherSEScreen.ScoreTypeCodeFK = Convert.ToInt32(ddScoreType.Value);
+
+                if (isEdit)
+                {
+                    //This is an edit
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the success message
+                        successMessageType = "OtherSEScreenEdited";
+
+                        //Set the edit-only fields
+                        currentOtherSEScreen.Editor = User.Identity.Name;
+                        currentOtherSEScreen.EditDate = DateTime.Now;
+
+                        //Get the existing OtherSEScreen record
+                        Models.OtherSEScreen existingASQ = context.OtherSEScreen.Find(currentOtherSEScreen.OtherSEScreenPK);
+
+                        //Overwrite the existing OtherSEScreen record with the values from the form
+                        context.Entry(existingASQ).CurrentValues.SetValues(currentOtherSEScreen);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfOtherSEScreenPK.Value = currentOtherSEScreen.OtherSEScreenPK.ToString();
+                        currentOtherSEScreenPK = currentOtherSEScreen.OtherSEScreenPK;
+                    }
+                }
+                else
+                {
+                    //This is an add
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the success message
+                        successMessageType = "OtherSEScreenAdded";
+
+                        //Set the create-only fields
+                        currentOtherSEScreen.Creator = User.Identity.Name;
+                        currentOtherSEScreen.CreateDate = DateTime.Now;
+                        currentOtherSEScreen.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
+
+                        //Add the OtherSEScreen to the database
+                        context.OtherSEScreen.Add(currentOtherSEScreen);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfOtherSEScreenPK.Value = currentOtherSEScreen.OtherSEScreenPK.ToString();
+                        currentOtherSEScreenPK = currentOtherSEScreen.OtherSEScreenPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message type
+            return successMessageType;
         }
 
         #endregion

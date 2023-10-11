@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="ASQ:SE Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="ASQSEDashboard.aspx.cs" Inherits="Pyramid.Pages.ASQSEDashboard" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -25,6 +25,17 @@
 
             //Show/hide the view only fields
             setViewOnlyVisibility();
+        }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
     </script>
 </asp:Content>
@@ -64,11 +75,12 @@
                                 <SettingsAdaptivity AdaptivityMode="HideDataCells" AllowOnlyOneAdaptiveDetailExpanded="true" AdaptiveColumnPosition="Left"></SettingsAdaptivity>
                                 <Columns>
                                     <dx:BootstrapGridViewDateColumn FieldName="FormDate" SortIndex="0" SortOrder="Descending" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="0"></dx:BootstrapGridViewDateColumn>
-                                    <dx:BootstrapGridViewDataColumn FieldName="ChildIdAndName" Caption="Child" AdaptivePriority="2"></dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDataColumn FieldName="ChildIDAndName" Caption="Child" AdaptivePriority="2"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="Interval" Caption="Interval" AdaptivePriority="5"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="TotalScore" Caption="Total Score" AdaptivePriority="3"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="ScoreType" Caption="Score Type" AdaptivePriority="4"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="ProgramName" Caption="Program" AdaptivePriority="6"></dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDataColumn Name="StateNameColumn" FieldName="StateName" Caption="State" AdaptivePriority="7" Visible="false"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">

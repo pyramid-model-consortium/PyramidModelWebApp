@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Classroom" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="Classroom.aspx.cs" Inherits="Pyramid.Pages.Classroom" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Classroom" Src="~/User_Controls/Classroom.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
@@ -25,16 +25,26 @@
             $('#lnkClassroomDashboard').addClass('active');
 
             //Allow date format for DataTables sorting
-            $.fn.dataTable.moment( 'MM/DD/YYYY' );
+            $.fn.dataTable.moment('MM/DD/YYYY');
+
+            //Show/hide the view only fields
+            setViewOnlyVisibility();
 
             //Initialize the datatables
             if (!$.fn.dataTable.isDataTable('#tblChildClassroomAssignments')) {
                 $('#tblChildClassroomAssignments').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [4] }
+                        { orderable: false, targets: [5] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 0, 'asc' ], [ 1, 'asc' ]],
+                    order: [2, 'desc'],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -46,11 +56,18 @@
             
             if (!$.fn.dataTable.isDataTable('#tblEmployeeClassroomAssignments')) {
                 $('#tblEmployeeClassroomAssignments').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [5] }
+                        { orderable: false, targets: [6] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 0, 'asc' ], [ 2, 'asc' ]],
+                    order: [3, 'desc'],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -60,9 +77,17 @@
                 });
             }
             $('.dataTables_filter input').removeClass('form-control-sm');
+        }
 
-            //Show/hide the view only fields
-            setViewOnlyVisibility();
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
 
         //This function controls whether or not the specify field for the leave reason is shown
@@ -72,7 +97,7 @@
             var leaveReason = ddChildLeaveReason.GetText();
 
             //If the leave reason is other, show the specify div
-            if (leaveReason.toLowerCase().includes('other')) {
+            if (leaveReason.toLowerCase() == 'other') {
                 $('#divChildLeaveReasonSpecify').slideDown();
             }
             else {
@@ -101,7 +126,8 @@
             var reasonSpecify = e.value;
             var leaveReason = ddChildLeaveReason.GetText();
 
-            if ((reasonSpecify == null || reasonSpecify == ' ') && leaveReason.toLowerCase().includes('other')) {
+            if ((reasonSpecify == null || reasonSpecify == ' ')
+                && leaveReason.toLowerCase() == 'other') {
                 e.isValid = false;
                 e.errorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";
             }
@@ -117,7 +143,7 @@
             var leaveReason = ddEmployeeLeaveReason.GetText();
 
             //If the leave reason is other, show the specify div
-            if (leaveReason.toLowerCase().includes('other')) {
+            if (leaveReason.toLowerCase() == 'other') {
                 $('#divEmployeeLeaveReasonSpecify').slideDown();
             }
             else {
@@ -146,7 +172,8 @@
             var reasonSpecify = e.value;
             var leaveReason = ddEmployeeLeaveReason.GetText();
 
-            if ((reasonSpecify == null || reasonSpecify == ' ') && leaveReason.toLowerCase().includes('other')) {
+            if ((reasonSpecify == null || reasonSpecify == ' ')
+                    && leaveReason.toLowerCase() == 'other') {
                 e.isValid = false;
                 e.errorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";
             }
@@ -171,16 +198,30 @@
             <asp:AsyncPostBackTrigger ControlID="repeatEmployeeClassroomAssignments" />
             <asp:AsyncPostBackTrigger ControlID="lbDeleteEmployeeClassroomAssignment" />
             <asp:AsyncPostBackTrigger ControlID="submitEmployeeClassroomAssignment" />
+            <asp:AsyncPostBackTrigger ControlID="btnPrintPreview" EventName="Click" />
             <asp:AsyncPostBackTrigger ControlID="submitClassroom" />
         </Triggers>
     </asp:UpdatePanel>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card bg-light">
-                <div class="card-header">Basic Information</div>
-                <div class="card-body">
-                    <asp:UpdatePanel ID="upBasicInfo" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                        <ContentTemplate>
+    <asp:UpdatePanel ID="upBasicInfo" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+        <ContentTemplate>
+            <asp:HiddenField ID="hfClassroomPK" runat="server" Value="" />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    Basic Information
+                                </div>
+                                <div class="col-md-4">
+                                    <dx:BootstrapButton ID="btnPrintPreview" runat="server" Text="Save and Download/Print" OnClick="btnPrintPreview_Click"
+                                        SettingsBootstrap-RenderOption="primary" ValidationGroup="vgClassroom" data-validation-group="vgClassroom">
+                                        <CssClasses Icon="fas fa-print" Control="float-right btn-loader" />
+                                    </dx:BootstrapButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Program: </label>
@@ -188,15 +229,15 @@
                                 </div>
                             </div>
                             <uc:Classroom ID="classroomControl" runat="server"></uc:Classroom>
-                        </ContentTemplate>
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="submitClassroom" />
-                        </Triggers>
-                    </asp:UpdatePanel>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="submitClassroom" />
+        </Triggers>
+    </asp:UpdatePanel>
     <div id="divEditOnly" runat="server" visible="false">
         <div class="row">
             <div class="col-xl-12">
@@ -216,17 +257,19 @@
                                                 <table id="tblChildClassroomAssignments" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Child</th>
-                                                            <th data-priority="3">Assign Date</th>
+                                                            <th data-priority="1"></th>
+                                                            <th data-priority="2">Child</th>
+                                                            <th data-priority="4">Assign Date</th>
                                                             <th class="min-tablet-l">Leave Date</th>
                                                             <th class="min-tablet-l">Leave Reason</th>
-                                                            <th data-priority="2"></th>
+                                                            <th data-priority="3"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                         <tr>
+                                                            <td></td>
                                                             <td><%# Eval("ChildIdAndName") %></td>
                                                             <td><%# Eval("AssignDate", "{0:MM/dd/yyyy}") %></td>
                                                             <td class="leave-date"><%# Eval("LeaveDate", "{0:MM/dd/yyyy}") %></td>
@@ -241,10 +284,11 @@
                                                                         <button class="dropdown-item delete-gridview" data-pk='<%# Eval("ChildClassroomPK") %>' data-hf="hfDeleteChildClassroomAssignmentPK" data-target="#divDeleteChildClassroomAssignmentModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfClassroomAssignmentPK" runat="server" Value='<%# Eval("ChildClassroomPK") %>' />
-                                                                <asp:HiddenField ID="hfChildFK" runat="server" Value='<%# Eval("ChildFK") %>' />
-                                                                <asp:HiddenField ID="hfEnrollmentDate" runat="server" Value='<%# Eval("EnrollmentDate") %>' />
-                                                                <asp:HiddenField ID="hfDischargeDate" runat="server" Value='<%# Eval("DischargeDate") %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblClassroomAssignmentPK" runat="server" Visible="false" Text='<%# Eval("ChildClassroomPK") %>'></asp:Label>
+                                                                <asp:Label ID="lblChildFK" runat="server" Visible="false" Text='<%# Eval("ChildFK") %>'></asp:Label>
+                                                                <asp:Label ID="lblEnrollmentDate" runat="server" Visible="false" Text='<%# Eval("EnrollmentDate") %>'></asp:Label>
+                                                                <asp:Label ID="lblDischargeDate" runat="server" Visible="false" Text='<%# Eval("DischargeDate") %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                             </ItemTemplate>
@@ -295,7 +339,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <dx:BootstrapDateEdit ID="deChildLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date"
+                                                            <dx:BootstrapDateEdit ID="deChildLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date" AllowNull="true"
                                                                 EditFormatString="MM/dd/yyyy" UseMaskBehavior="true"
                                                                 ClientInstanceName="deChildLeaveDate" OnValidation="deChildLeaveDate_Validation" 
                                                                 AllowMouseWheel="false" PickerDisplayMode="Calendar" MinDate="01/01/1900">
@@ -309,11 +353,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <dx:BootstrapComboBox ID="ddChildLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--"
+                                                        <dx:BootstrapComboBox ID="ddChildLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--" AllowNull="true"
                                                             TextField="Description" ValueField="CodeChildLeaveReasonPK" ValueType="System.Int32"
                                                             IncrementalFilteringMode="Contains"  AllowMouseWheel="false"
                                                             OnValidation="ddChildLeaveReason_Validation" ClientInstanceName="ddChildLeaveReason" 
-                                                            AllowNull="true" ClearButton-DisplayMode="Always">
+                                                            ClearButton-DisplayMode="Always">
                                                             <ClientSideEvents Validation="validateChildLeaveReason" Init="showHideChildLeaveReasonSpecify" SelectedIndexChanged="showHideChildLeaveReasonSpecify" />
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <ValidationSettings ValidationGroup="vgChildClassroomAssignment" ErrorDisplayMode="ImageWithText" EnableCustomValidation="true">
@@ -338,7 +382,12 @@
                                                     <asp:HiddenField ID="hfAddEditChildClassroomChildPK" runat="server" Value="0" />
                                                     <asp:HiddenField ID="hfAddEditChildClassroomEnrollmentDate" runat="server" Value="" />
                                                     <asp:HiddenField ID="hfAddEditChildClassroomDischargeDate" runat="server" Value="" />
-                                                    <uc:Submit ID="submitChildClassroomAssignment" runat="server" ValidationGroup="vgChildClassroomAssignment" OnSubmitClick="submitChildClassroomAssignment_Click" OnCancelClick="submitChildClassroomAssignment_CancelClick" OnValidationFailed="submitChildClassroomAssignment_ValidationFailed" />
+                                                    <uc:Submit ID="submitChildClassroomAssignment" runat="server" 
+                                                        ValidationGroup="vgChildClassroomAssignment"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitChildClassroomAssignment_Click" 
+                                                        OnCancelClick="submitChildClassroomAssignment_CancelClick" 
+                                                        OnValidationFailed="submitChildClassroomAssignment_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -360,34 +409,36 @@
                     <ContentTemplate>
                         <div class="card bg-light">
                             <div class="card-header">
-                                Employee Assignment History
+                                Professional Assignment History
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <label>Employees Assigned to this Classroom</label>
-                                        <asp:Repeater ID="repeatEmployeeClassroomAssignments" runat="server" ItemType="Pyramid.Models.EmployeeClassroom">
+                                        <label>Professionals Assigned to this Classroom</label>
+                                        <asp:Repeater ID="repeatEmployeeClassroomAssignments" runat="server">
                                             <HeaderTemplate>
                                                 <table id="tblEmployeeClassroomAssignments" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Employee</th>
-                                                            <th data-priority="3">Classroom Job</th>
-                                                            <th data-priority="4">Assign Date</th>
+                                                            <th data-priority="1"></th>
+                                                            <th data-priority="2">Professional</th>
+                                                            <th data-priority="4">Classroom Job</th>
+                                                            <th data-priority="5">Assign Date</th>
                                                             <th class="min-tablet-l">Leave Date</th>
                                                             <th class="min-tablet-l">Leave Reason</th>
-                                                            <th data-priority="2"></th>
+                                                            <th data-priority="3"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Item.ProgramEmployee.FirstName + " " + Item.ProgramEmployee.LastName %></td>
-                                                            <td><%# Item.CodeJobType.Description %></td>
-                                                            <td><%# Item.AssignDate.ToString("MM/dd/yyyy") %></td>
-                                                            <td class="leave-date"><%# (Item.LeaveDate.HasValue ? Item.LeaveDate.Value.ToString("MM/dd/yyyy") : "") %></td>
-                                                            <td><%# (Item.CodeEmployeeLeaveReason != null ? Item.CodeEmployeeLeaveReason.Description +  (!String.IsNullOrWhiteSpace(Item.LeaveReasonSpecify) ? " (" + Item.LeaveReasonSpecify + ")" :"") : "") %></td>
+                                                            <td></td>
+                                                            <td><%# Eval("EmployeeName") %></td>
+                                                            <td><%# Eval("ClassroomJob") %></td>
+                                                            <td><%# Eval("AssignDate", "{0:MM/dd/yyyy}") %></td>
+                                                            <td class="leave-date"><%# Eval("LeaveDate", "{0:MM/dd/yyyy}") %></td>
+                                                            <td><%# Eval("LeaveReason") %></td>
                                                             <td class="text-center">
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -395,13 +446,14 @@
                                                                     </button>
                                                                     <div class="dropdown-menu dropdown-menu-right">
                                                                         <asp:LinkButton ID="lbEditEmployeeClassroomAssignment" runat="server" CssClass="dropdown-item" OnClick="lbEditEmployeeClassroomAssignment_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
-                                                                        <button class="dropdown-item delete-gridview" data-pk='<%# Item.EmployeeClassroomPK %>' data-hf="hfDeleteEmployeeClassroomAssignmentPK" data-target="#divDeleteEmployeeClassroomAssignmentModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                                                        <button class="dropdown-item delete-gridview" data-pk='<%# Eval("EmployeeClassroomPK") %>' data-hf="hfDeleteEmployeeClassroomAssignmentPK" data-target="#divDeleteEmployeeClassroomAssignmentModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                                     </div>
                                                                 </div>
-                                                                <asp:HiddenField ID="hfClassroomAssignmentPK" runat="server" Value='<%# Item.EmployeeClassroomPK %>' />
-                                                                <asp:HiddenField ID="hfEmployeeFK" runat="server" Value='<%# Item.EmployeeFK %>' />
-                                                                <asp:HiddenField ID="hfHireDate" runat="server" Value='<%# Item.ProgramEmployee.HireDate %>' />
-                                                                <asp:HiddenField ID="hfTermDate" runat="server" Value='<%# Item.ProgramEmployee.TermDate %>' />
+                                                                <!-- Need to use labels so that values are maintained after postback (inputs get cleared because professionalof an interaction with DataTables and the repeater) -->
+                                                                <asp:Label ID="lblClassroomAssignmentPK" runat="server" Visible="false" Text='<%# Eval("EmployeeClassroomPK") %>'></asp:Label>
+                                                                <asp:Label ID="lblProgramEmployeeFK" runat="server" Visible="false" Text='<%# Eval("ProgramEmployeeFK") %>'></asp:Label>
+                                                                <asp:Label ID="lblHireDate" runat="server" Visible="false" Text='<%# Eval("HireDate") %>'></asp:Label>
+                                                                <asp:Label ID="lblTermDate" runat="server" Visible="false" Text='<%# Eval("TermDate") %>'></asp:Label>
                                                             </td>
                                                         </tr>
                                             </ItemTemplate>
@@ -422,12 +474,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <dx:BootstrapComboBox ID="ddEmployee" runat="server" Caption="Employee" NullText="--Select--"
+                                                            <dx:BootstrapComboBox ID="ddEmployee" runat="server" Caption="Professional" NullText="--Select--"
                                                                 TextField="Name" ValueField="ProgramEmployeePK" ValueType="System.Int32" 
                                                                 IncrementalFilteringMode="Contains" AllowMouseWheel="false">
                                                                 <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                                 <ValidationSettings ValidationGroup="vgEmployeeClassroomAssignment" ErrorDisplayMode="ImageWithText">
-                                                                    <RequiredField IsRequired="true" ErrorText="Employee is required!" />
+                                                                    <RequiredField IsRequired="true" ErrorText="Professional is required!" />
                                                                 </ValidationSettings>
                                                             </dx:BootstrapComboBox>
                                                         </div>
@@ -464,7 +516,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <dx:BootstrapDateEdit ID="deEmployeeLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date"
+                                                            <dx:BootstrapDateEdit ID="deEmployeeLeaveDate" runat="server" Caption="Leave Date" EditFormat="Date" AllowNull="true"
                                                                 EditFormatString="MM/dd/yyyy" UseMaskBehavior="true"
                                                                 ClientInstanceName="deEmployeeLeaveDate" OnValidation="deEmployeeLeaveDate_Validation" 
                                                                 AllowMouseWheel="false" PickerDisplayMode="Calendar" MinDate="01/01/1900">
@@ -478,11 +530,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
-                                                        <dx:BootstrapComboBox ID="ddEmployeeLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--"
+                                                        <dx:BootstrapComboBox ID="ddEmployeeLeaveReason" runat="server" Caption="Leave Reason" NullText="--Select--" AllowNull="true"
                                                             TextField="Description" ValueField="CodeEmployeeLeaveReasonPK" ValueType="System.Int32"
                                                             IncrementalFilteringMode="Contains"  AllowMouseWheel="false"
                                                             OnValidation="ddEmployeeLeaveReason_Validation" ClientInstanceName="ddEmployeeLeaveReason" 
-                                                            AllowNull="true" ClearButton-DisplayMode="Always">
+                                                            ClearButton-DisplayMode="Always">
                                                             <ClientSideEvents Validation="validateEmployeeLeaveReason" Init="showHideEmployeeLeaveReasonSpecify" SelectedIndexChanged="showHideEmployeeLeaveReasonSpecify" />
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <ValidationSettings ValidationGroup="vgEmployeeClassroomAssignment" ErrorDisplayMode="ImageWithText" EnableCustomValidation="true">
@@ -504,10 +556,15 @@
                                             <div class="card-footer">
                                                 <div class="center-content">
                                                     <asp:HiddenField ID="hfAddEditEmployeeClassroomAssignmentPK" runat="server" Value="0" />
-                                                    <asp:HiddenField ID="hfAddEditEmployeeClassroomEmployeePK" runat="server" Value="0" />
+                                                    <asp:HiddenField ID="hfAddEditEmployeeClassroomProgramEmployeePK" runat="server" Value="0" />
                                                     <asp:HiddenField ID="hfAddEditEmployeeClassroomHireDate" runat="server" Value="" />
                                                     <asp:HiddenField ID="hfAddEditEmployeeClassroomTermDate" runat="server" Value="" />
-                                                    <uc:Submit ID="submitEmployeeClassroomAssignment" runat="server" ValidationGroup="vgEmployeeClassroomAssignment" OnSubmitClick="submitEmployeeClassroomAssignment_Click" OnCancelClick="submitEmployeeClassroomAssignment_CancelClick" OnValidationFailed="submitEmployeeClassroomAssignment_ValidationFailed" />
+                                                    <uc:Submit ID="submitEmployeeClassroomAssignment" runat="server" 
+                                                        ValidationGroup="vgEmployeeClassroomAssignment"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitEmployeeClassroomAssignment_Click" 
+                                                        OnCancelClick="submitEmployeeClassroomAssignment_CancelClick" 
+                                                        OnValidationFailed="submitEmployeeClassroomAssignment_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -524,7 +581,10 @@
         </div>
     </div>
     <div class="page-footer">
-        <uc:Submit ID="submitClassroom" runat="server" ValidationGroup="vgClassroom" OnSubmitClick="submitClassroom_Click" OnCancelClick="submitClassroom_CancelClick" OnValidationFailed="submitClassroom_ValidationFailed"></uc:Submit>
+        <uc:Submit ID="submitClassroom" runat="server" ValidationGroup="vgClassroom"
+            ControlCssClass="center-content"
+            OnSubmitClick="submitClassroom_Click" OnCancelClick="submitClassroom_CancelClick" 
+            OnValidationFailed="submitClassroom_ValidationFailed"></uc:Submit>
     </div>
     <div class="modal" id="divDeleteChildClassroomAssignmentModal">
         <div class="modal-dialog">
@@ -547,11 +607,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee Classroom Assignment</h4>
+                    <h4 class="modal-title">Delete Professional Classroom Assignment</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this employee's classroom assignment?
+                    Are you sure you want to delete this professional's classroom assignment?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i>&nbsp;No</button>

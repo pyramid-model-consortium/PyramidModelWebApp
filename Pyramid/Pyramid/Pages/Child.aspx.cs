@@ -6,25 +6,50 @@ using System.Web.UI.WebControls;
 using System.Data.Entity;
 using Pyramid.Code;
 using DevExpress.Web;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace Pyramid.Pages
 {
-    public partial class Child : System.Web.UI.Page
+    public partial class Child : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "CHILD";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.ChildProgram currentChildProgram;
         private int programFK;
+        private int childProgramPK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //To hold the child program PK
-            int childProgramPK = 0;
-
             //To hold the action the user is performing on this page
             string action;
 
             //Get the user's program role from session
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
 
             //Try to get the child pk from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["ChildProgramPK"]))
@@ -33,8 +58,17 @@ namespace Pyramid.Pages
                 int.TryParse(Request.QueryString["ChildProgramPK"], out childProgramPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (childProgramPK == 0 && !string.IsNullOrWhiteSpace(hfChildProgramPK.Value))
+            {
+                int.TryParse(hfChildProgramPK.Value, out childProgramPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = childProgramPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/ChildrenDashboard.aspx?messageType=NotAuthorized");
             }
@@ -61,10 +95,10 @@ namespace Pyramid.Pages
             }
 
             //Get the proper program fk
-            programFK = (currentChildProgram.ChildProgramPK > 0 ? currentChildProgram.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
+            programFK = (isEdit ? currentChildProgram.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
 
             //Don't allow users to view children from other programs
-            if (currentChildProgram.ChildProgramPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentChildProgram.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentChildProgram.ProgramFK))
             {
                 //Redirect the user to the dashboard with an error message
                 Response.Redirect(string.Format("/Pages/ChildrenDashboard.aspx?messageType={0}", "NoChild"));
@@ -92,7 +126,7 @@ namespace Pyramid.Pages
                 }
 
                 //Show the edit only div if this is an edit
-                divEditOnly.Visible = (childProgramPK > 0 ? true : false);
+                divEditOnly.Visible = isEdit;
 
                 //Try to get the action type
                 if (!string.IsNullOrWhiteSpace(Request.QueryString["Action"]))
@@ -136,30 +170,36 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentChildProgram.ChildProgramPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
                     //Populate the user control
-                    childControl.InitializeWithData(0, programFK, false);
+                    childControl.InitializeWithData(0, programFK, false, currentProgramRole.ViewPrivateChildInfo.Value);
 
-                    //Show the submit button
-                    submitChild.ShowSubmitButton = true;
+                    //Set control usability
+                    EnableControls(true);
 
                     //Show other controls
                     hfViewOnly.Value = "False";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New Child";
                 }
-                else if (currentChildProgram.ChildProgramPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
                     //Populate the user control
-                    childControl.InitializeWithData(currentChildProgram.ChildProgramPK, programFK, false);
+                    childControl.InitializeWithData(currentChildProgram.ChildProgramPK, programFK, false, currentProgramRole.ViewPrivateChildInfo.Value);
 
-                    //Show the submit button
-                    submitChild.ShowSubmitButton = true;
+                    //Set control usability
+                    EnableControls(true);
 
                     //Show other controls
                     hfViewOnly.Value = "False";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit Child Information";
@@ -167,13 +207,16 @@ namespace Pyramid.Pages
                 else
                 {
                     //Populate the user control
-                    childControl.InitializeWithData(currentChildProgram.ChildProgramPK, programFK, true);
+                    childControl.InitializeWithData(currentChildProgram.ChildProgramPK, programFK, true, currentProgramRole.ViewPrivateChildInfo.Value);
 
-                    //Hide the submit button
-                    submitChild.ShowSubmitButton = false;
+                    //Set control usability
+                    EnableControls(false);
 
                     //Hide other controls
                     hfViewOnly.Value = "True";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "View Child Information";
@@ -186,7 +229,51 @@ namespace Pyramid.Pages
 
                 //Set focus to the first name field
                 childControl.FocusFirstName();
+
+                //Check for the printing item in the query string
+                string strIsPrinting = Request.QueryString["Print"];
+
+                //Check to see if printing
+                if (!string.IsNullOrWhiteSpace(strIsPrinting))
+                {
+                    //To hold the printing value
+                    bool isPrinting = false;
+
+                    //Print the form if the query string value is true
+                    if (bool.TryParse(strIsPrinting, out isPrinting) && isPrinting == true)
+                    {
+                        //Print the form
+                        PrintForm();
+                    }
+                }
+
+                //Set the max dates
+                deNoteDate.MaxDate = DateTime.Now;
+                deStatusDate.MaxDate = DateTime.Now;
+                deAssignDate.MaxDate = DateTime.Now;
+                deLeaveDate.MaxDate = DateTime.Now;
             }
+        }
+
+        /// <summary>
+        /// This method enables/disables the controls based on the passed boolean value
+        /// </summary>
+        /// <param name="enabled">True if the controls should be read only, false if not</param>
+        private void EnableControls(bool enabled)
+        {
+            //Show/hide the submit button
+            submitChild.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            bool useCancelConfirmations = enabled && areConfirmationsEnabled;
+
+            submitChild.UseCancelConfirm = useCancelConfirmations;
+            submitNote.UseCancelConfirm = useCancelConfirmations;
+            submitStatus.UseCancelConfirm = useCancelConfirmations;
+            submitClassroomAssignment.UseCancelConfirm = useCancelConfirmations;
         }
 
         /// <summary>
@@ -197,80 +284,24 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitChild_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the type of change
+            string successMessageType = SaveForm(true);
+
+            //Only allow redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the child and child program objects
-                Models.Child currentChild;
-
-                //To hold the type of change
-                string successMessageType = null;
-
-                //Get the child object and child program
-                Models.Child updatedChild = childControl.GetChild();
-                Models.ChildProgram updatedChildProgram = childControl.GetChildProgram();
-
-                if (updatedChild.ChildPK > 0)
+                //Redirect differently if add or edit
+                if (isEdit)
                 {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the edit success message
-                        successMessageType = "ChildEdited";
-
-                        //Set the edit fields
-                        updatedChild.EditDate = DateTime.Now;
-                        updatedChild.Editor = User.Identity.Name;
-                        updatedChildProgram.EditDate = DateTime.Now;
-                        updatedChildProgram.Editor = User.Identity.Name;
-
-                        //Get the current child object from the context
-                        currentChild = context.Child.Find(updatedChild.ChildPK);
-
-                        //Get the current child program object from the context
-                        currentChildProgram = context.ChildProgram.Find(updatedChildProgram.ChildProgramPK);
-
-                        //Set the child and child program objects to the new values
-                        context.Entry(currentChild).CurrentValues.SetValues(updatedChild);
-                        context.Entry(currentChildProgram).CurrentValues.SetValues(updatedChildProgram);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
                     //Redirect the user to the dashboard
                     Response.Redirect(string.Format("/Pages/ChildrenDashboard.aspx?messageType={0}", successMessageType));
                 }
                 else
                 {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the add success message
-                        successMessageType = "ChildAdded";
-
-                        //Set the creator fields
-                        updatedChild.CreateDate = DateTime.Now;
-                        updatedChild.Creator = User.Identity.Name;
-                        updatedChildProgram.CreateDate = DateTime.Now;
-                        updatedChildProgram.Creator = User.Identity.Name;
-
-                        //Add the child to the context
-                        context.Child.Add(updatedChild);
-
-                        //Set the child FK and add to the context
-                        updatedChildProgram.ChildFK = updatedChild.ChildPK;
-                        context.ChildProgram.Add(updatedChildProgram);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
                     //Redirect the user back to this page with a message and the PK
                     Response.Redirect(string.Format("/Pages/Child.aspx?ChildProgramPK={0}&Action=Edit&messageType={1}",
-                                                        updatedChildProgram.ChildProgramPK.ToString(), successMessageType));
+                                                        childProgramPK, successMessageType));
                 }
-            }
-            else
-            {
-                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
             }
         }
 
@@ -296,6 +327,156 @@ namespace Pyramid.Pages
             //Tell the user that validation failed
             msgSys.ShowMessageToUser("danger", "Validation Error", childControl.ValidationMessageToDisplay, 22000);
             msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Print the form
+            PrintForm();
+        }
+
+        /// <summary>
+        /// This method prints the form
+        /// </summary>
+        private void PrintForm()
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitChild.ValidationGroup))
+            {
+                //To hold the success message type
+                string successMessageType;
+
+                //Submit the form
+                successMessageType = SaveForm(false);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    //Get the master page
+                    MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                    //Get the report
+                    Reports.PreBuiltReports.FormReports.RptChild report = new Reports.PreBuiltReports.FormReports.RptChild();
+
+                    //Display the report
+                    masterPage.DisplayReport(currentProgramRole, report, "Child Information", childProgramPK);
+                }
+                else
+                {
+                    //Get the action
+                    string action = "View";
+                    if (!string.IsNullOrWhiteSpace(successMessageType))
+                    {
+                        //The save was successful, the user will be editing
+                        action = "Edit";
+                    }
+
+                    //Redirect the user back to this page with a message and the PK
+                    Response.Redirect(string.Format("/Pages/Child.aspx?ChildProgramPK={0}&Action={1}&messageType={2}&Print=True",
+                                                        childProgramPK, action, successMessageType));
+                }
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("danger", "Validation Error", childControl.ValidationMessageToDisplay, 22000);
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message
+            string successMessageType = null;
+
+            //Determine if the user is allowed to save the form
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //To hold the child information
+                Models.Child currentChild = new Models.Child();
+
+                //Get the child object and child program
+                Models.Child updatedChild = childControl.GetChild();
+                Models.ChildProgram updatedChildProgram = childControl.GetChildProgram(true);
+
+                if (isEdit)
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the edit success message
+                        successMessageType = "ChildEdited";
+
+                        //Set the edit fields
+                        updatedChild.EditDate = DateTime.Now;
+                        updatedChild.Editor = User.Identity.Name;
+                        updatedChildProgram.EditDate = DateTime.Now;
+                        updatedChildProgram.Editor = User.Identity.Name;
+
+                        //Get the current child object from the context
+                        currentChild = context.Child.Find(updatedChild.ChildPK);
+
+                        //Get the current child program object from the context
+                        currentChildProgram = context.ChildProgram.Find(updatedChildProgram.ChildProgramPK);
+
+                        //Set the child and child program objects to the new values
+                        context.Entry(currentChild).CurrentValues.SetValues(updatedChild);
+                        context.Entry(currentChildProgram).CurrentValues.SetValues(updatedChildProgram);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfChildProgramPK.Value = updatedChildProgram.ChildProgramPK.ToString();
+                        childProgramPK = updatedChildProgram.ChildProgramPK;
+                    }
+                }
+                else
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the add success message
+                        successMessageType = "ChildAdded";
+
+                        //Set the creator fields
+                        updatedChild.CreateDate = DateTime.Now;
+                        updatedChild.Creator = User.Identity.Name;
+                        updatedChildProgram.CreateDate = DateTime.Now;
+                        updatedChildProgram.Creator = User.Identity.Name;
+
+                        //Add the child to the context
+                        context.Child.Add(updatedChild);
+
+                        //Set the child FK and add to the context
+                        updatedChildProgram.ChildFK = updatedChild.ChildPK;
+                        context.ChildProgram.Add(updatedChildProgram);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfChildProgramPK.Value = updatedChildProgram.ChildProgramPK.ToString();
+                        childProgramPK = updatedChildProgram.ChildProgramPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message type
+            return successMessageType;
         }
 
         #region Child Notes
@@ -355,11 +536,11 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden field with the PK for editing
-            HiddenField hfNotePK = (HiddenField)item.FindControl("hfChildNotePK");
+            //Get the label with the PK for editing
+            Label lblChildNotePK = (Label)item.FindControl("lblChildNotePK");
 
-            //Get the PK from the hidden field
-            int? notePK = (String.IsNullOrWhiteSpace(hfNotePK.Value) ? (int?)null : Convert.ToInt32(hfNotePK.Value));
+            //Get the PK from the label
+            int? notePK = (String.IsNullOrWhiteSpace(lblChildNotePK.Text) ? (int?)null : Convert.ToInt32(lblChildNotePK.Text));
 
             if (notePK.HasValue)
             {
@@ -419,7 +600,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitNote_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the note pk
                 int notePK = Convert.ToInt32(hfAddEditNotePK.Value);
@@ -484,28 +666,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteChildNote_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteChildNotePK.Value) ? (int?)null : Convert.ToInt32(hfDeleteChildNotePK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the note to remove
-                        ChildNote noteToRemove = context.ChildNote.Where(cn => cn.ChildNotePK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the note to remove
+                            ChildNote noteToRemove = context.ChildNote.Where(cn => cn.ChildNotePK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the note
-                        context.ChildNote.Remove(noteToRemove);
-                        context.SaveChanges();
+                            //Remove the note
+                            context.ChildNote.Remove(noteToRemove);
 
-                        //Rebind the note repeater
-                        BindNotes();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted note!", 10000);
+                            //Get the delete change row and set the deleter
+                            context.ChildNoteChanged
+                                    .OrderByDescending(cnc => cnc.ChildNoteChangedPK)
+                                    .Where(cnc => cnc.ChildNotePK == noteToRemove.ChildNotePK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the note repeater
+                            BindNotes();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted note!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the note, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the note!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the note!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -573,11 +801,11 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden field with the PK for editing
-            HiddenField hfStatusPK = (HiddenField)item.FindControl("hfChildStatusPK");
+            //Get the label with the PK for editing
+            Label lblChildStatusPK = (Label)item.FindControl("lblChildStatusPK");
 
-            //Get the PK from the hidden field
-            int? statusPK = (String.IsNullOrWhiteSpace(hfStatusPK.Value) ? (int?)null : Convert.ToInt32(hfStatusPK.Value));
+            //Get the PK from the label
+            int? statusPK = (String.IsNullOrWhiteSpace(lblChildStatusPK.Text) ? (int?)null : Convert.ToInt32(lblChildStatusPK.Text));
 
             if (statusPK.HasValue)
             {
@@ -637,7 +865,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitStatus_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the status pk
                 int statusPK = Convert.ToInt32(hfAddEditStatusPK.Value);
@@ -702,28 +931,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteChildStatus_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteChildStatusPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteChildStatusPK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the status to remove
-                        ChildStatus statusToRemove = context.ChildStatus.Where(cn => cn.ChildStatusPK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the status to remove
+                            ChildStatus statusToRemove = context.ChildStatus.Where(cn => cn.ChildStatusPK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the status
-                        context.ChildStatus.Remove(statusToRemove);
-                        context.SaveChanges();
+                            //Remove the status
+                            context.ChildStatus.Remove(statusToRemove);
 
-                        //Rebind the status table
-                        BindStatus();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted status!", 10000);
+                            //Get the delete change row and set the deleter
+                            context.ChildStatusChanged
+                                    .OrderByDescending(csc => csc.ChildStatusChangedPK)
+                                    .Where(csc => csc.ChildStatusPK == statusToRemove.ChildStatusPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the status table
+                            BindStatus();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted status!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the status, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the status!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the status!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -805,11 +1080,11 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden field with the PK for editing
-            HiddenField hfClassroomAssignmentPK = (HiddenField)item.FindControl("hfClassroomAssignmentPK");
+            //Get the label with the PK for editing
+            Label lblClassroomAssignmentPK = (Label)item.FindControl("lblClassroomAssignmentPK");
 
-            //Get the PK from the hidden field
-            int? assignmentPK = (String.IsNullOrWhiteSpace(hfClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfClassroomAssignmentPK.Value));
+            //Get the PK from the label
+            int? assignmentPK = (String.IsNullOrWhiteSpace(lblClassroomAssignmentPK.Text) ? (int?)null : Convert.ToInt32(lblClassroomAssignmentPK.Text));
 
             if (assignmentPK.HasValue)
             {
@@ -872,7 +1147,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the classroom assignment pk
                 int assignmentPK = Convert.ToInt32(hfAddEditClassroomAssignmentPK.Value);
@@ -942,28 +1218,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the child record, just determine if the user is allowed to edit the child info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteClassroomAssignmentPK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the classroom assignment to remove
-                        ChildClassroom assignmentToRemove = context.ChildClassroom.Where(cn => cn.ChildClassroomPK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the classroom assignment to remove
+                            ChildClassroom assignmentToRemove = context.ChildClassroom.Where(cn => cn.ChildClassroomPK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the classroom assignment
-                        context.ChildClassroom.Remove(assignmentToRemove);
-                        context.SaveChanges();
+                            //Remove the classroom assignment
+                            context.ChildClassroom.Remove(assignmentToRemove);
 
-                        //Rebind the classroom assignment table
-                        BindClassroomAssignments();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                            //Get the delete change row and set the deleter
+                            context.ChildClassroomChanged
+                                    .OrderByDescending(ccc => ccc.ChildClassroomChangedPK)
+                                    .Where(ccc => ccc.ChildClassroomPK == assignmentToRemove.ChildClassroomPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the classroom assignment table
+                            BindClassroomAssignments();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the classroom assignment, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -1169,7 +1491,7 @@ namespace Pyramid.Pages
             string leaveReasonSpecify = (txtLeaveReasonSpecify.Value == null ? null : txtLeaveReasonSpecify.Value.ToString());
 
             //Perform validation
-            if (ddLeaveReason.SelectedItem != null && ddLeaveReason.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(leaveReasonSpecify))
+            if (ddLeaveReason.SelectedItem != null && ddLeaveReason.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(leaveReasonSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";

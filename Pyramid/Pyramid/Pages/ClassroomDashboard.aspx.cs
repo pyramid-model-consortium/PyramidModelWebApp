@@ -8,8 +8,29 @@ using System.Linq;
 
 namespace Pyramid.Pages
 {
-    public partial class ClassroomDashboard : System.Web.UI.Page
+    public partial class ClassroomDashboard : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "CLASS";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -17,8 +38,17 @@ namespace Pyramid.Pages
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToViewDashboard == false)
+            {
+                Response.Redirect("/Default.aspx?messageType=PageNotAuthorized");
+            }
+
             //Don't allow aggregate viewers to see the action column
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 //Get the action column index (the farthest right column)
                 int actionColumnIndex = (bsGRClassrooms.Columns.Count - 1);
@@ -27,16 +57,19 @@ namespace Pyramid.Pages
                 bsGRClassrooms.Columns[actionColumnIndex].Visible = false;
             }
 
+            //Show/hide the state column based on the number of states accessible to the user
+            bsGRClassrooms.Columns["StateNameColumn"].Visible = (currentProgramRole.StateFKs.Count > 1);
+
             if (!IsPostBack)
             {
                 //Set the view only value
-                if (currentProgramRole.AllowedToEdit.Value)
+                if (FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
                 }
 
                 //Check for messages in the query string
@@ -101,8 +134,10 @@ namespace Pyramid.Pages
 
             //Set the source to a LINQ query
             PyramidContext context = new PyramidContext();
-            e.QueryableSource = context.Classroom.AsNoTracking().Include(c => c.Program)
-                                    .Where(c => currentProgramRole.ProgramFKs.Contains(c.ProgramFK));
+            e.QueryableSource = context.Classroom.AsNoTracking()
+                                        .Include(c => c.Program)
+                                        .Include(c => c.Program.State)
+                                        .Where(c => currentProgramRole.ProgramFKs.Contains(c.ProgramFK));
         }
 
         /// <summary>
@@ -113,13 +148,13 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteClassroom_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (FormPermissions.AllowedToDelete)
             {
                 //Get the PK from the hidden field
                 int? removeClassroomPK = (String.IsNullOrWhiteSpace(hfDeleteClassroomPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteClassroomPK.Value));
 
                 //Remove the role if the PK is not null
-                if (removeClassroomPK != null)
+                if (removeClassroomPK.HasValue)
                 {
                     try
                     {
@@ -130,6 +165,17 @@ namespace Pyramid.Pages
 
                             //Remove the classroom
                             context.Classroom.Remove(classroomToRemove);
+
+                            //Save the deletion to the database
+                            context.SaveChanges();
+
+                            //Get the delete change row and set the deleter
+                            context.ClassroomChanged
+                                    .OrderByDescending(cc => cc.ClassroomChangedPK)
+                                    .Where(cc => cc.ClassroomPK == classroomToRemove.ClassroomPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
                             context.SaveChanges();
 
                             //Show a success message
@@ -145,7 +191,39 @@ namespace Pyramid.Pages
                             SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
                             if (sqlEx.Number == 547)
                             {
-                                msgSys.ShowMessageToUser("danger", "Error", "Could not delete the classroom, there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.", 120000);
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "";
+
+                                if (errorMessage.Contains("behaviorincident"))
+                                {
+                                    messageForUser = "there are Behavior Incident Reports entered for this classroom!";
+                                }
+                                else if (errorMessage.Contains("childclassroom"))
+                                {
+                                    messageForUser = "there are children assigned to this classroom!";
+                                }
+                                else if (errorMessage.Contains("employeeclassroom"))
+                                {
+                                    messageForUser = "there are employees assigned to this classroom!";
+                                }
+                                else if (errorMessage.Contains("tpitos"))
+                                {
+                                    messageForUser = "there are TPITOS observations entered for this classroom!";
+                                }
+                                else if (errorMessage.Contains("tpot"))
+                                {
+                                    messageForUser = "there are TPOT observations entered for this classroom!";
+                                }
+                                else
+                                {
+                                    messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+                                }
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the classroom, {0}", messageForUser), 120000);
                             }
                             else
                             {
@@ -158,7 +236,7 @@ namespace Pyramid.Pages
                         }
 
                         //Log the error
-                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
+                        Utilities.LogException(dbUpdateEx);
                     }
 
                     //Rebind the classroom controls

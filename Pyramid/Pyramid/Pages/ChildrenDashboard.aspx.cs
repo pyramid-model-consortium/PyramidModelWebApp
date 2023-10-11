@@ -14,8 +14,29 @@ using DevExpress.Web.Bootstrap;
 
 namespace Pyramid.Pages
 {
-    public partial class ChildrenDashboard : System.Web.UI.Page
+    public partial class ChildrenDashboard : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "CHILD";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -23,8 +44,17 @@ namespace Pyramid.Pages
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
+            //Check to see if the user can view this page
+            if (FormPermissions.AllowedToViewDashboard == false)
+            {
+                Response.Redirect("/Default.aspx?messageType=PageNotAuthorized");
+            }
+
             //Don't allow aggregate viewers to see the action column
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 //Get the action column index (the farthest right column)
                 int actionColumnIndex = (bsGRChildren.Columns.Count - 1);
@@ -33,16 +63,26 @@ namespace Pyramid.Pages
                 bsGRChildren.Columns[actionColumnIndex].Visible = false;
             }
 
+            //Don't allow certain users to see the child's DOB
+            if(currentProgramRole.ViewPrivateChildInfo == false)
+            {
+                //Hide the birth date column
+                bsGRChildren.Columns["BirthDateColumn"].Visible = false;
+            }
+
+            //Show/hide the state column based on the number of states accessible to the user
+            bsGRChildren.Columns["StateNameColumn"].Visible = (currentProgramRole.StateFKs.Count > 1);
+
             if (!IsPostBack)
             {
                 //Set the view only value
-                if(currentProgramRole.AllowedToEdit.Value)
+                if (FormPermissions.AllowedToAdd == false && FormPermissions.AllowedToEdit == false)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
                 }
 
                 //Populate the chart
@@ -107,12 +147,19 @@ namespace Pyramid.Pages
 
             //Set the source to a LINQ query
             PyramidContext context = new PyramidContext();
-            e.QueryableSource = from c in context.Child.Include(c => c.ChildProgram).AsNoTracking()
-                                join cp in context.ChildProgram.Include(cp => cp.CodeDischargeReason).Include(cp => cp.Program) on c.ChildPK equals cp.ChildFK
+            e.QueryableSource = from c in context.Child.AsNoTracking()
+                                                .Include(c => c.ChildProgram)
+                                join cp in context.ChildProgram.AsNoTracking()
+                                                .Include(cp => cp.CodeDischargeReason)
+                                                .Include(cp => cp.Program) 
+                                                .Include(cp => cp.Program.State)
+                                    on c.ChildPK equals cp.ChildFK
                                 where currentProgramRole.ProgramFKs.Contains(cp.ProgramFK)
                                 select new {
                                     c.ChildPK,
-                                    Name = c.FirstName + " " + c.LastName,
+                                    Name = (currentProgramRole.ViewPrivateChildInfo.Value ? 
+                                                c.FirstName + " " + c.LastName :
+                                                "HIDDEN"),
                                     c.BirthDate,
                                     cp.ChildProgramPK,
                                     cp.ProgramSpecificID,
@@ -123,7 +170,8 @@ namespace Pyramid.Pages
                                     DischargeReason = cp.CodeDischargeReason.Description,
                                     cp.DischargeReasonSpecify,
                                     cp.ProgramFK,
-                                    cp.Program.ProgramName
+                                    cp.Program.ProgramName,
+                                    StateName = cp.Program.State.Name
                                 };
         }
 
@@ -135,7 +183,7 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteChild_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (FormPermissions.AllowedToDelete)
             {
                 //Get the PK from the hidden field
                 int? removeChildProgramPK = (String.IsNullOrWhiteSpace(hfDeleteChildProgramPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteChildProgramPK.Value));
@@ -173,8 +221,66 @@ namespace Pyramid.Pages
                             //Remove the child
                             context.Child.Remove(childToRemove);
 
-                            //Save all the changes to the database
+                            //Save all the deletions to the database
                             context.SaveChanges();
+
+                            //To hold lists of change rows
+                            List<ChildNoteChanged> noteChangeRows;
+                            List<ChildStatusChanged> statusChangeRows;
+                            List<ChildClassroomChanged> assignmentChangeRows;
+
+                            //Check the note deletions
+                            if (notesToRemove.Count > 0) 
+                            {
+                                //Get the note deletion rows and set the deleter
+                                noteChangeRows = context.ChildNoteChanged.Where(cnc => cnc.ChildFK == childToRemove.ChildPK)
+                                                                                        .OrderByDescending(cnc => cnc.ChildNoteChangedPK)
+                                                                                        .Take(notesToRemove.Count).ToList()
+                                                                                        .Select(cnc => { cnc.Deleter = User.Identity.Name; return cnc; }).ToList();
+                            }
+
+                            //Check the status deletions
+                            if (statusToRemove.Count > 0) 
+                            {
+                                //Get the status deletion rows and set the deleter
+                                statusChangeRows = context.ChildStatusChanged.Where(csc => csc.ChildFK == childToRemove.ChildPK)
+                                                                                        .OrderByDescending(csc => csc.ChildStatusChangedPK)
+                                                                                        .Take(statusToRemove.Count).ToList()
+                                                                                        .Select(csc => { csc.Deleter = User.Identity.Name; return csc; }).ToList();
+                            }
+
+                            //Check the classroom assignment deletions
+                            if (classroomAssignmentsToRemove.Count > 0) 
+                            {
+                                //Get the classroom assignment deletion rows and set the deleter
+                                assignmentChangeRows = context.ChildClassroomChanged.Where(ccc => ccc.ChildFK == childToRemove.ChildPK)
+                                                                                        .OrderByDescending(ccc => ccc.ChildClassroomChangedPK)
+                                                                                        .Take(classroomAssignmentsToRemove.Count).ToList()
+                                                                                        .Select(ccc => { ccc.Deleter = User.Identity.Name; return ccc; }).ToList();
+                            }
+
+                            //Get the child program delete row and set the deleter
+                            context.ChildProgramChanged
+                                    .OrderByDescending(cpc => cpc.ChildProgramChangedPK)
+                                    .Where(cpc => cpc.ChildProgramPK == childProgramToRemove.ChildProgramPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Get the child delete row and set the deleter
+                            context.ChildChanged
+                                    .OrderByDescending(cc => cc.ChildChangedPK)
+                                    .Where(cc => cc.ChildPK == childToRemove.ChildPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete row changes to the database
+                            context.SaveChanges();
+
+                            //Check to see if the parent permission file exists
+                            if (!string.IsNullOrWhiteSpace(childProgramToRemove.ParentPermissionDocumentFileName))
+                            {
+                                //Delete the parent permission file
+                                Utilities.DeleteFileFromAzureStorage(childProgramToRemove.ParentPermissionDocumentFileName,
+                                    Utilities.ConstantAzureStorageContainerName.CHILD_FORM_UPLOADS.ToString());
+                            }
 
                             //Show a success message
                             msgSys.ShowMessageToUser("success", "Success", "Successfully deleted child!", 10000);
@@ -189,7 +295,31 @@ namespace Pyramid.Pages
                             SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
                             if (sqlEx.Number == 547)
                             {
-                                msgSys.ShowMessageToUser("danger", "Error", "Could not delete the child, there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.", 120000);
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "";
+
+                                if (errorMessage.Contains("asqse"))
+                                {
+                                    messageForUser = "there are ASQSEs entered for this child!";
+                                }
+                                else if (errorMessage.Contains("behaviorincident"))
+                                {
+                                    messageForUser = "there are Behavior Incident Reports entered for this child!";
+                                }
+                                else if (errorMessage.Contains("othersescreen"))
+                                {
+                                    messageForUser = "there are social emotional assessments entered for this child!";
+                                }
+                                else
+                                {
+                                    messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+                                }
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the child, {0}", messageForUser), 120000);
                             }
                             else
                             {
@@ -202,7 +332,7 @@ namespace Pyramid.Pages
                         }
 
                         //Log the error
-                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
+                        Utilities.LogException(dbUpdateEx);
                     }
 
                     //Rebind the child controls

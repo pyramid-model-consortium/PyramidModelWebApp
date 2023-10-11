@@ -1,8 +1,8 @@
-﻿<%@ Page Title="Other Social Emotional Screening Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="OtherSEScreenDashboard.aspx.cs" Inherits="Pyramid.Pages.OtherSEScreenDashboard" %>
+﻿<%@ Page Title="Other Social Emotional Assessment Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="OtherSEScreenDashboard.aspx.cs" Inherits="Pyramid.Pages.OtherSEScreenDashboard" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -26,6 +26,17 @@
             //Show/hide the view only fields
             setViewOnlyVisibility();
         }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
@@ -43,15 +54,15 @@
         <div class="col-lg-7 col-xl-8">
             <div class="card bg-light">
                 <div class="card-header">
-                    Other Social Emotional Screenings
-                    <a href="/Pages/OtherSEScreen.aspx?OtherSEScreenPK=0&action=Add" class="btn btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Social-Emotional Screen</a>
+                    Other Social Emotional Assessments
+                    <a href="/Pages/OtherSEScreen.aspx?OtherSEScreenPK=0&action=Add" class="btn btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Social-Emotional Assessment</a>
                 </div>
                 <div class="card-body">
                     <asp:UpdatePanel runat="server" ID="upAllOtherSEScreen">
                         <ContentTemplate>
-                            <label>All Other Social Emotional Screenings</label>
+                            <label>All Other Social Emotional Assessments</label>
                             <div class="alert alert-primary">
-                                This table contains all other social emotional screenings regardless of when they were performed.
+                                This table contains all other social emotional assessments regardless of when they were performed.
                             </div>
                             <dx:BootstrapGridView ID="bsGROtherSEScreen" runat="server" EnableCallBacks="false" EnableRowsCache="true" KeyFieldName="OtherSEScreenPK"
                                 AutoGenerateColumns="false" DataSourceID="efOtherSEScreenDataSource">
@@ -63,12 +74,13 @@
                                 <CssClasses IconHeaderSortUp="fas fa-long-arrow-alt-up" IconHeaderSortDown="fas fa-long-arrow-alt-down" IconShowAdaptiveDetailButton="fas fa-plus-circle" />
                                 <SettingsAdaptivity AdaptivityMode="HideDataCells" AllowOnlyOneAdaptiveDetailExpanded="true" AdaptiveColumnPosition="Left"></SettingsAdaptivity>
                                 <Columns>
-                                    <dx:BootstrapGridViewDateColumn FieldName="ScreenDate" SortIndex="0" SortOrder="Descending" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="0"></dx:BootstrapGridViewDateColumn>
-                                    <dx:BootstrapGridViewDataColumn FieldName="ScreenType" Caption="Screen Type" AdaptivePriority="2"></dx:BootstrapGridViewDataColumn>
-                                    <dx:BootstrapGridViewDataColumn FieldName="ChildIdAndName" Caption="Child" AdaptivePriority="3"></dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDateColumn FieldName="ScreenDate" SortIndex="0" SortOrder="Descending" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" Caption="Assessment Date" AdaptivePriority="0"></dx:BootstrapGridViewDateColumn>
+                                    <dx:BootstrapGridViewDataColumn FieldName="ScreenType" Caption="Assessment Type" AdaptivePriority="2"></dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDataColumn FieldName="ChildIDAndName" Caption="Child" AdaptivePriority="3"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="Score" Caption="Total Score" AdaptivePriority="4"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="ScoreType" Caption="Score Type" AdaptivePriority="5"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="ProgramName" Caption="Program" AdaptivePriority="6"></dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDataColumn Name="StateNameColumn" FieldName="StateName" Caption="State" AdaptivePriority="7"></dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">
@@ -97,11 +109,11 @@
         <div class="col-lg-5 col-xl-4">
             <div class="card bg-light">
                 <div class="card-header">
-                    Other Social Emotional Screenings by Score Type
+                    Other Social Emotional Assessments by Score Type
                 </div>
                 <div class="card-body">
                     <div class="alert alert-primary">
-                        This chart only includes other social emotional screenings performed in the past year.
+                        This chart only includes other social emotional assessments performed in the past year.
                     </div>
                     <asp:UpdatePanel ID="upScoreTypeChart" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
@@ -130,11 +142,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Social Emotional Screening</h4>
+                    <h4 class="modal-title">Delete Social Emotional Assessment</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this social emotional screening?
+                    Are you sure you want to delete this social emotional assessment?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i>&nbsp;No</button>

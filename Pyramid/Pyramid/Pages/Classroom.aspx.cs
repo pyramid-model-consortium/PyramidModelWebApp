@@ -7,34 +7,68 @@ using System.Data.Entity;
 using Pyramid.Code;
 using DevExpress.Web;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data.Entity.Infrastructure;
 
 namespace Pyramid.Pages
 {
-    public partial class Classroom : System.Web.UI.Page
+    public partial class Classroom : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "CLASS";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.Classroom currentClassroom;
+        private int classroomPK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //To hold the classroom program PK
-            int classroomProgramPK = 0;
-
             //To hold the action the user is performing on this page
             string action;
 
             //Get the user's program role from session
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
             //Try to get the classroom pk from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["ClassroomPK"]))
             {
                 //Parse the classroom pk
-                int.TryParse(Request.QueryString["ClassroomPK"], out classroomProgramPK);
+                int.TryParse(Request.QueryString["ClassroomPK"], out classroomPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (classroomPK == 0 && !string.IsNullOrWhiteSpace(hfClassroomPK.Value))
+            {
+                int.TryParse(hfClassroomPK.Value, out classroomPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = classroomPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/ClassroomDashboard.aspx?messageType=NotAuthorized");
             }
@@ -44,7 +78,7 @@ namespace Pyramid.Pages
                 //Get the classroom program object
                 currentClassroom = context.Classroom.AsNoTracking()
                                         .Include(c => c.Program)
-                                        .Where(c => c.ClassroomPK == classroomProgramPK)
+                                        .Where(c => c.ClassroomPK == classroomPK)
                                         .FirstOrDefault();
 
                 //If the classroom is null, this is an add
@@ -64,7 +98,7 @@ namespace Pyramid.Pages
             }
 
             //Don't allow users to view classrooms from other programs
-            if (currentClassroom.ClassroomPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentClassroom.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentClassroom.ProgramFK))
             {
                 //Redirect the user to the dashboard with an error message
                 Response.Redirect(string.Format("/Pages/ClassroomDashboard.aspx?messageType={0}", "NoClassroom"));
@@ -84,7 +118,7 @@ namespace Pyramid.Pages
                     switch (messageType)
                     {
                         case "ClassroomAdded":
-                            msgSys.ShowMessageToUser("success", "Success", "Classroom successfully added!<br/><br/>More detailed information can now be added.", 10000);
+                            msgSys.ShowMessageToUser("success", "Success", "Classroom successfully added!", 10000);
                             break;
                         default:
                             break;
@@ -99,7 +133,7 @@ namespace Pyramid.Pages
                 BindEmployeeClassroomAssignments();
 
                 //Show the edit only div if this is an edit
-                divEditOnly.Visible = (classroomProgramPK > 0 ? true : false);
+                divEditOnly.Visible = isEdit;
 
                 //Try to get the action type
                 if (!string.IsNullOrWhiteSpace(Request.QueryString["Action"]))
@@ -112,30 +146,36 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentClassroom.ClassroomPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
                     //Populate the user control
                     classroomControl.InitializeWithData(0, currentProgramRole.CurrentProgramFK.Value, false);
 
-                    //Show the submit button
-                    submitClassroom.ShowSubmitButton = true;
+                    //Set control usability
+                    EnableControls(true);
 
                     //Show other controls
                     hfViewOnly.Value = "False";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New Classroom";
                 }
-                else if (currentClassroom.ClassroomPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
                     //Populate the user control
                     classroomControl.InitializeWithData(currentClassroom.ClassroomPK, currentClassroom.ProgramFK, false);
 
-                    //Show the submit button
-                    submitClassroom.ShowSubmitButton = true;
+                    //Set control usability
+                    EnableControls(true);
 
                     //Show other controls
                     hfViewOnly.Value = "False";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit Classroom Information";
@@ -145,19 +185,65 @@ namespace Pyramid.Pages
                     //Populate the user control
                     classroomControl.InitializeWithData(currentClassroom.ClassroomPK, currentClassroom.ProgramFK, true);
 
-                    //Hide the submit button
-                    submitClassroom.ShowSubmitButton = false;
+                    //Set control usability
+                    EnableControls(false);
 
                     //Hide other controls
                     hfViewOnly.Value = "True";
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "View Classroom Information";
                 }
 
+                //Set the max dates for the date edits
+                deChildAssignDate.MaxDate = DateTime.Now;
+                deChildLeaveDate.MaxDate = DateTime.Now;
+                deEmployeeAssignDate.MaxDate = DateTime.Now;
+                deEmployeeLeaveDate.MaxDate = DateTime.Now;
+
                 //Set focus to the name field
                 classroomControl.FocusClassroomName();
+
+                //Check for the printing item in the query string
+                string strIsPrinting = Request.QueryString["Print"];
+
+                //Check to see if printing
+                if (!string.IsNullOrWhiteSpace(strIsPrinting))
+                {
+                    //To hold the printing value
+                    bool isPrinting = false;
+
+                    //Print the form if the query string value is true
+                    if (bool.TryParse(strIsPrinting, out isPrinting) && isPrinting == true)
+                    {
+                        //Print the form
+                        PrintForm();
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// This method enables/disables the controls based on the passed boolean value
+        /// </summary>
+        /// <param name="enabled">True if the controls should be read only, false if not</param>
+        private void EnableControls(bool enabled)
+        {
+            //Show/hide the submit button
+            submitClassroom.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            bool useCancelConfirmations = enabled && areConfirmationsEnabled;
+
+            submitClassroom.UseCancelConfirm = useCancelConfirmations;
+            submitChildClassroomAssignment.UseCancelConfirm = useCancelConfirmations;
+            submitEmployeeClassroomAssignment.UseCancelConfirm = useCancelConfirmations;
         }
 
         /// <summary>
@@ -182,23 +268,26 @@ namespace Pyramid.Pages
                                   select new
                                   {
                                       c.ChildPK,
-                                      IdAndName = "(" + cp.ProgramSpecificID + ") "
-                                        + c.FirstName + " " + c.LastName
+                                      IdAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                "(" + cp.ProgramSpecificID + ") " + c.FirstName + " " + c.LastName :
+                                                cp.ProgramSpecificID)
 
                                   };
                 ddChild.DataSource = allChildren.ToList();
                 ddChild.DataBind();
 
                 //Get all the program's employees
-                var allEmployeesTAs = context.ProgramEmployee.AsNoTracking()
+                var allProgramEmployees = context.ProgramEmployee
+                                        .Include(pe => pe.Employee)
+                                        .AsNoTracking()
                                         .Where(pe => pe.ProgramFK == currentClassroom.ProgramFK)
-                                        .OrderBy(pe => pe.FirstName)
+                                        .OrderBy(pe => pe.Employee.FirstName)
                                         .Select(pe => new
                                         {
                                             pe.ProgramEmployeePK,
-                                            Name = pe.FirstName + " " + pe.LastName
+                                            Name = (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + pe.ProgramSpecificID + ") " + pe.Employee.FirstName + " " + pe.Employee.LastName : "HIDDEN")
                                         }).ToList();
-                ddEmployee.DataSource = allEmployeesTAs;
+                ddEmployee.DataSource = allProgramEmployees;
                 ddEmployee.DataBind();
 
                 //Get all the employee leave reasons
@@ -210,12 +299,14 @@ namespace Pyramid.Pages
 
                 //Get all the job functions
                 var allJobFunctions = context.CodeJobType.AsNoTracking()
-                                        .Where(cjt => cjt.RolesAuthorizedToModify.Contains((currentProgramRole.RoleFK.Value.ToString() + ",")))
                                         .OrderBy(cjt => cjt.OrderBy)
                                         .ToList();
 
+                //Filter the job functions by the user's current role
+                var filteredJobFunctions = allJobFunctions.Where(ajf => ajf.RolesAuthorizedToModify.Split(',').ToList().Contains(currentProgramRole.CodeProgramRoleFK.Value.ToString())).ToList();
+
                 //Bind the classroom job type dropdown
-                ddClassroomJobType.DataSource = allJobFunctions;
+                ddClassroomJobType.DataSource = filteredJobFunctions;
                 ddClassroomJobType.DataBind();
             }
         }
@@ -228,66 +319,14 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitClassroom_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the type of change
+            string successMessageType = SaveForm(true);
+
+            //Only allow redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the classroom and classroom program objects
-                Models.Classroom currentClassroom;
-
-                //To hold the type of change
-                string successMessageType = null;
-
-                //Get the classroom object and classroom program
-                Models.Classroom updatedClassroom = classroomControl.GetClassroom();
-
-                if (updatedClassroom.ClassroomPK > 0)
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the edit success message
-                        successMessageType = "ClassroomEdited";
-
-                        //Set the edit fields
-                        updatedClassroom.EditDate = DateTime.Now;
-                        updatedClassroom.Editor = User.Identity.Name;
-
-                        //Get the current classroom object from the context
-                        currentClassroom = context.Classroom.Find(updatedClassroom.ClassroomPK);
-
-                        //Set the classroom and classroom program objects to the new values
-                        context.Entry(currentClassroom).CurrentValues.SetValues(updatedClassroom);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard
-                    Response.Redirect(string.Format("/Pages/ClassroomDashboard.aspx?messageType={0}", successMessageType));
-                }
-                else
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the add success message
-                        successMessageType = "ClassroomAdded";
-
-                        //Set the creator fields
-                        updatedClassroom.CreateDate = DateTime.Now;
-                        updatedClassroom.Creator = User.Identity.Name;
-
-                        //Add the classroom to the context
-                        context.Classroom.Add(updatedClassroom);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard
-                    Response.Redirect(string.Format("/Pages/ClassroomDashboard.aspx?messageType={0}", successMessageType));
-                }
-            }
-            else
-            {
-                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+                //Redirect the user to the dashboard
+                Response.Redirect(string.Format("/Pages/ClassroomDashboard.aspx?messageType={0}", successMessageType));
             }
         }
 
@@ -314,6 +353,140 @@ namespace Pyramid.Pages
             msgSys.ShowMessageToUser("danger", "Validation Error", classroomControl.ValidationMessageToDisplay, 22000);
             msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
         }
+        
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Print the form
+            PrintForm();
+        }
+
+        /// <summary>
+        /// This method prints the form
+        /// </summary>
+        private void PrintForm()
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitClassroom.ValidationGroup))
+            {
+                //To hold the success message type
+                string successMessageType;
+
+                //Submit the form
+                successMessageType = SaveForm(false);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    //Get the master page
+                    MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                    //Get the report
+                    Reports.PreBuiltReports.FormReports.RptClassroom report = new Reports.PreBuiltReports.FormReports.RptClassroom();
+
+                    //Display the report
+                    masterPage.DisplayReport(currentProgramRole, report, "Classroom Information", classroomPK);
+                }
+                else
+                {
+                    //Get the action
+                    string action = "View";
+                    if (!string.IsNullOrWhiteSpace(successMessageType))
+                    {
+                        //The save was successful, the user will be editing
+                        action = "Edit";
+                    }
+
+                    //Redirect the user back to this page with a message and the PK
+                    Response.Redirect(string.Format("/Pages/Classroom.aspx?ClassroomPK={0}&Action={1}&messageType={2}&Print=True",
+                                                        classroomPK, action, successMessageType));
+                }
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("danger", "Validation Error", classroomControl.ValidationMessageToDisplay, 22000);
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message
+            string successMessageType = null;
+
+            //Determine if the user is allowed to save the form
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Get the classroom object and classroom program
+                Models.Classroom updatedClassroom = classroomControl.GetClassroom();
+
+                if (isEdit)
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the edit success message
+                        successMessageType = "ClassroomEdited";
+
+                        //Set the edit fields
+                        updatedClassroom.EditDate = DateTime.Now;
+                        updatedClassroom.Editor = User.Identity.Name;
+
+                        //Get the current classroom object from the context
+                        currentClassroom = context.Classroom.Find(updatedClassroom.ClassroomPK);
+
+                        //Set the classroom and classroom program objects to the new values
+                        context.Entry(currentClassroom).CurrentValues.SetValues(updatedClassroom);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local PK variable
+                        hfClassroomPK.Value = updatedClassroom.ClassroomPK.ToString();
+                        classroomPK = updatedClassroom.ClassroomPK;
+                    }
+                }
+                else
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the add success message
+                        successMessageType = "ClassroomAdded";
+
+                        //Set the creator fields
+                        updatedClassroom.CreateDate = DateTime.Now;
+                        updatedClassroom.Creator = User.Identity.Name;
+
+                        //Add the classroom to the context
+                        context.Classroom.Add(updatedClassroom);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local PK variable
+                        hfClassroomPK.Value = updatedClassroom.ClassroomPK.ToString();
+                        classroomPK = updatedClassroom.ClassroomPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message type
+            return successMessageType;
+        }
 
         #region Child Classroom Assignments
 
@@ -338,9 +511,11 @@ namespace Pyramid.Pages
                                                cc.ChildClassroomPK,
                                                cc.AssignDate,
                                                cc.LeaveDate,
-                                               LeaveReason = (cc.CodeChildLeaveReason != null ? cc.CodeChildLeaveReason.Description + (cc.LeaveReasonSpecify == null ? " (" + cc.LeaveReasonSpecify + ")" : "") : ""),
+                                               LeaveReason = (cc.CodeChildLeaveReason != null ? cc.CodeChildLeaveReason.Description + (cc.LeaveReasonSpecify == null || cc.LeaveReasonSpecify == "" ? "" : " (" + cc.LeaveReasonSpecify + ")") : ""),
                                                cc.ChildFK,
-                                               ChildIdAndName = "(" + cp.ProgramSpecificID + ") " + cc.Child.FirstName + " " + cc.Child.LastName,
+                                               ChildIdAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                                    "(" + cp.ProgramSpecificID + ") " + cc.Child.FirstName + " " + cc.Child.LastName :
+                                                                    cp.ProgramSpecificID),
                                                cp.EnrollmentDate,
                                                cp.DischargeDate
                                            };
@@ -367,15 +542,15 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden fields
-            HiddenField hfClassroomAssignmentPK = (HiddenField)item.FindControl("hfClassroomAssignmentPK");
-            HiddenField hfChildFK = (HiddenField)item.FindControl("hfChildFK");
-            HiddenField hfEnrollmentDate = (HiddenField)item.FindControl("hfEnrollmentDate");
-            HiddenField hfDischargeDate = (HiddenField)item.FindControl("hfDischargeDate");
+            //Get the labels
+            Label lblClassroomAssignmentPK = (Label)item.FindControl("lblClassroomAssignmentPK");
+            Label lblChildFK = (Label)item.FindControl("lblChildFK");
+            Label lblEnrollmentDate = (Label)item.FindControl("lblEnrollmentDate");
+            Label lblDischargeDate = (Label)item.FindControl("lblDischargeDate");
 
-            //Get the PK from the hidden field
-            int? assignmentPK = (String.IsNullOrWhiteSpace(hfClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfClassroomAssignmentPK.Value));
-            int? childFK = (String.IsNullOrWhiteSpace(hfChildFK.Value) ? (int?)null : Convert.ToInt32(hfChildFK.Value));
+            //Get the PK from the labels
+            int? assignmentPK = (String.IsNullOrWhiteSpace(lblClassroomAssignmentPK.Text) ? (int?)null : Convert.ToInt32(lblClassroomAssignmentPK.Text));
+            int? childFK = (String.IsNullOrWhiteSpace(lblChildFK.Text) ? (int?)null : Convert.ToInt32(lblChildFK.Text));
 
             if (assignmentPK.HasValue)
             {
@@ -393,8 +568,8 @@ namespace Pyramid.Pages
                     txtChildLeaveReasonSpecify.Value = (editClassroomAssignment.LeaveReasonSpecify == null ? "" : editClassroomAssignment.LeaveReasonSpecify.ToString());
                     hfAddEditChildClassroomAssignmentPK.Value = assignmentPK.Value.ToString();
                     hfAddEditChildClassroomChildPK.Value = (childFK.HasValue ? childFK.Value.ToString() : "0");
-                    hfAddEditChildClassroomEnrollmentDate.Value = hfEnrollmentDate.Value;
-                    hfAddEditChildClassroomDischargeDate.Value = hfDischargeDate.Value;
+                    hfAddEditChildClassroomEnrollmentDate.Value = lblEnrollmentDate.Text;
+                    hfAddEditChildClassroomDischargeDate.Value = lblDischargeDate.Text;
                 }
 
                 //Show the classroom assignment div
@@ -441,7 +616,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitChildClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the classroom record, just determine if the user is allowed to edit the classroom info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the classroom assignment pk
                 int assignmentPK = Convert.ToInt32(hfAddEditChildClassroomAssignmentPK.Value);
@@ -512,28 +688,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteChildClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the classroom record, just determine if the user is allowed to edit the classroom info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteChildClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteChildClassroomAssignmentPK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the classroom assignment to remove
-                        ChildClassroom assignmentToRemove = context.ChildClassroom.Where(cn => cn.ChildClassroomPK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the classroom assignment to remove
+                            ChildClassroom assignmentToRemove = context.ChildClassroom.Where(cn => cn.ChildClassroomPK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the classroom assignment
-                        context.ChildClassroom.Remove(assignmentToRemove);
-                        context.SaveChanges();
+                            //Remove the classroom assignment
+                            context.ChildClassroom.Remove(assignmentToRemove);
 
-                        //Rebind the classroom assignment table
-                        BindChildClassroomAssignments();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                            //Get the delete change row
+                            context.ChildClassroomChanged
+                                    .OrderByDescending(ccc => ccc.ChildClassroomChangedPK)
+                                    .Where(ccc => ccc.ChildClassroomPK == assignmentToRemove.ChildClassroomPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the classroom assignment table
+                            BindChildClassroomAssignments();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the classroom assignment, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -578,13 +800,13 @@ namespace Pyramid.Pages
                         && (assignDate.Value > dischargeDate.Value || assignDate.Value < enrollmentDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Assign Date must be between the hire date and termination date!";
+                e.ErrorText = "Assign Date must be between the enrollment date and separation date!";
             }
             else if (assignDate.HasValue && dischargeDate.HasValue == false
                 && (assignDate.Value > DateTime.Now || assignDate.Value < enrollmentDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Assign Date must be between the hire date and now!";
+                e.ErrorText = "Assign Date must be between the enrollment date and now!";
             }
             else
             {
@@ -742,7 +964,7 @@ namespace Pyramid.Pages
             string leaveReasonSpecify = (txtChildLeaveReasonSpecify.Value == null ? null : txtChildLeaveReasonSpecify.Value.ToString());
 
             //Perform validation
-            if (ddChildLeaveReason.SelectedItem != null && ddChildLeaveReason.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(leaveReasonSpecify))
+            if (ddChildLeaveReason.SelectedItem != null && ddChildLeaveReason.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(leaveReasonSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";
@@ -765,12 +987,27 @@ namespace Pyramid.Pages
             {
                 //Bind the repeater
                 var classroomAssignments = context.EmployeeClassroom.AsNoTracking()
-                                            .Include(cc => cc.ProgramEmployee)
-                                            .Include(cc => cc.Classroom)
-                                            .Include(cc => cc.CodeEmployeeLeaveReason)
-                                            .Include(cc => cc.CodeJobType)
-                                            .Where(cc => cc.ClassroomFK == currentClassroom.ClassroomPK)
-                                            .OrderBy(cc => cc.AssignDate)
+                                            .Include(ec => ec.ProgramEmployee)
+                                            .Include(ec => ec.ProgramEmployee.Employee)
+                                            .Include(ec => ec.Classroom)
+                                            .Include(ec => ec.CodeEmployeeLeaveReason)
+                                            .Include(ec => ec.CodeJobType)
+                                            .Where(ec => ec.ClassroomFK == currentClassroom.ClassroomPK)
+                                            .OrderBy(ec => ec.AssignDate)
+                                            .Select(ec => new
+                                            {
+                                                ec.EmployeeClassroomPK,
+                                                ec.ProgramEmployeeFK,
+                                                ec.ClassroomFK,
+                                                ec.ProgramEmployee.HireDate,
+                                                ec.ProgramEmployee.TermDate,
+                                                ec.ProgramEmployee.EmployeeFK,
+                                                EmployeeName = (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + ec.ProgramEmployee.ProgramSpecificID + ") " + ec.ProgramEmployee.Employee.FirstName + " " + ec.ProgramEmployee.Employee.LastName : ec.ProgramEmployee.ProgramSpecificID),
+                                                ClassroomJob = ec.CodeJobType.Description,
+                                                ec.AssignDate,
+                                                ec.LeaveDate,
+                                                LeaveReason = (ec.CodeEmployeeLeaveReason != null ? ec.CodeEmployeeLeaveReason.Description + (ec.LeaveReasonSpecify != null ? " (" + ec.LeaveReasonSpecify + ")" : "") : "")
+                                            })
                                             .ToList();
                 repeatEmployeeClassroomAssignments.DataSource = classroomAssignments;
                 repeatEmployeeClassroomAssignments.DataBind();
@@ -794,15 +1031,15 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden fields
-            HiddenField hfClassroomAssignmentPK = (HiddenField)item.FindControl("hfClassroomAssignmentPK");
-            HiddenField hfEmployeeFK = (HiddenField)item.FindControl("hfEmployeeFK");
-            HiddenField hfHireDate = (HiddenField)item.FindControl("hfHireDate");
-            HiddenField hfTermDate = (HiddenField)item.FindControl("hfTermDate");
+            //Get the labels
+            Label lblClassroomAssignmentPK = (Label)item.FindControl("lblClassroomAssignmentPK");
+            Label lblProgramEmployeeFK = (Label)item.FindControl("lblProgramEmployeeFK");
+            Label lblHireDate = (Label)item.FindControl("lblHireDate");
+            Label lblTermDate = (Label)item.FindControl("lblTermDate");
 
-            //Get the PK from the hidden field
-            int? assignmentPK = (String.IsNullOrWhiteSpace(hfClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfClassroomAssignmentPK.Value));
-            int? employeeFK = (String.IsNullOrWhiteSpace(hfEmployeeFK.Value) ? (int?)null : Convert.ToInt32(hfEmployeeFK.Value));
+            //Get the PK from the labels
+            int? assignmentPK = (string.IsNullOrWhiteSpace(lblClassroomAssignmentPK.Text) ? (int?)null : Convert.ToInt32(lblClassroomAssignmentPK.Text));
+            int? programEmployeeFK = (string.IsNullOrWhiteSpace(lblProgramEmployeeFK.Text) ? (int?)null : Convert.ToInt32(lblProgramEmployeeFK.Text));
 
             if (assignmentPK.HasValue)
             {
@@ -814,15 +1051,15 @@ namespace Pyramid.Pages
                     //Fill the inputs
                     lblAddEditEmployeeClassroomAssignment.Text = "Edit Classroom Assignment";
                     deEmployeeAssignDate.Value = editClassroomAssignment.AssignDate.ToString("MM/dd/yyyy");
-                    ddEmployee.SelectedItem = ddEmployee.Items.FindByValue(editClassroomAssignment.EmployeeFK);
+                    ddEmployee.SelectedItem = ddEmployee.Items.FindByValue(editClassroomAssignment.ProgramEmployeeFK);
                     ddClassroomJobType.SelectedItem = ddClassroomJobType.Items.FindByValue(editClassroomAssignment.JobTypeCodeFK);
                     deEmployeeLeaveDate.Value = (editClassroomAssignment.LeaveDate.HasValue ? editClassroomAssignment.LeaveDate.Value.ToString("MM/dd/yyyy") : "");
                     ddEmployeeLeaveReason.SelectedItem = ddEmployeeLeaveReason.Items.FindByValue(editClassroomAssignment.LeaveReasonCodeFK);
                     txtEmployeeLeaveReasonSpecify.Value = (editClassroomAssignment.LeaveReasonSpecify == null ? "" : editClassroomAssignment.LeaveReasonSpecify.ToString());
                     hfAddEditEmployeeClassroomAssignmentPK.Value = assignmentPK.Value.ToString();
-                    hfAddEditEmployeeClassroomEmployeePK.Value = (employeeFK.HasValue ? employeeFK.Value.ToString() : "0");
-                    hfAddEditEmployeeClassroomHireDate.Value = hfHireDate.Value;
-                    hfAddEditEmployeeClassroomTermDate.Value = hfTermDate.Value;
+                    hfAddEditEmployeeClassroomProgramEmployeePK.Value = (programEmployeeFK.HasValue ? programEmployeeFK.Value.ToString() : "0");
+                    hfAddEditEmployeeClassroomHireDate.Value = lblHireDate.Text;
+                    hfAddEditEmployeeClassroomTermDate.Value = lblTermDate.Text;
                 }
 
                 //Show the classroom assignment div
@@ -869,7 +1106,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitEmployeeClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the classroom record, just determine if the user is allowed to edit the classroom info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the classroom assignment pk
                 int assignmentPK = Convert.ToInt32(hfAddEditEmployeeClassroomAssignmentPK.Value);
@@ -887,7 +1125,7 @@ namespace Pyramid.Pages
                         currentClassroomAssignment.LeaveDate = (deEmployeeLeaveDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deEmployeeLeaveDate.Value));
                         currentClassroomAssignment.LeaveReasonCodeFK = (ddEmployeeLeaveReason.Value == null ? (int?)null : Convert.ToInt32(ddEmployeeLeaveReason.Value));
                         currentClassroomAssignment.LeaveReasonSpecify = (txtEmployeeLeaveReasonSpecify.Value == null ? null : txtEmployeeLeaveReasonSpecify.Value.ToString());
-                        currentClassroomAssignment.EmployeeFK = Convert.ToInt32(ddEmployee.Value);
+                        currentClassroomAssignment.ProgramEmployeeFK = Convert.ToInt32(ddEmployee.Value);
                         currentClassroomAssignment.JobTypeCodeFK = Convert.ToInt32(ddClassroomJobType.Value);
                         currentClassroomAssignment.CreateDate = DateTime.Now;
                         currentClassroomAssignment.Creator = User.Identity.Name;
@@ -897,7 +1135,7 @@ namespace Pyramid.Pages
                         context.SaveChanges();
 
                         //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully added employee classroom assignment!", 10000);
+                        msgSys.ShowMessageToUser("success", "Success", "Successfully added professional classroom assignment!", 10000);
                     }
                     else
                     {
@@ -908,7 +1146,7 @@ namespace Pyramid.Pages
                         currentClassroomAssignment.LeaveDate = (deEmployeeLeaveDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deEmployeeLeaveDate.Value));
                         currentClassroomAssignment.LeaveReasonCodeFK = (ddEmployeeLeaveReason.Value == null ? (int?)null : Convert.ToInt32(ddEmployeeLeaveReason.Value));
                         currentClassroomAssignment.LeaveReasonSpecify = (txtEmployeeLeaveReasonSpecify.Value == null ? null : txtEmployeeLeaveReasonSpecify.Value.ToString());
-                        currentClassroomAssignment.EmployeeFK = Convert.ToInt32(ddEmployee.Value);
+                        currentClassroomAssignment.ProgramEmployeeFK = Convert.ToInt32(ddEmployee.Value);
                         currentClassroomAssignment.JobTypeCodeFK = Convert.ToInt32(ddClassroomJobType.Value);
                         currentClassroomAssignment.EditDate = DateTime.Now;
                         currentClassroomAssignment.Editor = User.Identity.Name;
@@ -942,28 +1180,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteEmployeeClassroomAssignment_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Since this is part of the classroom record, just determine if the user is allowed to edit the classroom info
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteEmployeeClassroomAssignmentPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteEmployeeClassroomAssignmentPK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the classroom assignment to remove
-                        EmployeeClassroom assignmentToRemove = context.EmployeeClassroom.Where(cn => cn.EmployeeClassroomPK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the classroom assignment to remove
+                            EmployeeClassroom assignmentToRemove = context.EmployeeClassroom.Where(cn => cn.EmployeeClassroomPK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the classroom assignment
-                        context.EmployeeClassroom.Remove(assignmentToRemove);
-                        context.SaveChanges();
+                            //Remove the classroom assignment
+                            context.EmployeeClassroom.Remove(assignmentToRemove);
 
-                        //Rebind the classroom assignment table
-                        BindEmployeeClassroomAssignments();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                            //Get the delete change row and set the deleter
+                            context.EmployeeClassroomChanged
+                                    .OrderByDescending(ecc => ecc.EmployeeClassroomChangedPK)
+                                    .Where(ecc => ecc.EmployeeClassroomPK == assignmentToRemove.EmployeeClassroomPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the classroom assignment table
+                            BindEmployeeClassroomAssignments();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted classroom assignment!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the classroom assignment, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the classroom assignment!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -985,7 +1269,7 @@ namespace Pyramid.Pages
         /// <param name="e">ValidationEventArgs</param>
         protected void ddClassroomJobType_Validation(object sender, ValidationEventArgs e)
         {
-            int? employeeFK = (ddEmployee.Value == null ? (int?)null : Convert.ToInt32(ddEmployee.Value));
+            int? programEmployeeFK = (ddEmployee.Value == null ? (int?)null : Convert.ToInt32(ddEmployee.Value));
             int? jobTypeFK = (ddClassroomJobType.Value == null ? (int?)null : Convert.ToInt32(ddClassroomJobType.Value));
             DateTime? assignDate = (deEmployeeAssignDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deEmployeeAssignDate.Value));
             List<JobFunction> activeJobFunctions = new List<JobFunction>();
@@ -996,13 +1280,13 @@ namespace Pyramid.Pages
                 e.IsValid = false;
                 e.ErrorText = "Classroom Job is required!";
             }
-            else if(employeeFK.HasValue && assignDate.HasValue)
+            else if(programEmployeeFK.HasValue && assignDate.HasValue)
             {
                 using (PyramidContext context = new PyramidContext())
                 {
                     //Check to see if the employee has a valid job function during this time
                     activeJobFunctions = context.JobFunction.AsNoTracking()
-                                                .Where(jf => jf.ProgramEmployeeFK == employeeFK.Value
+                                                .Where(jf => jf.ProgramEmployeeFK == programEmployeeFK.Value
                                                         && jf.StartDate <= assignDate.Value
                                                         && (jf.EndDate.HasValue == false || jf.EndDate.Value >= assignDate.Value)
                                                         && jf.JobTypeCodeFK == jobTypeFK.Value)
@@ -1012,7 +1296,7 @@ namespace Pyramid.Pages
                     if(activeJobFunctions.Count < 1)
                     {
                         e.IsValid = false;
-                        e.ErrorText = "Employee is not active in that job function as of the classroom assign date!";
+                        e.ErrorText = "Professional is not active in that job function as of the classroom assign date!";
                     }
                 }
             }
@@ -1037,8 +1321,8 @@ namespace Pyramid.Pages
             int.TryParse(hfAddEditEmployeeClassroomAssignmentPK.Value, out assignmentPK);
 
             //Get the employee pk
-            int employeePK;
-            int.TryParse(hfAddEditEmployeeClassroomEmployeePK.Value, out employeePK);
+            int programEmployeePK;
+            int.TryParse(hfAddEditEmployeeClassroomProgramEmployeePK.Value, out programEmployeePK);
 
             //Perform the validation
             if (assignDate.HasValue == false)
@@ -1050,13 +1334,13 @@ namespace Pyramid.Pages
                         && (assignDate.Value > termDate.Value || assignDate.Value < hireDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Assign Date must be between the hire date and termination date!";
+                e.ErrorText = "Assign Date must be between the professional's start date and separation date!";
             }
             else if (assignDate.HasValue && termDate.HasValue == false
                 && (assignDate.Value > DateTime.Now || assignDate.Value < hireDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Assign Date must be between the hire date and now!";
+                e.ErrorText = "Assign Date must be between the professional's start date and now!";
             }
             else if(jobTypeFK.HasValue)
             {
@@ -1067,7 +1351,7 @@ namespace Pyramid.Pages
                                                 .Include(cc => cc.Classroom)
                                                 .Include(cc => cc.CodeEmployeeLeaveReason)
                                                 .Include(cc => cc.CodeJobType)
-                                                .Where(cc => cc.EmployeeFK == employeePK
+                                                .Where(cc => cc.ProgramEmployeeFK == programEmployeePK
                                                         && cc.ClassroomFK == currentClassroom.ClassroomPK
                                                         && cc.EmployeeClassroomPK != assignmentPK
                                                         && cc.JobTypeCodeFK == jobTypeFK.Value)
@@ -1078,7 +1362,7 @@ namespace Pyramid.Pages
                         if (assignment.LeaveDate.HasValue == false && assignDate >= assignment.AssignDate)
                         {
                             e.IsValid = false;
-                            e.ErrorText = "The employee is already active as a " + assignment.CodeJobType.Description + " in this classroom: (" + assignment.Classroom.ProgramSpecificID + ") " + assignment.Classroom.Name;
+                            e.ErrorText = "The professional is already active as a " + assignment.CodeJobType.Description + " in this classroom: (" + assignment.Classroom.ProgramSpecificID + ") " + assignment.Classroom.Name;
                         }
                         else if (assignment.LeaveDate.HasValue && assignDate >= assignment.AssignDate && assignDate <= assignment.LeaveDate.Value)
                         {
@@ -1111,8 +1395,8 @@ namespace Pyramid.Pages
             int.TryParse(hfAddEditEmployeeClassroomAssignmentPK.Value, out assignmentPK);
 
             //Get the employee pk
-            int employeePK;
-            int.TryParse(hfAddEditEmployeeClassroomEmployeePK.Value, out employeePK);
+            int programEmployeePK;
+            int.TryParse(hfAddEditEmployeeClassroomProgramEmployeePK.Value, out programEmployeePK);
 
             //Perform the validation
             if (leaveDate.HasValue == false && !String.IsNullOrWhiteSpace(leaveReason))
@@ -1134,13 +1418,13 @@ namespace Pyramid.Pages
                         && (leaveDate.Value > termDate.Value || leaveDate.Value < hireDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Leave Date must be between the hire date and term date!";
+                e.ErrorText = "Leave Date must be between the professional's start date and separation date!";
             }
             else if (leaveDate.HasValue && termDate.HasValue == false
                 && (leaveDate.Value > DateTime.Now || leaveDate.Value < hireDate.Value))
             {
                 e.IsValid = false;
-                e.ErrorText = "Leave Date must be between the hire date and now!";
+                e.ErrorText = "Leave Date must be between the professional's start date and now!";
             }
             else if (jobTypeFK.HasValue)
             {
@@ -1151,7 +1435,7 @@ namespace Pyramid.Pages
                                                 .Include(cc => cc.Classroom)
                                                 .Include(cc => cc.CodeEmployeeLeaveReason)
                                                 .Include(cc => cc.CodeJobType)
-                                                .Where(cc => cc.EmployeeFK == employeePK
+                                                .Where(cc => cc.ProgramEmployeeFK == programEmployeePK
                                                         && cc.ClassroomFK == currentClassroom.ClassroomPK
                                                         && cc.EmployeeClassroomPK != assignmentPK
                                                         && cc.JobTypeCodeFK == jobTypeFK.Value)
@@ -1170,7 +1454,7 @@ namespace Pyramid.Pages
                         else if (assignment.LeaveDate.HasValue == false && leaveDate >= assignment.AssignDate)
                         {
                             e.IsValid = false;
-                            e.ErrorText = "The employee is already active as a " + assignment.CodeJobType.Description + " in this classroom: (" + assignment.Classroom.ProgramSpecificID + ") " + assignment.Classroom.Name;
+                            e.ErrorText = "The professional is already active as a " + assignment.CodeJobType.Description + " in this classroom: (" + assignment.Classroom.ProgramSpecificID + ") " + assignment.Classroom.Name;
                         }
                         else if (assignment.LeaveDate.HasValue && leaveDate >= assignment.AssignDate && leaveDate <= assignment.LeaveDate.Value)
                         {
@@ -1223,7 +1507,7 @@ namespace Pyramid.Pages
             string leaveReasonSpecify = (txtEmployeeLeaveReasonSpecify.Value == null ? null : txtEmployeeLeaveReasonSpecify.Value.ToString());
 
             //Perform validation
-            if (ddEmployeeLeaveReason.SelectedItem != null && ddEmployeeLeaveReason.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(leaveReasonSpecify))
+            if (ddEmployeeLeaveReason.SelectedItem != null && ddEmployeeLeaveReason.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(leaveReasonSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Leave Reason is required when the 'Other' leave reason is selected!";

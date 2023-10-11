@@ -12,20 +12,45 @@ using System.Web.UI.WebControls;
 
 namespace Pyramid.Pages
 {
-    public partial class BehaviorIncident : System.Web.UI.Page
+    public partial class BehaviorIncident : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "BIR";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.BehaviorIncident currentBehaviorIncident;
-        int behaviorIncidentPK = 0;
-        int programFK = 0;
+        private int behaviorIncidentPK = 0;
+        private int programFK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/BehaviorIncidentDashboard.aspx?messageType=NotAuthorized");
             }
@@ -35,6 +60,15 @@ namespace Pyramid.Pages
             {
                 int.TryParse(Request.QueryString["BehaviorIncidentPK"], out behaviorIncidentPK);
             }
+
+            //If the current PK is 0, try to get the value from the hidden field
+            if (behaviorIncidentPK == 0 && !string.IsNullOrWhiteSpace(hfBIRPK.Value))
+            {
+                int.TryParse(hfBIRPK.Value, out behaviorIncidentPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = behaviorIncidentPK > 0;
 
             //Get the Behavior Incident from the database
             using (PyramidContext context = new PyramidContext())
@@ -64,17 +98,14 @@ namespace Pyramid.Pages
             }
 
             //Don't allow users to view Behavior Incidents from other programs
-            if (currentBehaviorIncident.BehaviorIncidentPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentBehaviorIncident.Classroom.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentBehaviorIncident.Classroom.ProgramFK))
             {
                 //Redirect the user to the dashboard with an error message
                 Response.Redirect(string.Format("/Pages/BehaviorIncidentDashboard.aspx?messageType={0}", "NoBehaviorIncident"));
             }
 
             //Get the proper program fk
-            programFK = (currentBehaviorIncident.BehaviorIncidentPK > 0 ? currentBehaviorIncident.Classroom.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
-
-            //Set the max value for the incident datetime date edit
-            deIncidentDatetime.MaxDate = DateTime.Now;
+            programFK = (isEdit ? currentBehaviorIncident.Classroom.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
 
             if (!IsPostBack)
             {
@@ -85,7 +116,7 @@ namespace Pyramid.Pages
                 BindDropDowns();
 
                 //If this is an edit or view, populate the page with values
-                if (behaviorIncidentPK != 0)
+                if (isEdit)
                 {
                     PopulatePage(currentBehaviorIncident);
                 }
@@ -106,48 +137,51 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentBehaviorIncident.BehaviorIncidentPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitBehaviorIncident.ShowSubmitButton = true;
-
                     //Show other controls
                     hfViewOnly.Value = "False";
 
                     //Lock the controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New Behavior Incident Report";
                 }
-                else if (currentBehaviorIncident.BehaviorIncidentPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitBehaviorIncident.ShowSubmitButton = true;
-
                     //Show other controls
                     hfViewOnly.Value = "False";
 
                     //Lock the controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit Behavior Incident Report";
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitBehaviorIncident.ShowSubmitButton = false;
-
                     //Hide other controls
                     hfViewOnly.Value = "True";
 
                     //Lock the controls
                     EnableControls(false);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
+
                     //Set the page title
                     lblPageTitle.Text = "View Behavior Incident Report";
                 }
+
+                //Set the max value for the incident datetime date edit
+                deIncidentDatetime.MaxDate = DateTime.Now;
 
                 //Set focus on the incident datetime field
                 deIncidentDatetime.Focus();
@@ -164,78 +198,14 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitBehaviorIncident_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the success message
+            string successMessageType = SaveForm(true);
+
+            //Only redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the success message
-                string successMessageType = null;
-
-                //Fill the fields of the object from the form
-                currentBehaviorIncident.IncidentDatetime = Convert.ToDateTime(deIncidentDatetime.Value);
-                currentBehaviorIncident.BehaviorDescription = txtBehaviorDescription.Value.ToString();
-                currentBehaviorIncident.ProblemBehaviorCodeFK = Convert.ToInt32(ddProblemBehavior.Value);
-                currentBehaviorIncident.ProblemBehaviorSpecify = (txtProblemBehaviorSpecify.Value == null ? null : txtProblemBehaviorSpecify.Value.ToString());
-                currentBehaviorIncident.ActivityCodeFK = Convert.ToInt32(ddActivity.Value);
-                currentBehaviorIncident.ActivitySpecify = (txtActivitySpecify.Value == null ? null : txtActivitySpecify.Value.ToString());
-                currentBehaviorIncident.OthersInvolvedCodeFK = Convert.ToInt32(ddOthersInvolved.Value);
-                currentBehaviorIncident.OthersInvolvedSpecify = (txtOthersInvolvedSpecify.Value == null ? null : txtOthersInvolvedSpecify.Value.ToString());
-                currentBehaviorIncident.PossibleMotivationCodeFK = Convert.ToInt32(ddPossibleMotivation.Value);
-                currentBehaviorIncident.PossibleMotivationSpecify = (txtPossibleMotivationSpecify.Value == null ? null : txtPossibleMotivationSpecify.Value.ToString());
-                currentBehaviorIncident.StrategyResponseCodeFK = Convert.ToInt32(ddStrategyResponse.Value);
-                currentBehaviorIncident.StrategyResponseSpecify = (txtStrategyResponseSpecify.Value == null ? null : txtStrategyResponseSpecify.Value.ToString());
-                currentBehaviorIncident.AdminFollowUpCodeFK = Convert.ToInt32(ddAdminFollowUp.Value);
-                currentBehaviorIncident.AdminFollowUpSpecify = (txtAdminFollowUpSpecify.Value == null ? null : txtAdminFollowUpSpecify.Value.ToString());
-                currentBehaviorIncident.Notes = (txtNotes.Value == null ? null : txtNotes.Value.ToString());
-                currentBehaviorIncident.ChildFK = Convert.ToInt32(ddChild.Value);
-                currentBehaviorIncident.ClassroomFK = Convert.ToInt32(ddClassroom.Value);
-
-                //Check to see if this is an add or edit
-                if (behaviorIncidentPK > 0)
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //This is an edit
-                        successMessageType = "BehaviorIncidentEdited";
-
-                        //Fill the edit-specific fields
-                        currentBehaviorIncident.EditDate = DateTime.Now;
-                        currentBehaviorIncident.Editor = User.Identity.Name;
-
-                        //Get the existing database values
-                        Models.BehaviorIncident existingBehaviorIncident = context.BehaviorIncident.Find(currentBehaviorIncident.BehaviorIncidentPK);
-
-                        //Set the behavior incident object to the new values
-                        context.Entry(existingBehaviorIncident).CurrentValues.SetValues(currentBehaviorIncident);
-
-                        //Save the changes
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard with the success message
-                    Response.Redirect(string.Format("/Pages/BehaviorIncidentDashboard.aspx?messageType={0}", successMessageType));
-                }
-                else
-                {
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //This is an add
-                        successMessageType = "BehaviorIncidentAdded";
-
-                        //Set the create-specific fields
-                        currentBehaviorIncident.CreateDate = DateTime.Now;
-                        currentBehaviorIncident.Creator = User.Identity.Name;
-
-                        //Add the behavior incident to the database and save
-                        context.BehaviorIncident.Add(currentBehaviorIncident);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the dashboard with the success message
-                    Response.Redirect(string.Format("/Pages/BehaviorIncidentDashboard.aspx?messageType={0}", successMessageType));
-                }
-            }
-            else
-            {
-                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+                //Redirect the user to the dashboard with the success message
+                Response.Redirect(string.Format("/Pages/BehaviorIncidentDashboard.aspx?messageType={0}", successMessageType));
             }
         }
 
@@ -285,8 +255,8 @@ namespace Pyramid.Pages
                                             && cp.ProgramFK == programFK)
                                             .OrderBy(cp => cp.EnrollmentDate).FirstOrDefault();
 
-                    //Check to see if the ChildProgram record exists and the user's edit permissions
-                    if (childProgram.ChildProgramPK > 0 && currentProgramRole.AllowedToEdit.Value)
+                    //Check to see if the ChildProgram record exists
+                    if (childProgram != null)
                     {
                         //The ChildProgram record exists and the user can edit, open a new tab for the user to edit the child
                         string urlToRedirect = "Child.aspx?ChildProgramPK=" + childProgram.ChildProgramPK.ToString() + "&Action=Edit";
@@ -310,6 +280,36 @@ namespace Pyramid.Pages
 
             //Re-bind the classroom dropdown
             BindClassroomDropDown(incidentDateTime, programFK, childFK);
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitBehaviorIncident.ValidationGroup))
+            {
+                //Submit the form
+                SaveForm(false);
+
+                //Get the master page
+                MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                //Get the report
+                Reports.PreBuiltReports.FormReports.RptBIR report = new Reports.PreBuiltReports.FormReports.RptBIR();
+
+                //Display the report
+                masterPage.DisplayReport(currentProgramRole, report, "Behavior Incident Report", behaviorIncidentPK);
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
         }
 
         #endregion
@@ -378,8 +378,9 @@ namespace Pyramid.Pages
                                       {
                                           c.ChildPK,
                                           cp.ChildProgramPK,
-                                          IdAndName = "(" + cp.ProgramSpecificID + ") "
-                                            + c.FirstName + " " + c.LastName
+                                          IdAndName = (currentProgramRole.ViewPrivateChildInfo.Value ?
+                                                "(" + cp.ProgramSpecificID + ") " + c.FirstName + " " + c.LastName :
+                                                cp.ProgramSpecificID)
                                       };
                     ddChild.DataSource = allChildren.ToList();
                     ddChild.DataBind();
@@ -480,7 +481,7 @@ namespace Pyramid.Pages
             using (PyramidContext context = new PyramidContext())
             {
                 //Bind the child and classroom dropdowns
-                if (currentBehaviorIncident.BehaviorIncidentPK > 0)
+                if (isEdit)
                 {
                     //If this is an edit, use the program fk from the behavior incident's classroom to filter
                     BindChildDropDown(currentBehaviorIncident.IncidentDatetime, currentBehaviorIncident.Classroom.ProgramFK, currentBehaviorIncident.ChildFK);
@@ -556,6 +557,15 @@ namespace Pyramid.Pages
             txtNotes.ClientEnabled = enabled;
             lbEditChild.Visible = enabled;
             lbRefreshClassrooms.Visible = enabled;
+
+            //Show/hide the submit button
+            submitBehaviorIncident.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            submitBehaviorIncident.UseCancelConfirm = enabled && areConfirmationsEnabled;
         }
 
         /// <summary>
@@ -585,6 +595,94 @@ namespace Pyramid.Pages
             txtNotes.Value = bi.Notes;
         }
 
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message
+            string successMessageType = null;
+
+            //Determine if the user is allowed to save the form
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Fill the fields of the object from the form
+                currentBehaviorIncident.IncidentDatetime = Convert.ToDateTime(deIncidentDatetime.Value);
+                currentBehaviorIncident.BehaviorDescription = txtBehaviorDescription.Value.ToString();
+                currentBehaviorIncident.ProblemBehaviorCodeFK = Convert.ToInt32(ddProblemBehavior.Value);
+                currentBehaviorIncident.ProblemBehaviorSpecify = (txtProblemBehaviorSpecify.Value == null ? null : txtProblemBehaviorSpecify.Value.ToString());
+                currentBehaviorIncident.ActivityCodeFK = Convert.ToInt32(ddActivity.Value);
+                currentBehaviorIncident.ActivitySpecify = (txtActivitySpecify.Value == null ? null : txtActivitySpecify.Value.ToString());
+                currentBehaviorIncident.OthersInvolvedCodeFK = Convert.ToInt32(ddOthersInvolved.Value);
+                currentBehaviorIncident.OthersInvolvedSpecify = (txtOthersInvolvedSpecify.Value == null ? null : txtOthersInvolvedSpecify.Value.ToString());
+                currentBehaviorIncident.PossibleMotivationCodeFK = Convert.ToInt32(ddPossibleMotivation.Value);
+                currentBehaviorIncident.PossibleMotivationSpecify = (txtPossibleMotivationSpecify.Value == null ? null : txtPossibleMotivationSpecify.Value.ToString());
+                currentBehaviorIncident.StrategyResponseCodeFK = Convert.ToInt32(ddStrategyResponse.Value);
+                currentBehaviorIncident.StrategyResponseSpecify = (txtStrategyResponseSpecify.Value == null ? null : txtStrategyResponseSpecify.Value.ToString());
+                currentBehaviorIncident.AdminFollowUpCodeFK = Convert.ToInt32(ddAdminFollowUp.Value);
+                currentBehaviorIncident.AdminFollowUpSpecify = (txtAdminFollowUpSpecify.Value == null ? null : txtAdminFollowUpSpecify.Value.ToString());
+                currentBehaviorIncident.Notes = (txtNotes.Value == null ? null : txtNotes.Value.ToString());
+                currentBehaviorIncident.ChildFK = Convert.ToInt32(ddChild.Value);
+                currentBehaviorIncident.ClassroomFK = Convert.ToInt32(ddClassroom.Value);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //This is an edit
+                        successMessageType = "BehaviorIncidentEdited";
+
+                        //Fill the edit-specific fields
+                        currentBehaviorIncident.EditDate = DateTime.Now;
+                        currentBehaviorIncident.Editor = User.Identity.Name;
+
+                        //Get the existing database values
+                        Models.BehaviorIncident existingBehaviorIncident = context.BehaviorIncident.Find(currentBehaviorIncident.BehaviorIncidentPK);
+
+                        //Set the behavior incident object to the new values
+                        context.Entry(existingBehaviorIncident).CurrentValues.SetValues(currentBehaviorIncident);
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfBIRPK.Value = currentBehaviorIncident.BehaviorIncidentPK.ToString();
+                        behaviorIncidentPK = currentBehaviorIncident.BehaviorIncidentPK;
+                    }
+                }
+                else
+                {
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //This is an add
+                        successMessageType = "BehaviorIncidentAdded";
+
+                        //Set the create-specific fields
+                        currentBehaviorIncident.CreateDate = DateTime.Now;
+                        currentBehaviorIncident.Creator = User.Identity.Name;
+
+                        //Add the behavior incident to the database and save
+                        context.BehaviorIncident.Add(currentBehaviorIncident);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfBIRPK.Value = currentBehaviorIncident.BehaviorIncidentPK.ToString();
+                        behaviorIncidentPK = currentBehaviorIncident.BehaviorIncidentPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message
+            return successMessageType;
+        }
+
         #endregion
 
         #region Custom Validation
@@ -601,7 +699,7 @@ namespace Pyramid.Pages
             string problemBehaviorSpecify = (txtProblemBehaviorSpecify.Value == null ? null : txtProblemBehaviorSpecify.Value.ToString());
 
             //Perform validation
-            if (ddProblemBehavior.SelectedItem != null && ddProblemBehavior.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(problemBehaviorSpecify))
+            if (ddProblemBehavior.SelectedItem != null && ddProblemBehavior.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(problemBehaviorSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Problem Behavior is required when the 'Other' problem behavior is selected!";
@@ -624,7 +722,7 @@ namespace Pyramid.Pages
             string activitySpecify = (txtActivitySpecify.Value == null ? null : txtActivitySpecify.Value.ToString());
 
             //Perform validation
-            if (ddActivity.SelectedItem != null && ddActivity.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(activitySpecify))
+            if (ddActivity.SelectedItem != null && ddActivity.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(activitySpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Activity is required when the 'Other' activity is selected!";
@@ -647,7 +745,7 @@ namespace Pyramid.Pages
             string othersInvolvedSpecify = (txtOthersInvolvedSpecify.Value == null ? null : txtOthersInvolvedSpecify.Value.ToString());
 
             //Perform validation
-            if (ddOthersInvolved.SelectedItem != null && ddOthersInvolved.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(othersInvolvedSpecify))
+            if (ddOthersInvolved.SelectedItem != null && ddOthersInvolved.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(othersInvolvedSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Others Involved is required when the 'Other' others involved is selected!";
@@ -670,7 +768,7 @@ namespace Pyramid.Pages
             string possibleMotivationSpecify = (txtPossibleMotivationSpecify.Value == null ? null : txtPossibleMotivationSpecify.Value.ToString());
 
             //Perform validation
-            if (ddPossibleMotivation.SelectedItem != null && ddPossibleMotivation.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(possibleMotivationSpecify))
+            if (ddPossibleMotivation.SelectedItem != null && ddPossibleMotivation.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(possibleMotivationSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Possible Motivation is required when the 'Other' possible motivation is selected!";
@@ -693,7 +791,7 @@ namespace Pyramid.Pages
             string strategyResponseSpecify = (txtStrategyResponseSpecify.Value == null ? null : txtStrategyResponseSpecify.Value.ToString());
 
             //Perform validation
-            if (ddStrategyResponse.SelectedItem != null && ddStrategyResponse.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(strategyResponseSpecify))
+            if (ddStrategyResponse.SelectedItem != null && ddStrategyResponse.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(strategyResponseSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Strategy Response is required when the 'Other' strategy response is selected!";
@@ -716,7 +814,7 @@ namespace Pyramid.Pages
             string adminFollowUpSpecify = (txtAdminFollowUpSpecify.Value == null ? null : txtAdminFollowUpSpecify.Value.ToString());
 
             //Perform validation
-            if (ddAdminFollowUp.SelectedItem != null && ddAdminFollowUp.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(adminFollowUpSpecify))
+            if (ddAdminFollowUp.SelectedItem != null && ddAdminFollowUp.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(adminFollowUpSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Admin Follow-up is required when the 'Other' admin follow-up is selected!";

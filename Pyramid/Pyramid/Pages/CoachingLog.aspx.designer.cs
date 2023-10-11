@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Pages {
-    
-    
-    public partial class CoachingLog {
-        
+namespace Pyramid.Pages
+{
+
+
+    public partial class CoachingLog
+    {
+
         /// <summary>
         /// lblPageTitle control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPageTitle;
-        
+
         /// <summary>
         /// hfViewOnly control.
         /// </summary>
@@ -29,25 +31,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
-        
-        /// <summary>
-        /// upMessaging control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upMessaging;
-        
-        /// <summary>
-        /// msgSys control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
         /// <summary>
         /// upCoachingLog control.
         /// </summary>
@@ -56,7 +40,34 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upCoachingLog;
-        
+
+        /// <summary>
+        /// msgSys control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Pyramid.User_Controls.MessagingSystem msgSys;
+
+        /// <summary>
+        /// hfCoachingLogPK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfCoachingLogPK;
+
+        /// <summary>
+        /// btnPrintPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnPrintPreview;
+
         /// <summary>
         /// lblProgram control.
         /// </summary>
@@ -65,7 +76,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProgram;
-        
+
         /// <summary>
         /// deLogDate control.
         /// </summary>
@@ -74,7 +85,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deLogDate;
-        
+
         /// <summary>
         /// txtDurationMinutes control.
         /// </summary>
@@ -83,7 +94,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtDurationMinutes;
-        
+
         /// <summary>
         /// ddCoach control.
         /// </summary>
@@ -92,16 +103,16 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddCoach;
-        
+
         /// <summary>
-        /// ddTeacher control.
+        /// tbCoachees control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddTeacher;
-        
+        protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbCoachees;
+
         /// <summary>
         /// ddOBSObserving control.
         /// </summary>
@@ -110,7 +121,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSObserving;
-        
+
         /// <summary>
         /// ddOBSModeling control.
         /// </summary>
@@ -119,7 +130,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSModeling;
-        
+
         /// <summary>
         /// ddOBSVerbalSupport control.
         /// </summary>
@@ -128,7 +139,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSVerbalSupport;
-        
+
         /// <summary>
         /// ddOBSSideBySide control.
         /// </summary>
@@ -137,7 +148,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSSideBySide;
-        
+
         /// <summary>
         /// ddOBSProblemSolving control.
         /// </summary>
@@ -146,7 +157,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSProblemSolving;
-        
+
         /// <summary>
         /// ddOBSReflectiveConversation control.
         /// </summary>
@@ -155,7 +166,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSReflectiveConversation;
-        
+
         /// <summary>
         /// ddOBSEnvironment control.
         /// </summary>
@@ -164,7 +175,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSEnvironment;
-        
+
         /// <summary>
         /// ddOBSOtherHelp control.
         /// </summary>
@@ -173,7 +184,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSOtherHelp;
-        
+
         /// <summary>
         /// ddOBSConductTPOT control.
         /// </summary>
@@ -182,7 +193,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSConductTPOT;
-        
+
         /// <summary>
         /// ddOBSConductTPITOS control.
         /// </summary>
@@ -191,7 +202,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSConductTPITOS;
-        
+
         /// <summary>
         /// ddOBSOther control.
         /// </summary>
@@ -200,7 +211,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOBSOther;
-        
+
         /// <summary>
         /// txtOBSOtherSpecify control.
         /// </summary>
@@ -209,7 +220,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtOBSOtherSpecify;
-        
+
         /// <summary>
         /// ddMEETProblemSolving control.
         /// </summary>
@@ -218,7 +229,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETProblemSolving;
-        
+
         /// <summary>
         /// ddMEETReflectiveConversation control.
         /// </summary>
@@ -227,7 +238,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETReflectiveConversation;
-        
+
         /// <summary>
         /// ddMEETEnvironment control.
         /// </summary>
@@ -236,7 +247,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETEnvironment;
-        
+
         /// <summary>
         /// ddMEETRoleplay control.
         /// </summary>
@@ -245,7 +256,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETRoleplay;
-        
+
         /// <summary>
         /// ddMEETVideo control.
         /// </summary>
@@ -254,7 +265,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETVideo;
-        
+
         /// <summary>
         /// ddMEETGraphic control.
         /// </summary>
@@ -263,7 +274,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETGraphic;
-        
+
         /// <summary>
         /// ddMEETGoalSetting control.
         /// </summary>
@@ -272,7 +283,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETGoalSetting;
-        
+
         /// <summary>
         /// ddMEETPerformance control.
         /// </summary>
@@ -281,7 +292,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETPerformance;
-        
+
         /// <summary>
         /// ddMEETMaterial control.
         /// </summary>
@@ -290,7 +301,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETMaterial;
-        
+
         /// <summary>
         /// ddMEETDemonstration control.
         /// </summary>
@@ -299,7 +310,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETDemonstration;
-        
+
         /// <summary>
         /// ddMEETOther control.
         /// </summary>
@@ -308,7 +319,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddMEETOther;
-        
+
         /// <summary>
         /// txtMEETOtherSpecify control.
         /// </summary>
@@ -317,7 +328,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtMEETOtherSpecify;
-        
+
         /// <summary>
         /// ddFUEmail control.
         /// </summary>
@@ -326,7 +337,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddFUEmail;
-        
+
         /// <summary>
         /// ddFUPhone control.
         /// </summary>
@@ -335,7 +346,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddFUPhone;
-        
+
         /// <summary>
         /// ddFUInPerson control.
         /// </summary>
@@ -344,7 +355,16 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddFUInPerson;
-        
+
+        /// <summary>
+        /// txtNarrative control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapMemo txtNarrative;
+
         /// <summary>
         /// submitCoachingLog control.
         /// </summary>

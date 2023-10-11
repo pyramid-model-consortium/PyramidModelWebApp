@@ -7,20 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Pages {
-    
-    
-    public partial class BOQFCCDashboard {
-        
+namespace Pyramid.Pages
+{
+
+
+    public partial class BOQFCCDashboard
+    {
+
         /// <summary>
-        /// hfViewOnly control.
+        /// hfBOQViewOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
-        
+        protected global::System.Web.UI.WebControls.HiddenField hfBOQViewOnly;
+
+        /// <summary>
+        /// hfScheduleViewOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfScheduleViewOnly;
+
         /// <summary>
         /// upDashboardMessaging control.
         /// </summary>
@@ -29,7 +40,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upDashboardMessaging;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -38,7 +49,16 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
+        /// <summary>
+        /// divBOQs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBOQs;
+
         /// <summary>
         /// hfDeleteBOQFCCPK control.
         /// </summary>
@@ -47,7 +67,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfDeleteBOQFCCPK;
-        
+
         /// <summary>
         /// upAllBOQFCC control.
         /// </summary>
@@ -56,7 +76,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upAllBOQFCC;
-        
+
         /// <summary>
         /// bsGRBOQFCCs control.
         /// </summary>
@@ -65,7 +85,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView bsGRBOQFCCs;
-        
+
         /// <summary>
         /// efBOQFCCDataSource control.
         /// </summary>
@@ -74,7 +94,223 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Data.Linq.EntityServerModeDataSource efBOQFCCDataSource;
-        
+
+        /// <summary>
+        /// divFormSchedules control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFormSchedules;
+
+        /// <summary>
+        /// hfDeleteFormSchedulePK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfDeleteFormSchedulePK;
+
+        /// <summary>
+        /// upFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upFormSchedule;
+
+        /// <summary>
+        /// lbAddFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbAddFormSchedule;
+
+        /// <summary>
+        /// bsGRFormSchedules control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView bsGRFormSchedules;
+
+        /// <summary>
+        /// efFormScheduleDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Data.Linq.EntityServerModeDataSource efFormScheduleDataSource;
+
+        /// <summary>
+        /// divAddEditFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAddEditFormSchedule;
+
+        /// <summary>
+        /// lblAddEditFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAddEditFormSchedule;
+
+        /// <summary>
+        /// ddFSProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddFSProgram;
+
+        /// <summary>
+        /// deFSYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deFSYear;
+
+        /// <summary>
+        /// chkFSScheduledForJan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForJan;
+
+        /// <summary>
+        /// chkFSScheduledForFeb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForFeb;
+
+        /// <summary>
+        /// chkFSScheduledForMar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForMar;
+
+        /// <summary>
+        /// chkFSScheduledForApr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForApr;
+
+        /// <summary>
+        /// chkFSScheduledForMay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForMay;
+
+        /// <summary>
+        /// chkFSScheduledForJun control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForJun;
+
+        /// <summary>
+        /// chkFSScheduledForJul control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForJul;
+
+        /// <summary>
+        /// chkFSScheduledForAug control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForAug;
+
+        /// <summary>
+        /// chkFSScheduledForSep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForSep;
+
+        /// <summary>
+        /// chkFSScheduledForOct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForOct;
+
+        /// <summary>
+        /// chkFSScheduledForNov control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForNov;
+
+        /// <summary>
+        /// chkFSScheduledForDec control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapCheckBox chkFSScheduledForDec;
+
+        /// <summary>
+        /// hfAddEditFormSchedulePK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfAddEditFormSchedulePK;
+
+        /// <summary>
+        /// submitFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Pyramid.User_Controls.Submit submitFormSchedule;
+
         /// <summary>
         /// lbDeleteBOQFCC control.
         /// </summary>
@@ -83,5 +319,14 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbDeleteBOQFCC;
+
+        /// <summary>
+        /// lbDeleteFormSchedule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbDeleteFormSchedule;
     }
 }

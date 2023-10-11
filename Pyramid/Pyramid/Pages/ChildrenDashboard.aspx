@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="Children Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="ChildrenDashboard.aspx.cs" Inherits="Pyramid.Pages.ChildrenDashboard" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -26,6 +26,17 @@
             //Show/hide the view only fields
             setViewOnlyVisibility();
         }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
@@ -44,7 +55,8 @@
             <div class="card bg-light">
                 <div class="card-header">
                     Children
-                    <a href="/Pages/Child.aspx?ChildProgramPK=0&Action=Add" class="btn btn-loader btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Child</a>
+                    <a href="/Pages/Child.aspx?ChildProgramPK=0&Action=Add" class="btn btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Child</a>
+                    <a href="/FileImport/ImportRecords.aspx?ImportRecordType=CHILD&ReturnUrl=/Pages/ChildrenDashboard.aspx" class="btn btn-loader btn-primary mr-2 float-right hide-on-view hidden"><i class="fas fa-file-upload"></i>&nbsp;Upload Rosters</a>
                 </div>
                 <div class="card-body">
                     <asp:UpdatePanel ID="upAllChildren" runat="server" UpdateMode="Conditional">
@@ -63,16 +75,11 @@
                                 <CssClasses IconHeaderSortUp="fas fa-long-arrow-alt-up" IconHeaderSortDown="fas fa-long-arrow-alt-down" IconShowAdaptiveDetailButton="fas fa-plus-circle" />
                                 <SettingsAdaptivity AdaptivityMode="HideDataCells" AllowOnlyOneAdaptiveDetailExpanded="true" AdaptiveColumnPosition="Left"></SettingsAdaptivity>
                                 <Columns>
-                                    <dx:BootstrapGridViewDataColumn FieldName="ProgramSpecificID" Caption="ID" Width="10%" AdaptivePriority="0" />
-                                    <dx:BootstrapGridViewDataColumn FieldName="Name" Caption="Name" SortIndex="0" SortOrder="Ascending" AdaptivePriority="0" />
-                                    <dx:BootstrapGridViewDateColumn FieldName="BirthDate" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="2" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="ProgramSpecificID" Caption="ID" SortIndex="1" SortOrder="Ascending" Width="10%" AdaptivePriority="0" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="Name" Caption="Name" AdaptivePriority="2" />
+                                    <dx:BootstrapGridViewDateColumn Name="BirthDateColumn" FieldName="BirthDate" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="2" />
                                     <dx:BootstrapGridViewDateColumn FieldName="EnrollmentDate" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="3" />
-                                    <dx:BootstrapGridViewDateColumn FieldName="DischargeDate" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="4" />
-                                    <dx:BootstrapGridViewDataColumn FieldName="DischargeReason" Caption="Discharge Reason" AdaptivePriority="8">
-                                        <DataItemTemplate>
-                                            <%# Eval("DischargeReason") + (Eval("DischargeReasonSpecify") == null ? "" : " (" + Eval("DischargeReasonSpecify") + ")") %>
-                                        </DataItemTemplate>
-                                    </dx:BootstrapGridViewDataColumn>
+                                    <dx:BootstrapGridViewDateColumn FieldName="DischargeDate" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" SortIndex="0" SortOrder="Ascending" AdaptivePriority="4" />
                                     <dx:BootstrapGridViewDataColumn FieldName="HasIEP" Caption="IEP?" AdaptivePriority="6">
                                         <DataItemTemplate>
                                             <%# (Convert.ToBoolean(Eval("HasIEP")) ? "Yes" : "No") %>
@@ -84,6 +91,7 @@
                                         </DataItemTemplate>
                                     </dx:BootstrapGridViewDataColumn>
                                     <dx:BootstrapGridViewDataColumn FieldName="ProgramName" Caption="Program" AdaptivePriority="5" />
+                                    <dx:BootstrapGridViewDataColumn Name="StateNameColumn" FieldName="StateName" Caption="State" AdaptivePriority="6" />
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">

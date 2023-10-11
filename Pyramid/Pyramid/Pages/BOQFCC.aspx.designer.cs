@@ -31,13 +31,13 @@ namespace Pyramid.Pages {
         protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
         
         /// <summary>
-        /// upMessaging control.
+        /// upBOQFCC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upMessaging;
+        protected global::System.Web.UI.UpdatePanel upBOQFCC;
         
         /// <summary>
         /// msgSys control.
@@ -47,6 +47,24 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
+        
+        /// <summary>
+        /// hfBOQFCCPK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfBOQFCCPK;
+        
+        /// <summary>
+        /// btnPrintPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnPrintPreview;
         
         /// <summary>
         /// deFormDate control.

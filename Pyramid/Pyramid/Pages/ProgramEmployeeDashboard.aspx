@@ -1,8 +1,8 @@
-﻿<%@ Page Title="Employee Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="ProgramEmployeeDashboard.aspx.cs" Inherits="Pyramid.Pages.ProgramEmployeeDashboard" %>
+﻿<%@ Page Title="Pyramid Model Professional Dashboard" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="ProgramEmployeeDashboard.aspx.cs" Inherits="Pyramid.Pages.ProgramEmployeeDashboard" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -26,6 +26,17 @@
             //Show/hide the view only fields
             setViewOnlyVisibility();
         }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
@@ -43,15 +54,16 @@
         <div class="col-lg-12 col-xl-12">
             <div class="card bg-light">
                 <div class="card-header">
-                    Employees
-                    <a href="/Pages/ProgramEmployee.aspx?EmployeePK=0&Action=Add" class="btn btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Employee</a>
+                    Pyramid Model Professionals
+                    <a href="/Pages/ProgramEmployee.aspx?EmployeePK=0&Action=Add" class="btn btn-loader btn-primary float-right hide-on-view hidden"><i class="fas fa-plus"></i>&nbsp;Add New Professional</a>
+                    <a href="/FileImport/ImportRecords.aspx?ImportRecordType=PE&ReturnUrl=/Pages/ProgramEmployeeDashboard.aspx" class="btn btn-loader btn-primary mr-2 float-right hide-on-view hidden"><i class="fas fa-file-upload"></i>&nbsp;Upload Rosters</a>
                 </div>
                 <div class="card-body">
                     <asp:UpdatePanel ID="upAllEmployees" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <label>All Employees</label>
+                            <label>All Professionals</label>
                             <div class="alert alert-primary">
-                                This table contains all employees, regardless of their employment status.
+                                This table contains all professionals, regardless of their employment status.
                             </div>
                             <dx:BootstrapGridView ID="bsGREmployees" runat="server" EnableCallBacks="false" EnableRowsCache="true" 
                                 KeyFieldName="ProgramEmployeePK" AutoGenerateColumns="false" DataSourceID="efEmployeeDataSource">
@@ -63,18 +75,20 @@
                                 <CssClasses IconHeaderSortUp="fas fa-long-arrow-alt-up" IconHeaderSortDown="fas fa-long-arrow-alt-down" IconShowAdaptiveDetailButton="fas fa-plus-circle" />
                                 <SettingsAdaptivity AdaptivityMode="HideDataCells" AllowOnlyOneAdaptiveDetailExpanded="true" AdaptiveColumnPosition="Left"></SettingsAdaptivity>
                                 <Columns>
-                                    <dx:BootstrapGridViewDataColumn FieldName="Name" Caption="Name" SortIndex="0" SortOrder="Ascending" AdaptivePriority="0" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="ProgramSpecificID" SortIndex="1" SortOrder="Ascending" Caption="ID" AdaptivePriority="0" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="Name" Caption="Name" AdaptivePriority="1" />
                                     <dx:BootstrapGridViewDataColumn FieldName="JobFunctions" Caption="Job Function(s)" AdaptivePriority="3" Settings-AllowFilterBySearchPanel="False" Settings-AllowSort="False">
                                         <DataItemTemplate>
                                             <%# string.Join(", ", (IEnumerable<string>)Eval("JobFunctions")) %>
                                         </DataItemTemplate>
                                     </dx:BootstrapGridViewDataColumn>
-                                    <dx:BootstrapGridViewDateColumn FieldName="HireDate" Caption="Hire Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="2" />
-                                    <dx:BootstrapGridViewDateColumn FieldName="TermDate" Caption="Termination Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="4" />
-                                        <dx:BootstrapGridViewDataColumn FieldName="EmailAddress" Caption="Email" AdaptivePriority="5"
-                                            CssClasses-DataCell="hidden" CssClasses-FilterCell="hidden" CssClasses-FooterCell="hidden" 
-                                            CssClasses-EditCell="hidden" CssClasses-HeaderCell="hidden" CssClasses-GroupFooterCell="hidden" />
+                                    <dx:BootstrapGridViewDateColumn FieldName="HireDate" Caption="Start Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="2" />
+                                    <dx:BootstrapGridViewDateColumn FieldName="TermDate" Caption="Separation Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" SortIndex="0" SortOrder="Ascending" AdaptivePriority="4" />
+                                    <dx:BootstrapGridViewDataColumn FieldName="EmailAddress" Caption="Email" AdaptivePriority="5"
+                                        CssClasses-DataCell="hidden" CssClasses-FilterCell="hidden" CssClasses-FooterCell="hidden" 
+                                        CssClasses-EditCell="hidden" CssClasses-HeaderCell="hidden" CssClasses-GroupFooterCell="hidden" />
                                     <dx:BootstrapGridViewDataColumn FieldName="ProgramName" Caption="Program" AdaptivePriority="4" />
+                                    <dx:BootstrapGridViewDataColumn Name="StateNameColumn" FieldName="StateName" Caption="State" AdaptivePriority="5" />
                                     <dx:BootstrapGridViewButtonEditColumn Settings-AllowDragDrop="False" AdaptivePriority="1" CssClasses-DataCell="text-center">
                                         <DataItemTemplate>
                                             <div class="btn-group">
@@ -106,11 +120,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee</h4>
+                    <h4 class="modal-title">Delete Professional</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this employee, their training history, their job function history, and their classroom assignment history?
+                    Are you sure you want to delete this professional, their training history, their job function history, and their classroom assignment history?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i>&nbsp;No</button>

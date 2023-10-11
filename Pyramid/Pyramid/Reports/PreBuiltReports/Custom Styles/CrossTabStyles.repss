@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StyleSheetSerializer SerializerVersion="20.1.3.0" FileName="">
+  <Styles>
+    <Item1 Name="crossTabGeneralStyle1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Name="crossTabHeaderStyle1" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item3 Name="crossTabDataStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item4 Name="crossTabTotalStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item5 Name="CrossTabTotalStyle" BorderStyle="Inset" Font="Arial, 9.75pt, style=Bold, Italic, charSet=0" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item6 Name="CrossTabHeaderStyle" BorderStyle="Inset" Font="Arial, 9pt, style=Bold, charSet=0" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+  </Styles>
+</StyleSheetSerializer>

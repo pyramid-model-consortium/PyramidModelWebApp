@@ -7,20 +7,48 @@ using System.Data.Entity;
 using Pyramid.MasterPages;
 using System.Collections.Generic;
 using DevExpress.Web.Bootstrap;
+using DevExpress.Web;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 
 namespace Pyramid.Pages
 {
-    public partial class TPITOS : System.Web.UI.Page
+    public partial class TPITOS : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "TPITOS";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions
+        {
+            get
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.TPITOS currentTPITOS;
         private int currentTPITOSPK = 0;
         private int currentProgramFK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
 
             //Get the TPITOS PK from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["TPITOSPK"]))
@@ -28,8 +56,17 @@ namespace Pyramid.Pages
                 int.TryParse(Request.QueryString["TPITOSPK"], out currentTPITOSPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (currentTPITOSPK == 0 && !string.IsNullOrWhiteSpace(hfTPITOSPK.Value))
+            {
+                int.TryParse(hfTPITOSPK.Value, out currentTPITOSPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = currentTPITOSPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if (FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/TPITOSDashboard.aspx?messageType=NotAuthorized");
             }
@@ -61,16 +98,13 @@ namespace Pyramid.Pages
             }
 
             //Prevent users from viewing TPITOSs from other programs
-            if (currentTPITOS.TPITOSPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentTPITOS.Classroom.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentTPITOS.Classroom.ProgramFK))
             {
                 Response.Redirect(string.Format("/Pages/TPITOSDashboard.aspx?messageType={0}", "NOTPITOS"));
             }
 
             //Get the proper program fk
-            currentProgramFK = (currentTPITOS.TPITOSPK > 0 ? currentTPITOS.Classroom.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
-
-            //Set the max value for the observation date
-            deObservationDate.MaxDate = DateTime.Now;
+            currentProgramFK = (isEdit ? currentTPITOS.Classroom.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
 
             if (!IsPostBack)
             {
@@ -93,27 +127,31 @@ namespace Pyramid.Pages
                     }
                 }
 
-                //Show certain divs based on whether this is an add or edit
-                if (currentTPITOSPK > 0)
+                //Bind the data bound controls
+                BindDataBoundControls();
+
+                //Check to see if this is an edit
+                if (isEdit)
                 {
+                    //This is an edit
+                    //Populate the page
+                    PopulatePage(currentTPITOS);
+
+                    //Show the print preview button
+                    btnPrintPreview.Visible = true;
+
+                    //Hide the add only message and show the edit only div
                     divAddOnlyMessage.Visible = false;
                     divEditOnly.Visible = true;
                 }
                 else
                 {
+                    //Hide the print preview button
+                    btnPrintPreview.Visible = false;
+
+                    //Show the add only message and hide the edit only div
                     divAddOnlyMessage.Visible = true;
                     divEditOnly.Visible = false;
-                }
-
-                //Bind the data bound controls
-                BindDataBoundControls();
-
-                //Check to see if this is an edit
-                if (currentTPITOSPK > 0)
-                {
-                    //This is an edit
-                    //Populate the page
-                    PopulatePage(currentTPITOS);
                 }
 
                 //Get the action from the query string
@@ -128,48 +166,51 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentTPITOS.TPITOSPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitTPITOS.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New TPITOS Observation";
                 }
-                else if (currentTPITOS.TPITOSPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitTPITOS.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit TPITOS Observation";
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitTPITOS.ShowSubmitButton = false;
-
                     //Hide certain controls
                     hfViewOnly.Value = "True";
 
                     //Disable page controls
                     EnableControls(false);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
+
                     //Set the page title
                     lblPageTitle.Text = "View TPITOS Observation";
                 }
+
+                //Set the max date for the observation date field
+                deObservationDate.MaxDate = DateTime.Now;
 
                 //Set focus on the observation date field
                 deObservationDate.Focus();
@@ -186,150 +227,24 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitTPITOS_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //To hold the success message type
+            string successMessageType = SaveForm(true);
+
+            //Only allow redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-
-                //To hold the success message type
-                string successMessageType = null;
-
-                //Fill the TPITOS fields from the observation
-                //Calculate the start and end datetimes
-                DateTime startDateTime = Convert.ToDateTime(deObservationDate.Value);
-                DateTime endDateTime = Convert.ToDateTime(deObservationDate.Value);
-                DateTime startTime = Convert.ToDateTime(teObservationStartTime.Value);
-                DateTime endTime = Convert.ToDateTime(teObservationEndTime.Value);
-                startDateTime = startDateTime.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
-                endDateTime = endDateTime.AddHours(endTime.Hour).AddMinutes(endTime.Minute);
-
-                //Basic information
-                currentTPITOS.ObservationStartDateTime = startDateTime;
-                currentTPITOS.ObservationEndDateTime = endDateTime;
-                currentTPITOS.ClassroomFK = Convert.ToInt32(ddClassroom.Value);
-                currentTPITOS.ObserverFK = Convert.ToInt32(ddObserver.Value);
-                currentTPITOS.NumAdultsBegin = Convert.ToInt32(txtAdultsBegin.Value);
-                currentTPITOS.NumAdultsEnd = Convert.ToInt32(txtAdultsEnd.Value);
-                currentTPITOS.NumAdultsEntered = Convert.ToInt32(txtAdultsEntered.Value);
-                currentTPITOS.NumKidsBegin = Convert.ToInt32(txtChildrenBegin.Value);
-                currentTPITOS.NumKidsEnd = Convert.ToInt32(txtChildrenEnd.Value);
-                currentTPITOS.Notes = (txtNotes.Value == null ? null : txtNotes.Value.ToString());
-
-                //Key practices
-                currentTPITOS.Item1NumYes = (txtItem1NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem1NumYes.Value));
-                currentTPITOS.Item1NumNo = (txtItem1NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem1NumNo.Value));
-                currentTPITOS.Item2NumYes = (txtItem2NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem2NumYes.Value));
-                currentTPITOS.Item2NumNo = (txtItem2NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem2NumNo.Value));
-                currentTPITOS.Item3NumYes = (txtItem3NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem3NumYes.Value));
-                currentTPITOS.Item3NumNo = (txtItem3NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem3NumNo.Value));
-                currentTPITOS.Item4NumYes = (txtItem4NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem4NumYes.Value));
-                currentTPITOS.Item4NumNo = (txtItem4NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem4NumNo.Value));
-                currentTPITOS.Item5NumYes = (txtItem5NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem5NumYes.Value));
-                currentTPITOS.Item5NumNo = (txtItem5NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem5NumNo.Value));
-                currentTPITOS.Item6NumYes = (txtItem6NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem6NumYes.Value));
-                currentTPITOS.Item6NumNo = (txtItem6NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem6NumNo.Value));
-                currentTPITOS.Item7NumYes = (txtItem7NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem7NumYes.Value));
-                currentTPITOS.Item7NumNo = (txtItem7NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem7NumNo.Value));
-                currentTPITOS.Item8NumYes = (txtItem8NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem8NumYes.Value));
-                currentTPITOS.Item8NumNo = (txtItem8NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem8NumNo.Value));
-                currentTPITOS.Item9NumYes = (txtItem9NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem9NumYes.Value));
-                currentTPITOS.Item9NumNo = (txtItem9NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem9NumNo.Value));
-                currentTPITOS.Item10NumYes = (txtItem10NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem10NumYes.Value));
-                currentTPITOS.Item10NumNo = (txtItem10NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem10NumNo.Value));
-                currentTPITOS.Item11NumYes = (txtItem11NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem11NumYes.Value));
-                currentTPITOS.Item11NumNo = (txtItem11NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem11NumNo.Value));
-                currentTPITOS.Item12NumYes = (txtItem12NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem12NumYes.Value));
-                currentTPITOS.Item12NumNo = (txtItem12NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem12NumNo.Value));
-                currentTPITOS.Item13NumYes = (txtItem13NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem13NumYes.Value));
-                currentTPITOS.Item13NumNo = (txtItem13NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem13NumNo.Value));
-
-                //Red flags
-                currentTPITOS.LeadTeacherRedFlagsNumYes = (txtLeadTeacherRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtLeadTeacherRedFlagsYes.Value));
-                currentTPITOS.LeadTeacherRedFlagsNumPossible = (txtLeadTeacherRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtLeadTeacherRedFlagsPossible.Value));
-                currentTPITOS.OtherTeacherRedFlagsNumYes = (txtOtherTeacherRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtOtherTeacherRedFlagsYes.Value));
-                currentTPITOS.OtherTeacherRedFlagsNumPossible = (txtOtherTeacherRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtOtherTeacherRedFlagsPossible.Value));
-                currentTPITOS.ClassroomRedFlagsNumYes = (txtClassroomRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtClassroomRedFlagsYes.Value));
-                currentTPITOS.ClassroomRedFlagsNumPossible = (txtClassroomRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtClassroomRedFlagsPossible.Value));
-
-                if (currentTPITOSPK > 0)
+                //Redirect differently if add or edit
+                if (isEdit)
                 {
-                    if (repeatParticipants.Items.Count > 0)
-                    {
-                        //This is an edit
-                        using (PyramidContext context = new PyramidContext())
-                        {
-                            //Set the success message
-                            successMessageType = "TPITOSEdited";
-
-                            //Set the edit-only fields
-                            currentTPITOS.Editor = User.Identity.Name;
-                            currentTPITOS.EditDate = DateTime.Now;
-
-                            //Clear the red flag type rows
-                            var currentRedFlags = context.TPITOSRedFlags.Where(trf => trf.TPITOSFK == currentTPITOSPK).ToList();
-                            context.TPITOSRedFlags.RemoveRange(currentRedFlags);
-
-                            //Save the red flag types
-                            foreach (BootstrapListEditItem item in lstBxRedFlags.Items)
-                            {
-                                if (item.Selected)
-                                {
-                                    TPITOSRedFlags newRedFlag = new TPITOSRedFlags();
-                                    newRedFlag.CreateDate = DateTime.Now;
-                                    newRedFlag.Creator = User.Identity.Name;
-                                    newRedFlag.RedFlagCodeFK = Convert.ToInt32(item.Value);
-                                    newRedFlag.TPITOSFK = currentTPITOSPK;
-                                    context.TPITOSRedFlags.Add(newRedFlag);
-                                }
-                            }
-
-                            //Set isValid to true because validation passed on the complete form
-                            currentTPITOS.IsValid = true;
-
-                            //Get the existing TPITOS record
-                            Models.TPITOS existingASQ = context.TPITOS.Find(currentTPITOS.TPITOSPK);
-
-                            //Overwrite the existing TPITOS record with the values from the observation
-                            context.Entry(existingASQ).CurrentValues.SetValues(currentTPITOS);
-                            context.SaveChanges();
-                        }
-
-                        //Redirect the user to the TPITOS dashboard
-                        Response.Redirect(string.Format("/Pages/TPITOSDashboard.aspx?messageType={0}", successMessageType));
-                    }
-                    else
-                    {
-                        //Tell the user that validation failed
-                        msgSys.ShowMessageToUser("danger", "TPITOS Participants Required!", "You must add at least one TPITOS participant!", 22000);
-                        msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
-                    }
+                    //Redirect the user to the TPITOS dashboard
+                    Response.Redirect(string.Format("/Pages/TPITOSDashboard.aspx?messageType={0}", successMessageType));
                 }
                 else
                 {
-                    //This is an add
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the success message
-                        successMessageType = "TPITOSAdded";
-
-                        //Set the create-only fields
-                        currentTPITOS.Creator = User.Identity.Name;
-                        currentTPITOS.CreateDate = DateTime.Now;
-
-                        //Set isValid to false because validation may not have passed on the complete form
-                        currentTPITOS.IsValid = false;
-
-                        //Add the TPITOS to the database
-                        context.TPITOS.Add(currentTPITOS);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the  this page
+                    //Redirect the user back to this page with a message and the PK
                     Response.Redirect(string.Format("/Pages/TPITOS.aspx?TPITOSPK={0}&Action=Edit&messageType={1}",
-                                                        currentTPITOS.TPITOSPK.ToString(), successMessageType));
+                                                        currentTPITOSPK, successMessageType));
                 }
-            }
-            else
-            {
-                msgSys.ShowMessageToUser("danger", "Unauthorized!", "You are not authorized to make changes!", 22000);
             }
         }
 
@@ -354,6 +269,18 @@ namespace Pyramid.Pages
         {
             //Tell the user that validation failed
             msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Print the form
+            PrintForm();
         }
 
         /// <summary>
@@ -393,11 +320,11 @@ namespace Pyramid.Pages
             //Get the specific repeater item
             RepeaterItem item = (RepeaterItem)editButton.Parent;
 
-            //Get the hidden field with the PK for editing
-            HiddenField hfParticipantPK = (HiddenField)item.FindControl("hfTPITOSParticipantPK");
+            //Get the label with the PK for editing
+            Label lblParticipantPK = (Label)item.FindControl("lblTPITOSParticipantPK");
 
-            //Get the PK from the hidden field
-            int? participantPK = (String.IsNullOrWhiteSpace(hfParticipantPK.Value) ? (int?)null : Convert.ToInt32(hfParticipantPK.Value));
+            //Get the PK from the label
+            int? participantPK = (String.IsNullOrWhiteSpace(lblParticipantPK.Text) ? (int?)null : Convert.ToInt32(lblParticipantPK.Text));
 
             if (participantPK.HasValue)
             {
@@ -433,7 +360,8 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitParticipant_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Check to see if the user is allowed to edit the TPITOS
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the participant pk
                 int participantPK = Convert.ToInt32(hfAddEditParticipantPK.Value);
@@ -498,28 +426,74 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void lbDeleteTPITOSParticipant_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Check to see if the user is allowed to edit the TPITOS
+            if (FormPermissions.AllowedToEdit)
             {
                 //Get the PK from the hidden field
                 int? rowToRemovePK = (String.IsNullOrWhiteSpace(hfDeleteTPITOSParticipantPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteTPITOSParticipantPK.Value));
 
                 //Remove the role if the PK is not null
-                if (rowToRemovePK != null)
+                if (rowToRemovePK.HasValue)
                 {
-                    using (PyramidContext context = new PyramidContext())
+                    try
                     {
-                        //Get the participant to remove
-                        TPITOSParticipant participantToRemove = context.TPITOSParticipant.Where(cn => cn.TPITOSParticipantPK == rowToRemovePK).FirstOrDefault();
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the participant to remove
+                            TPITOSParticipant participantToRemove = context.TPITOSParticipant.Where(cn => cn.TPITOSParticipantPK == rowToRemovePK).FirstOrDefault();
 
-                        //Remove the participant
-                        context.TPITOSParticipant.Remove(participantToRemove);
-                        context.SaveChanges();
+                            //Remove the participant
+                            context.TPITOSParticipant.Remove(participantToRemove);
 
-                        //Rebind the participant repeater
-                        BindParticipants();
+                            //Save the deletion to the database
+                            context.SaveChanges();
 
-                        //Show a success message
-                        msgSys.ShowMessageToUser("success", "Success", "Successfully deleted TPITOS participant!", 10000);
+                            //Get the delete change row and set the deleter
+                            context.TPITOSParticipantChanged
+                                    .OrderByDescending(tpc => tpc.TPITOSParticipantChangedPK)
+                                    .Where(tpc => tpc.TPITOSParticipantPK == participantToRemove.TPITOSParticipantPK)
+                                    .FirstOrDefault().Deleter = User.Identity.Name;
+
+                            //Save the delete change row to the database
+                            context.SaveChanges();
+
+                            //Rebind the participant repeater
+                            BindParticipants();
+
+                            //Show a success message
+                            msgSys.ShowMessageToUser("success", "Success", "Successfully deleted TPITOS participant!", 10000);
+                        }
+                    }
+                    catch (DbUpdateException dbUpdateEx)
+                    {
+                        //Check if it is a foreign key error
+                        if (dbUpdateEx.InnerException?.InnerException is SqlException)
+                        {
+                            //If it is a foreign key error, display a custom message
+                            SqlException sqlEx = (SqlException)dbUpdateEx.InnerException.InnerException;
+                            if (sqlEx.Number == 547)
+                            {
+                                //Get the SQL error message
+                                string errorMessage = sqlEx.Message.ToLower();
+
+                                //Create the message for the user based on the error message
+                                string messageForUser = "there are related records in the system!<br/><br/>If you do not know what related records exist, please contact tech support via ticket.";
+
+                                //Show the error message
+                                msgSys.ShowMessageToUser("danger", "Error", string.Format("Could not delete the TPITOS participant, {0}", messageForUser), 120000);
+                            }
+                            else
+                            {
+                                msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the TPITOS participant!", 120000);
+                            }
+                        }
+                        else
+                        {
+                            msgSys.ShowMessageToUser("danger", "Error", "An error occurred while deleting the TPITOS participant!", 120000);
+                        }
+
+                        //Log the error
+                        Elmah.ErrorSignal.FromCurrentContext().Raise(dbUpdateEx);
                     }
                 }
                 else
@@ -576,6 +550,9 @@ namespace Pyramid.Pages
             //Bind the observer dropdown
             BindObserverDropDown(observationDate, currentProgramFK, observerFK);
             BindParticipantDropDown(observationDate, currentProgramFK, observerFK);
+
+            //Set focus to the observation date
+            deObservationDate.Focus();
         }
 
         #endregion
@@ -612,13 +589,18 @@ namespace Pyramid.Pages
                 //Bind the red flag list box
                 var allTPITOSRedFlags = context.CodeTPITOSRedFlag.AsNoTracking()
                                             .OrderBy(ctrf => ctrf.OrderBy)
+                                            .Select(ctrf => new
+                                            {
+                                                ctrf.CodeTPITOSRedFlagPK,
+                                                Description = string.Concat("(", ctrf.TypeAbbreviation, ") ", ctrf.Description) 
+                                            })
                                             .ToList();
                 lstBxRedFlags.DataSource = allTPITOSRedFlags;
                 lstBxRedFlags.DataBind();
             }
 
             //Bind other controls based on the pk
-            if (currentTPITOS.TPITOSPK > 0)
+            if (isEdit)
             {
                 //This is an edit
                 //Bind the observer and participant dropdown
@@ -650,8 +632,12 @@ namespace Pyramid.Pages
                 using (PyramidContext context = new PyramidContext())
                 {
                     //Get all the observers in the program that were active as of the observation date
-                    string observerTypes = (((int)Utilities.TrainingFKs.TPITOS_OBSERVER).ToString() + ",");
-                    var allObservers = context.spGetAllObservers(programFK, observationDate, observerTypes).ToList();
+                    string observerTrainings = (((int)Utilities.TrainingFKs.TPITOS_OBSERVER).ToString() + ",");
+                    var allObservers = context.spGetAllObservers(programFK, observationDate, observerTrainings).Select(ob => new {
+                        ob.ProgramEmployeePK,
+                        ob.ObserverID,
+                        ObserverName = (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + ob.ObserverID + ") " + ob.ObserverName : ob.ObserverID)
+                    }).ToList();
 
                     //Bind the observer dropdown to the list of observer
                     ddObserver.DataSource = allObservers.ToList();
@@ -695,9 +681,11 @@ namespace Pyramid.Pages
                 using (PyramidContext context = new PyramidContext())
                 {
                     //Get all the participants in the program that were active as of the log date
-                    var allParticipants = (from pe in context.ProgramEmployee.AsNoTracking()
+                    var allParticipants = (from pe in context.ProgramEmployee
+                                                    .Include(pe => pe.Employee)
                                                     .Include(pe => pe.JobFunction)
-                                          join jf in context.JobFunction on pe.ProgramEmployeePK equals jf.ProgramEmployeeFK
+                                                    .AsNoTracking()
+                                           join jf in context.JobFunction.AsNoTracking() on pe.ProgramEmployeePK equals jf.ProgramEmployeeFK
                                           where pe.ProgramFK == programFK
                                             && pe.ProgramEmployeePK != observerFK.Value
                                             && pe.HireDate <= observationDate.Value
@@ -708,7 +696,8 @@ namespace Pyramid.Pages
                                           select new
                                           {
                                               pe.ProgramEmployeePK,
-                                              ParticipantName = pe.FirstName + " " + pe.LastName
+                                              pe.ProgramSpecificID,
+                                              ParticipantName = (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + pe.ProgramSpecificID + ") " + pe.Employee.FirstName + " " + pe.Employee.LastName : pe.ProgramSpecificID)
                                           }).Distinct();
 
                     //Bind the participant list box to the list of participants
@@ -746,9 +735,20 @@ namespace Pyramid.Pages
                 //Bind the repeater
                 var allTPITOSParticipants = context.TPITOSParticipant.AsNoTracking()
                                             .Include(tp => tp.ProgramEmployee)
+                                            .Include(tp => tp.ProgramEmployee.Employee)
                                             .Include(tp => tp.CodeParticipantType)
                                             .Where(tp => tp.TPITOSFK == currentTPITOS.TPITOSPK)
-                                            .OrderBy(tp => tp.ProgramEmployee.FirstName)
+                                            .OrderBy(tp => tp.ProgramEmployee.Employee.FirstName)
+                                            .ThenBy(tp => tp.ProgramEmployee.Employee.LastName)
+                                            .Select(tp => new
+                                            {
+                                                tp.TPITOSParticipantPK,
+                                                tp.ProgramEmployeeFK,
+                                                tp.TPITOSFK,
+                                                tp.ParticipantTypeCodeFK,
+                                                ParticipantName = (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + tp.ProgramEmployee.ProgramSpecificID + ") " + tp.ProgramEmployee.Employee.FirstName + " " + tp.ProgramEmployee.Employee.LastName : tp.ProgramEmployee.ProgramSpecificID),
+                                                ParticipantType = tp.CodeParticipantType.Description
+                                            })
                                             .ToList();
                 repeatParticipants.DataSource = allTPITOSParticipants;
                 repeatParticipants.DataBind();
@@ -878,6 +878,214 @@ namespace Pyramid.Pages
             txtClassroomRedFlagsYes.ClientEnabled = enabled;
             txtClassroomRedFlagsPossible.ClientEnabled = enabled;
             lstBxRedFlags.ReadOnly = !enabled;
+
+            //Show/hide the submit button
+            submitTPITOS.ShowSubmitButton = enabled;
+            submitParticipant.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            bool useCancelConfirmations = enabled && areConfirmationsEnabled;
+
+            submitTPITOS.UseCancelConfirm = useCancelConfirmations;
+            submitParticipant.UseCancelConfirm = useCancelConfirmations;
+        }
+
+        /// <summary>
+        /// This method prints the form
+        /// </summary>
+        private void PrintForm()
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitTPITOS.ValidationGroup))
+            {
+                //Submit the form
+                SaveForm(false);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    //Get the master page
+                    MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                    //Get the report
+                    Reports.PreBuiltReports.FormReports.RptTPITOS report = new Reports.PreBuiltReports.FormReports.RptTPITOS();
+
+                    //Display the report
+                    masterPage.DisplayReport(currentProgramRole, report, "TPITOS Observation", currentTPITOSPK);
+                }
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message type
+            string successMessageType = null;
+
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Fill the TPITOS fields from the observation
+                //Calculate the start and end datetimes
+                DateTime startDateTime = Convert.ToDateTime(deObservationDate.Value);
+                DateTime endDateTime = Convert.ToDateTime(deObservationDate.Value);
+                DateTime startTime = Convert.ToDateTime(teObservationStartTime.Value);
+                DateTime endTime = Convert.ToDateTime(teObservationEndTime.Value);
+                startDateTime = startDateTime.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
+                endDateTime = endDateTime.AddHours(endTime.Hour).AddMinutes(endTime.Minute);
+
+                //Basic information
+                currentTPITOS.ObservationStartDateTime = startDateTime;
+                currentTPITOS.ObservationEndDateTime = endDateTime;
+                currentTPITOS.ClassroomFK = Convert.ToInt32(ddClassroom.Value);
+                currentTPITOS.ObserverFK = Convert.ToInt32(ddObserver.Value);
+                currentTPITOS.NumAdultsBegin = Convert.ToInt32(txtAdultsBegin.Value);
+                currentTPITOS.NumAdultsEnd = Convert.ToInt32(txtAdultsEnd.Value);
+                currentTPITOS.NumAdultsEntered = Convert.ToInt32(txtAdultsEntered.Value);
+                currentTPITOS.NumKidsBegin = Convert.ToInt32(txtChildrenBegin.Value);
+                currentTPITOS.NumKidsEnd = Convert.ToInt32(txtChildrenEnd.Value);
+                currentTPITOS.Notes = (txtNotes.Value == null ? null : txtNotes.Value.ToString());
+
+                //Key practices
+                currentTPITOS.Item1NumYes = (txtItem1NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem1NumYes.Value));
+                currentTPITOS.Item1NumNo = (txtItem1NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem1NumNo.Value));
+                currentTPITOS.Item2NumYes = (txtItem2NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem2NumYes.Value));
+                currentTPITOS.Item2NumNo = (txtItem2NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem2NumNo.Value));
+                currentTPITOS.Item3NumYes = (txtItem3NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem3NumYes.Value));
+                currentTPITOS.Item3NumNo = (txtItem3NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem3NumNo.Value));
+                currentTPITOS.Item4NumYes = (txtItem4NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem4NumYes.Value));
+                currentTPITOS.Item4NumNo = (txtItem4NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem4NumNo.Value));
+                currentTPITOS.Item5NumYes = (txtItem5NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem5NumYes.Value));
+                currentTPITOS.Item5NumNo = (txtItem5NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem5NumNo.Value));
+                currentTPITOS.Item6NumYes = (txtItem6NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem6NumYes.Value));
+                currentTPITOS.Item6NumNo = (txtItem6NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem6NumNo.Value));
+                currentTPITOS.Item7NumYes = (txtItem7NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem7NumYes.Value));
+                currentTPITOS.Item7NumNo = (txtItem7NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem7NumNo.Value));
+                currentTPITOS.Item8NumYes = (txtItem8NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem8NumYes.Value));
+                currentTPITOS.Item8NumNo = (txtItem8NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem8NumNo.Value));
+                currentTPITOS.Item9NumYes = (txtItem9NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem9NumYes.Value));
+                currentTPITOS.Item9NumNo = (txtItem9NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem9NumNo.Value));
+                currentTPITOS.Item10NumYes = (txtItem10NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem10NumYes.Value));
+                currentTPITOS.Item10NumNo = (txtItem10NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem10NumNo.Value));
+                currentTPITOS.Item11NumYes = (txtItem11NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem11NumYes.Value));
+                currentTPITOS.Item11NumNo = (txtItem11NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem11NumNo.Value));
+                currentTPITOS.Item12NumYes = (txtItem12NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem12NumYes.Value));
+                currentTPITOS.Item12NumNo = (txtItem12NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem12NumNo.Value));
+                currentTPITOS.Item13NumYes = (txtItem13NumYes.Value == null ? (int?)null : Convert.ToInt32(txtItem13NumYes.Value));
+                currentTPITOS.Item13NumNo = (txtItem13NumNo.Value == null ? (int?)null : Convert.ToInt32(txtItem13NumNo.Value));
+
+                //Red flags
+                currentTPITOS.LeadTeacherRedFlagsNumYes = (txtLeadTeacherRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtLeadTeacherRedFlagsYes.Value));
+                currentTPITOS.LeadTeacherRedFlagsNumPossible = (txtLeadTeacherRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtLeadTeacherRedFlagsPossible.Value));
+                currentTPITOS.OtherTeacherRedFlagsNumYes = (txtOtherTeacherRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtOtherTeacherRedFlagsYes.Value));
+                currentTPITOS.OtherTeacherRedFlagsNumPossible = (txtOtherTeacherRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtOtherTeacherRedFlagsPossible.Value));
+                currentTPITOS.ClassroomRedFlagsNumYes = (txtClassroomRedFlagsYes.Value == null ? (int?)null : Convert.ToInt32(txtClassroomRedFlagsYes.Value));
+                currentTPITOS.ClassroomRedFlagsNumPossible = (txtClassroomRedFlagsPossible.Value == null ? (int?)null : Convert.ToInt32(txtClassroomRedFlagsPossible.Value));
+
+                if (isEdit)
+                {
+                    //This is an edit
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the success message
+                        successMessageType = "TPITOSEdited";
+
+                        //Set the edit-only fields
+                        currentTPITOS.Editor = User.Identity.Name;
+                        currentTPITOS.EditDate = DateTime.Now;
+
+                        //Clear the red flag type rows
+                        var currentRedFlags = context.TPITOSRedFlags.Where(trf => trf.TPITOSFK == currentTPITOSPK).ToList();
+                        context.TPITOSRedFlags.RemoveRange(currentRedFlags);
+
+                        //Save the red flag types
+                        foreach (BootstrapListEditItem item in lstBxRedFlags.Items)
+                        {
+                            if (item.Selected)
+                            {
+                                TPITOSRedFlags newRedFlag = new TPITOSRedFlags();
+                                newRedFlag.CreateDate = DateTime.Now;
+                                newRedFlag.Creator = User.Identity.Name;
+                                newRedFlag.RedFlagCodeFK = Convert.ToInt32(item.Value);
+                                newRedFlag.TPITOSFK = currentTPITOSPK;
+                                context.TPITOSRedFlags.Add(newRedFlag);
+                            }
+                        }
+
+                        //Set IsComplete to true because validation passed on the complete form
+                        currentTPITOS.IsComplete = true;
+
+                        //Get the existing TPITOS record
+                        Models.TPITOS existingTPITOS = context.TPITOS.Find(currentTPITOS.TPITOSPK);
+
+                        //Overwrite the existing TPITOS record with the values from the observation
+                        context.Entry(existingTPITOS).CurrentValues.SetValues(currentTPITOS);
+                        context.SaveChanges();
+
+                        //To hold the change rows
+                        List<TPITOSRedFlagsChanged> redFlagsChangeRows;
+
+                        //Check the red flag deletions
+                        if(currentRedFlags.Count > 0)
+                        {
+                            //Get the red flag change rows and set the deleter
+                            redFlagsChangeRows = context.TPITOSRedFlagsChanged.Where(trfc => trfc.TPITOSFK == currentTPITOS.TPITOSPK)
+                                                            .OrderByDescending(trfc => trfc.TPITOSRedFlagsChangedPK)
+                                                            .Take(currentRedFlags.Count).ToList()
+                                                            .Select(tc => { tc.Deleter = User.Identity.Name; return tc; }).ToList();
+                        }
+
+                        //Save the delete row changes to the database
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfTPITOSPK.Value = currentTPITOS.TPITOSPK.ToString();
+                        currentTPITOSPK = currentTPITOS.TPITOSPK;
+                    }
+                }
+                else
+                {
+                    //This is an add
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the success message
+                        successMessageType = "TPITOSAdded";
+
+                        //Set the create-only fields
+                        currentTPITOS.Creator = User.Identity.Name;
+                        currentTPITOS.CreateDate = DateTime.Now;
+
+                        //Set IsComplete to false because validation may not have passed on the complete form
+                        currentTPITOS.IsComplete = false;
+
+                        //Add the TPITOS to the database
+                        context.TPITOS.Add(currentTPITOS);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfTPITOSPK.Value = currentTPITOS.TPITOSPK.ToString();
+                        currentTPITOSPK = currentTPITOS.TPITOSPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Unauthorized!", "You are not authorized to make changes!", 22000);
+            }
+
+            //Return the success message type
+            return successMessageType;
         }
 
         #endregion
@@ -906,32 +1114,44 @@ namespace Pyramid.Pages
                 e.IsValid = false;
                 e.ErrorText = "Observation Date cannot be in the future!";
             }
-            else if (currentTPITOSPK > 0)
+            else if (isEdit)
             {
-                using (PyramidContext context = new PyramidContext())
+                if (repeatParticipants.Items.Count > 0)
                 {
-                    //Get the validated participants
-                    var validatedParticipants = context.spValidateTPITOSParticipants(currentTPITOSPK, observationDate).ToList();
-
-                    //Get the invalid participants from the list
-                    List<String> lstInvalidParticipantNames = validatedParticipants
-                                                                .Where(vp => vp.IsValid == false)
-                                                                .Select(vp => vp.EmployeeName)
-                                                                .ToList();
-
-                    //Tell the user if there are invalid participants
-                    if (lstInvalidParticipantNames.Count > 0)
+                    using (PyramidContext context = new PyramidContext())
                     {
-                        //Set the validation message
-                        e.IsValid = false;
-                        e.ErrorText = "At least one TPITOS participant would be invalidated by this observation date!  See alert message for details.";
+                        //Get the validated participants
+                        var validatedParticipants = context.spValidateTPITOSParticipants(currentTPITOSPK, observationDate).ToList();
 
-                        //Get a comma-separated list of the employee names
-                        string invalidParticipants = string.Join(", ", lstInvalidParticipantNames);
+                        //Get the invalid participants from the list
+                        List<String> lstInvalidParticipantNames = validatedParticipants
+                                                                    .Where(vp => vp.IsValid == false)
+                                                                    .Select(vp => (currentProgramRole.ViewPrivateEmployeeInfo.Value ? "(" + vp.EmployeeID + ") " + vp.EmployeeName : vp.EmployeeID))
+                                                                    .ToList();
 
-                        //Show the user a message that tells them what employees are invalid
-                        msgSys.ShowMessageToUser("danger", "Invalid Observation Date", "The following Employees were not active in a Teacher or TA job function as of the new observation date: " + invalidParticipants, 25000);
+                        //Tell the user if there are invalid participants
+                        if (lstInvalidParticipantNames.Count > 0)
+                        {
+                            //Set the validation message
+                            e.IsValid = false;
+                            e.ErrorText = "At least one TPITOS participant would be invalidated by this observation date!  See alert message for details.";
+
+                            //Get a comma-separated list of the employee names
+                            string invalidParticipants = string.Join(", ", lstInvalidParticipantNames);
+
+                            //Show the user a message that tells them what employees are invalid
+                            msgSys.ShowMessageToUser("danger", "Invalid Observation Date", "The following Professionals were not active in a Teacher or TA job function as of the new observation date: " + invalidParticipants, 25000);
+                        }
                     }
+                }
+                else
+                {
+                    //Participants are required
+                    e.IsValid = false;
+                    e.ErrorText = "You must add at least one TPITOS participant below!"; 
+
+                    //Show an error message
+                    msgSys.ShowMessageToUser("danger", "TPITOS Participants Required!", "You must add at least one TPITOS participant!", 22000);
                 }
             }
         }
@@ -996,7 +1216,7 @@ namespace Pyramid.Pages
             if (endTime.HasValue == false)
             {
                 e.IsValid = false;
-                e.ErrorText = "Start Time is required!";
+                e.ErrorText = "End Time is required!";
             }
             else if (startTime >= endTime)
             {

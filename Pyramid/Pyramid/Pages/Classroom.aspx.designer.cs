@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Pages {
-    
-    
-    public partial class Classroom {
-        
+namespace Pyramid.Pages
+{
+
+
+    public partial class Classroom
+    {
+
         /// <summary>
         /// lblPageTitle control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPageTitle;
-        
+
         /// <summary>
         /// hfViewOnly control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
-        
+
         /// <summary>
         /// upMessaging control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upMessaging;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
         /// <summary>
         /// upBasicInfo control.
         /// </summary>
@@ -56,7 +58,25 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upBasicInfo;
-        
+
+        /// <summary>
+        /// hfClassroomPK control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfClassroomPK;
+
+        /// <summary>
+        /// btnPrintPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnPrintPreview;
+
         /// <summary>
         /// lblProgram control.
         /// </summary>
@@ -65,7 +85,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblProgram;
-        
+
         /// <summary>
         /// classroomControl control.
         /// </summary>
@@ -74,7 +94,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.Classroom classroomControl;
-        
+
         /// <summary>
         /// divEditOnly control.
         /// </summary>
@@ -83,7 +103,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEditOnly;
-        
+
         /// <summary>
         /// hfDeleteChildClassroomAssignmentPK control.
         /// </summary>
@@ -92,7 +112,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfDeleteChildClassroomAssignmentPK;
-        
+
         /// <summary>
         /// upChildClassroomAssignment control.
         /// </summary>
@@ -101,7 +121,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upChildClassroomAssignment;
-        
+
         /// <summary>
         /// repeatChildClassroomAssignments control.
         /// </summary>
@@ -110,7 +130,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repeatChildClassroomAssignments;
-        
+
         /// <summary>
         /// divAddEditChildClassroomAssignment control.
         /// </summary>
@@ -119,7 +139,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAddEditChildClassroomAssignment;
-        
+
         /// <summary>
         /// lblAddEditChildClassroomAssignment control.
         /// </summary>
@@ -128,7 +148,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAddEditChildClassroomAssignment;
-        
+
         /// <summary>
         /// ddChild control.
         /// </summary>
@@ -137,7 +157,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddChild;
-        
+
         /// <summary>
         /// deChildAssignDate control.
         /// </summary>
@@ -146,7 +166,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deChildAssignDate;
-        
+
         /// <summary>
         /// deChildLeaveDate control.
         /// </summary>
@@ -155,7 +175,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deChildLeaveDate;
-        
+
         /// <summary>
         /// ddChildLeaveReason control.
         /// </summary>
@@ -164,7 +184,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddChildLeaveReason;
-        
+
         /// <summary>
         /// txtChildLeaveReasonSpecify control.
         /// </summary>
@@ -173,7 +193,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtChildLeaveReasonSpecify;
-        
+
         /// <summary>
         /// hfAddEditChildClassroomAssignmentPK control.
         /// </summary>
@@ -182,7 +202,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditChildClassroomAssignmentPK;
-        
+
         /// <summary>
         /// hfAddEditChildClassroomChildPK control.
         /// </summary>
@@ -191,7 +211,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditChildClassroomChildPK;
-        
+
         /// <summary>
         /// hfAddEditChildClassroomEnrollmentDate control.
         /// </summary>
@@ -200,7 +220,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditChildClassroomEnrollmentDate;
-        
+
         /// <summary>
         /// hfAddEditChildClassroomDischargeDate control.
         /// </summary>
@@ -209,7 +229,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditChildClassroomDischargeDate;
-        
+
         /// <summary>
         /// submitChildClassroomAssignment control.
         /// </summary>
@@ -218,7 +238,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.Submit submitChildClassroomAssignment;
-        
+
         /// <summary>
         /// hfDeleteEmployeeClassroomAssignmentPK control.
         /// </summary>
@@ -227,7 +247,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfDeleteEmployeeClassroomAssignmentPK;
-        
+
         /// <summary>
         /// upEmployeeClassroomAssignment control.
         /// </summary>
@@ -236,7 +256,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upEmployeeClassroomAssignment;
-        
+
         /// <summary>
         /// repeatEmployeeClassroomAssignments control.
         /// </summary>
@@ -245,7 +265,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repeatEmployeeClassroomAssignments;
-        
+
         /// <summary>
         /// divAddEditEmployeeClassroomAssignment control.
         /// </summary>
@@ -254,7 +274,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAddEditEmployeeClassroomAssignment;
-        
+
         /// <summary>
         /// lblAddEditEmployeeClassroomAssignment control.
         /// </summary>
@@ -263,7 +283,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAddEditEmployeeClassroomAssignment;
-        
+
         /// <summary>
         /// ddEmployee control.
         /// </summary>
@@ -272,7 +292,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddEmployee;
-        
+
         /// <summary>
         /// deEmployeeAssignDate control.
         /// </summary>
@@ -281,7 +301,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deEmployeeAssignDate;
-        
+
         /// <summary>
         /// ddClassroomJobType control.
         /// </summary>
@@ -290,7 +310,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddClassroomJobType;
-        
+
         /// <summary>
         /// deEmployeeLeaveDate control.
         /// </summary>
@@ -299,7 +319,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deEmployeeLeaveDate;
-        
+
         /// <summary>
         /// ddEmployeeLeaveReason control.
         /// </summary>
@@ -308,7 +328,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddEmployeeLeaveReason;
-        
+
         /// <summary>
         /// txtEmployeeLeaveReasonSpecify control.
         /// </summary>
@@ -317,7 +337,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtEmployeeLeaveReasonSpecify;
-        
+
         /// <summary>
         /// hfAddEditEmployeeClassroomAssignmentPK control.
         /// </summary>
@@ -326,16 +346,16 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditEmployeeClassroomAssignmentPK;
-        
+
         /// <summary>
-        /// hfAddEditEmployeeClassroomEmployeePK control.
+        /// hfAddEditEmployeeClassroomProgramEmployeePK control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfAddEditEmployeeClassroomEmployeePK;
-        
+        protected global::System.Web.UI.WebControls.HiddenField hfAddEditEmployeeClassroomProgramEmployeePK;
+
         /// <summary>
         /// hfAddEditEmployeeClassroomHireDate control.
         /// </summary>
@@ -344,7 +364,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditEmployeeClassroomHireDate;
-        
+
         /// <summary>
         /// hfAddEditEmployeeClassroomTermDate control.
         /// </summary>
@@ -353,7 +373,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfAddEditEmployeeClassroomTermDate;
-        
+
         /// <summary>
         /// submitEmployeeClassroomAssignment control.
         /// </summary>
@@ -362,7 +382,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.Submit submitEmployeeClassroomAssignment;
-        
+
         /// <summary>
         /// submitClassroom control.
         /// </summary>
@@ -371,7 +391,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.Submit submitClassroom;
-        
+
         /// <summary>
         /// lbDeleteChildClassroomAssignment control.
         /// </summary>
@@ -380,7 +400,7 @@ namespace Pyramid.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbDeleteChildClassroomAssignment;
-        
+
         /// <summary>
         /// lbDeleteEmployeeClassroomAssignment control.
         /// </summary>

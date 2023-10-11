@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="TPITOS Observation" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="TPITOS.aspx.cs" Inherits="Pyramid.Pages.TPITOS" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 
@@ -30,8 +30,30 @@
             //Highlight the correct dashboard link
             $('#lnkTPITOSDashboard').addClass('active');
 
+            //Set up the click events for the help buttons
+            $('#btnObserverHelp').popover({
+                trigger: 'hover focus',
+                title: 'Help',
+                html: true,
+                content: 'In order for a professional to appear in this list, ' +
+                    'the professional must have their TPITOS observer training added to their professional record by a state administrator ' +
+                    'with a training date that is on or before the date of this observation and the observation date is on or before the training expiration date.'
+            });
+
+            $('#btnParticipantHelp').popover({
+                trigger: 'hover focus',
+                title: 'Help',
+                html: true,
+                content: 'In order for a professional to appear in this list, ' +
+                    'the professional must have a current teacher or teaching assistant job function in their ' +
+                    'professional record as of the date of this observation.'
+            });
+
             //Allow date format for DataTables sorting
             $.fn.dataTable.moment('MM/DD/YYYY');
+
+            //Show/hide the view only fields
+            setViewOnlyVisibility();
 
             //Initialize the datatables
             if (!$.fn.dataTable.isDataTable('#tblParticipants')) {
@@ -41,6 +63,8 @@
                         { orderable: false, targets: [2] }
                     ],
                     order: [[0, 'asc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -90,9 +114,17 @@
                 });
             }
             $('.dataTables_filter input').removeClass('form-control-sm');
+        }
 
-            //Show/hide the view only fields
-            setViewOnlyVisibility();
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
 
         //This function validates the start time field
@@ -129,74 +161,169 @@
             }
         }
 
-        //This function is used to calculate the item percentages
-        function calculateItemPercentage(s, e) {
-            //Get the row using JQuery and the control name
-            var row = $('#' + s.name).closest('.item-row');
+        //This function is used to calculate the values for the items
+        function calculateItemValues(s, e) {
+            //Get the item rows
+            var itemRows = $('.item-row');
 
-            //Get the percent label for later
-            var percentLabel = row.find('.item-percentage');
+            //To hold the totals
+            var totalNumYes = 0;
+            var totalNumNo = 0;
+            var totalPercent = 0;
 
-            //Get the yes and no textbox IDs and then controls
-            var yesTextboxID = row.find('.item-yes').attr('id');
-            var noTextboxID = row.find('.item-no').attr('id');
-            var yesTextbox = ASPxClientControl.Cast(yesTextboxID);
-            var noTextbox = ASPxClientControl.Cast(noTextboxID);
+            //Loop through the item rows
+            itemRows.each(function (index) {
+                //Get the row
+                var row = $(this);
 
-            //Get the number in the yes textbox and the number in the no textbox
-            var numYes = Number(yesTextbox.GetValue());
-            var numNo = Number(noTextbox.GetValue());
+                //Get the percent label for later
+                var percentLabel = row.find('.item-percentage');
 
-            //Get the total
-            var numTotal = numYes + numNo;
+                //Get the yes and no textbox IDs and then controls
+                var yesTextboxID = row.find('.item-yes').attr('id');
+                var noTextboxID = row.find('.item-no').attr('id');
+                var yesTextbox = ASPxClientControl.Cast(yesTextboxID);
+                var noTextbox = ASPxClientControl.Cast(noTextboxID);
 
-            //Fill the percent label
-            if (numYes > 0 && numNo <= 0) {
-                //There is no numNo, set the label to 100%
-                percentLabel.text('100%');
+                //Get the number in the yes textbox and the number in the no textbox
+                var numYes = Number(yesTextbox.GetValue());
+                var numNo = Number(noTextbox.GetValue());
+
+                //Get the total
+                var numTotal = numYes + numNo;
+
+                //Fill the percent label
+                if (numYes > 0 && numNo <= 0) {
+                    //There is no numNo, set the label to 100%
+                    percentLabel.text('100%');
+                }
+                else if (numYes > 0 && numNo > 0) {
+                    //There is a numNo, calculate the percentage and set the label
+                    var percentage = Math.round((numYes / numTotal) * 100);
+                    percentLabel.text(percentage.toString() + '%');
+                }
+                else {
+                    //Can't calculate, set the label to 0%
+                    percentLabel.text('0%');
+                }
+
+                //Add to the total num yes
+                if (numYes > 0) {
+                    totalNumYes += numYes;
+                }
+
+                //Add to the total num no
+                if (numNo > 0) {
+                    totalNumNo += numNo;
+                }
+            });
+
+            //Get the total labels
+            var lblTotalNumYes = $('#lblTotalItemNumYes');
+            var lblTotalNumNo = $('#lblTotalItemNumNo');
+            var lblTotalItemPercentYes = $('#lblTotalItemPercentYes');
+
+            //Set the total number labels
+            lblTotalNumYes.text(totalNumYes.toString());
+            lblTotalNumNo.text(totalNumNo.toString());
+
+            //Check the totals to calculate percentage
+            if (totalNumYes > 0 && totalNumNo <= 0) {
+                //Set the total % Yes label to 100
+                lblTotalItemPercentYes.text('100%');
+
             }
-            else if (numYes > 0 && numNo > 0) {
-                //There is a numNo, calculate the percentage and set the label
-                var percentage = Math.round((numYes / numTotal) * 100);
-                percentLabel.text(percentage + '%');
+            else if (totalNumYes > 0 && totalNumNo > 0) {
+                //Get the total % Yes
+                totalPercent = Math.round(totalNumYes / (totalNumYes + totalNumNo) * 100);
+
+                //Set the total % Yes label
+                lblTotalItemPercentYes.text(totalPercent.toString() + '%');
             }
             else {
-                //Can't calculate, set the label to 0%
-                percentLabel.text('0%');
+                //Set all the total % Yes label to 0
+                lblTotalItemPercentYes.text('0%');
             }
         }
 
         //This function is used to calculate the red flag percentages
-        function calculateRedFlagPercentage(s, e) {
-            //Get the row using JQuery and the control name
-            var row = $('#' + s.name).closest('.red-flag-row');
+        function calculateRedFlagValues(s, e) {
+            //Get the redFlag rows
+            var redFlagRows = $('.red-flag-row');
 
-            //Get the percent label for later
-            var percentLabel = row.find('.red-flag-percentage');
+            //To hold the totals
+            var totalNumYes = 0;
+            var totalNumPossible = 0;
+            var totalPercent = 0;
 
-            //Get the yes and possible textbox IDs and then controls
-            var yesTextboxID = row.find('.red-flag-yes').attr('id');
-            var possibleTextboxID = row.find('.red-flag-possible').attr('id');
-            var yesTextbox = ASPxClientControl.Cast(yesTextboxID);
-            var possibleTextbox = ASPxClientControl.Cast(possibleTextboxID);
+            //Loop through the redFlag rows
+            redFlagRows.each(function (index) {
+                //Get the row
+                var row = $(this);
 
-            //Get the number in the yes textbox and the number in the possible textbox
-            var numYes = Number(yesTextbox.GetValue());
-            var numPossible = Number(possibleTextbox.GetValue());
+                //Get the percent label for later
+                var percentLabel = row.find('.red-flag-percentage');
 
-            //Fill the percent label
-            if (numYes > 0 && numPossible <= 0) {
-                //There is no numPossible, set the label to 100%
-                percentLabel.text('100%');
+                //Get the yes and possible textbox IDs and then controls
+                var yesTextboxID = row.find('.red-flag-yes').attr('id');
+                var possibleTextboxID = row.find('.red-flag-possible').attr('id');
+                var yesTextbox = ASPxClientControl.Cast(yesTextboxID);
+                var possibleTextbox = ASPxClientControl.Cast(possibleTextboxID);
+
+                //Get the number in the yes textbox and the number in the possible textbox
+                var numYes = Number(yesTextbox.GetValue());
+                var numPossible = Number(possibleTextbox.GetValue());
+
+                //Fill the percent label
+                if (numYes > 0 && numPossible <= 0) {
+                    //There is no numPossible, set the label to 100%
+                    percentLabel.text('100%');
+                }
+                else if (numYes > 0 && numPossible > 0) {
+                    //There is a numPossible, calculate the percentage and set the label
+                    var percentage = Math.round((numYes / numPossible) * 100);
+                    percentLabel.text(percentage.toString() + '%');
+                }
+                else {
+                    //Can't calculate, set the label to 0%
+                    percentLabel.text('0%');
+                }
+
+                //Add to the total num yes
+                if (numYes > 0) {
+                    totalNumYes += numYes;
+                }
+
+                //Add to the total num possible
+                if (numPossible > 0) {
+                    totalNumPossible += numPossible;
+                }
+            });
+
+            //Get the total labels
+            var lblTotalNumYes = $('#lblTotalRedFlagNumYes');
+            var lblTotalNumPossible = $('#lblTotalRedFlagNumPossible');
+            var lblTotalRedFlagPercentYes = $('#lblTotalRedFlagPercentYes');
+
+            //Set the total number labels
+            lblTotalNumYes.text(totalNumYes.toString());
+            lblTotalNumPossible.text(totalNumPossible.toString());
+
+            //Check the totals to calculate percentage
+            if (totalNumYes > 0 && totalNumPossible <= 0) {
+                //Set the total % Yes label to 100
+                lblTotalRedFlagPercentYes.text('100%');
             }
-            else if (numYes > 0 && numPossible > 0) {
-                //There is a numPossible, calculate the percentage and set the label
-                var percentage = Math.round((numYes / numPossible) * 100);
-                percentLabel.text(percentage + '%');
+            else if (totalNumYes > 0 && totalNumPossible > 0) {
+                //Get the total % Yes
+                totalPercent = Math.round((totalNumYes /  totalNumPossible) * 100);
+
+                //Set the total % Yes label
+                lblTotalRedFlagPercentYes.text(totalPercent.toString() + '%');
             }
             else {
-                //Can't calculate, set the label to 0%
-                percentLabel.text('0%');
+                //Set all the total % Yes label to 0
+                lblTotalRedFlagPercentYes.text('0%');
             }
         }
 
@@ -316,16 +443,28 @@
             <asp:AsyncPostBackTrigger ControlID="deObservationDate" />
             <asp:AsyncPostBackTrigger ControlID="lbDeleteTPITOSParticipant" EventName="Click" />
             <asp:AsyncPostBackTrigger ControlID="submitParticipant" />
+            <asp:AsyncPostBackTrigger ControlID="btnPrintPreview" EventName="Click" />
             <asp:AsyncPostBackTrigger ControlID="submitTPITOS" />
         </Triggers>
     </asp:UpdatePanel>
     <asp:UpdatePanel ID="upBasicInfo" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
+            <asp:HiddenField ID="hfTPITOSPK" runat="server" Value="" />
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card bg-light">
                         <div class="card-header">
-                            Basic Information
+                            <div class="row">
+                                <div class="col-md-8">
+                                    Basic Information
+                                </div>
+                                <div class="col-md-4">
+                                    <dx:BootstrapButton ID="btnPrintPreview" runat="server" Text="Save and Download/Print" OnClick="btnPrintPreview_Click"
+                                        SettingsBootstrap-RenderOption="primary" ValidationGroup="vgTPITOS" data-validation-group="vgTPITOS">
+                                        <CssClasses Icon="fas fa-print" Control="float-right btn-loader" />
+                                    </dx:BootstrapButton>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -391,6 +530,7 @@
                                             <RequiredField IsRequired="true" ErrorText="Observer is required!  If this is not enabled, there are no active observers in the database as of the observation date." />
                                         </ValidationSettings>
                                     </dx:BootstrapComboBox>
+                                    <button id="btnObserverHelp" type="button" class="btn btn-link p-0"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
@@ -455,7 +595,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div id="divAddOnlyMessage" runat="server" visible="false" class="alert alert-primary">
-                                        You must save the basic information before adding TPITOS participants, Key Practices, and Red Flags.
+                                        You must save the basic information before downloading/printing or adding TPITOS participants, Key Practices, and Red Flags.
                                     </div>
                                 </div>
                             </div>
@@ -483,12 +623,12 @@
                                 <div class="row mt-2">
                                     <div class="col-lg-12">
                                         <label>All TPITOS Participants</label>
-                                        <asp:Repeater ID="repeatParticipants" runat="server" ItemType="Pyramid.Models.TPITOSParticipant">
+                                        <asp:Repeater ID="repeatParticipants" runat="server">
                                             <HeaderTemplate>
                                                 <table id="tblParticipants" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th data-priority="1">Employee</th>
+                                                            <th data-priority="1">Professional</th>
                                                             <th>Observation Role</th>
                                                             <th data-priority="2"></th>
                                                         </tr>
@@ -497,8 +637,8 @@
                                             </HeaderTemplate>
                                             <ItemTemplate>
                                                 <tr>
-                                                    <td><%# Item.ProgramEmployee.FirstName + " " + Item.ProgramEmployee.LastName %></td>
-                                                    <td><%# Item.CodeParticipantType.Description %></td>
+                                                    <td><%# Eval("ParticipantName") %></td>
+                                                    <td><%# Eval("ParticipantType") %></td>
                                                     <td class="text-center">
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-secondary dropdown-toggle hide-on-view hidden" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -506,10 +646,11 @@
                                                             </button>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <asp:LinkButton ID="lbEditTPITOSParticipant" runat="server" CssClass="dropdown-item" OnClick="lbEditTPITOSParticipant_Click"><i class="fas fa-edit"></i> Edit</asp:LinkButton>
-                                                                <button class="dropdown-item delete-gridview" data-pk='<%# Item.TPITOSParticipantPK %>' data-hf="hfDeleteTPITOSParticipantPK" data-target="#divDeleteTPITOSParticipantModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
+                                                                <button class="dropdown-item delete-gridview" data-pk='<%# Eval("TPITOSParticipantPK") %>' data-hf="hfDeleteTPITOSParticipantPK" data-target="#divDeleteTPITOSParticipantModal"><i class="fas fa-trash"></i>&nbsp;Delete</button>
                                                             </div>
                                                         </div>
-                                                        <asp:HiddenField ID="hfTPITOSParticipantPK" runat="server" Value='<%# Item.TPITOSParticipantPK %>' />
+                                                        <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                                        <asp:Label ID="lblTPITOSParticipantPK" runat="server" Visible="false" Text='<%# Eval("TPITOSParticipantPK") %>'></asp:Label>
                                                     </td>
                                                 </tr>
                                             </ItemTemplate>
@@ -538,6 +679,7 @@
                                                                 <RequiredField IsRequired="true" ErrorText="TPITOS Participant is required!" />
                                                             </ValidationSettings>
                                                         </dx:BootstrapComboBox>
+                                                        <button id="btnParticipantHelp" type="button" class="btn btn-link p-0"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <dx:BootstrapComboBox ID="ddParticipantRole" runat="server" Caption="TPITOS Participant Role" NullText="--Select--"
@@ -554,7 +696,12 @@
                                             <div class="card-footer">
                                                 <div class="center-content">
                                                     <asp:HiddenField ID="hfAddEditParticipantPK" runat="server" Value="0" />
-                                                    <uc:Submit ID="submitParticipant" runat="server" ValidationGroup="vgParticipant" OnSubmitClick="submitParticipant_Click" OnCancelClick="submitParticipant_CancelClick" OnValidationFailed="submitParticipant_ValidationFailed" />
+                                                    <uc:Submit ID="submitParticipant" runat="server" 
+                                                        ValidationGroup="vgParticipant"
+                                                        ControlCssClass="center-content"
+                                                        OnSubmitClick="submitParticipant_Click" 
+                                                        OnCancelClick="submitParticipant_CancelClick" 
+                                                        OnValidationFailed="submitParticipant_ValidationFailed" />
                                                 </div>
                                             </div>
                                         </div>
@@ -602,7 +749,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem1NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Init="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -613,7 +760,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem1NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -632,7 +779,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem2NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -643,7 +790,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem2NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -662,7 +809,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem3NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -673,7 +820,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem3NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -692,7 +839,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem4NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -703,7 +850,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem4NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -722,7 +869,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem5NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -733,7 +880,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem5NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -752,7 +899,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem6NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -763,7 +910,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem6NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -782,7 +929,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem7NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -793,7 +940,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem7NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -812,7 +959,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem8NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -823,7 +970,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem8NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -842,7 +989,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem9NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -853,7 +1000,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem9NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -872,7 +1019,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem10NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -883,7 +1030,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem10NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -902,7 +1049,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem11NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -913,7 +1060,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem11NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -932,7 +1079,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem12NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -943,7 +1090,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem12NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -962,7 +1109,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem13NumYes" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" Init="calculateItemPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers"  />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -973,7 +1120,7 @@
                                                         <dx:BootstrapTextBox ID="txtItem13NumNo" runat="server" NullText="N/O" OnValidation="TPITOSItemNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="item-no" />
-                                                            <ClientSideEvents ValueChanged="calculateItemPercentage" Validation="validateTPITOSItemNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateItemValues" Validation="validateTPITOSItemNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -985,6 +1132,22 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <tfoot>
+                                                <tr class="font-size-1-2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><label>Totals</label></td>
+                                                    <td>
+                                                        <label id="lblTotalItemNumYes"></label>
+                                                    </td>
+                                                    <td>
+                                                        <label id="lblTotalItemNumNo"></label>
+                                                    </td>
+                                                    <td>
+                                                        <label id="lblTotalItemPercentYes"></label>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -1006,7 +1169,7 @@
                                             <thead>
                                                 <tr>
                                                     <th data-priority="1"></th>
-                                                    <th data-priority="3"></th>
+                                                    <th data-priority="3">#</th>
                                                     <th>Red Flags</th>
                                                     <th data-priority="2"># Yes</th>
                                                     <th data-priority="2"># Possible</th>
@@ -1022,7 +1185,7 @@
                                                         <dx:BootstrapTextBox ID="txtLeadTeacherRedFlagsYes" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-yes" />
-                                                            <ClientSideEvents Init="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" ValueChanged="calculateRedFlagPercentage" />
+                                                            <ClientSideEvents Init="calculateRedFlagValues" ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -1033,7 +1196,7 @@
                                                         <dx:BootstrapTextBox ID="txtLeadTeacherRedFlagsPossible" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-possible" />
-                                                            <ClientSideEvents ValueChanged="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -1052,7 +1215,7 @@
                                                         <dx:BootstrapTextBox ID="txtOtherTeacherRedFlagsYes" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-yes" />
-                                                            <ClientSideEvents ValueChanged="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" Init="calculateRedFlagPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -1063,7 +1226,7 @@
                                                         <dx:BootstrapTextBox ID="txtOtherTeacherRedFlagsPossible" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-possible" />
-                                                            <ClientSideEvents ValueChanged="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -1082,7 +1245,7 @@
                                                         <dx:BootstrapTextBox ID="txtClassroomRedFlagsYes" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-yes" />
-                                                            <ClientSideEvents Init="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" ValueChanged="calculateRedFlagPercentage" />
+                                                            <ClientSideEvents ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required!" />
@@ -1093,7 +1256,7 @@
                                                         <dx:BootstrapTextBox ID="txtClassroomRedFlagsPossible" runat="server" NullText="N/O" OnValidation="TPITOSRedFlagNumbers_Validation">
                                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                                             <CssClasses Control="red-flag-possible" />
-                                                            <ClientSideEvents ValueChanged="calculateRedFlagPercentage" Validation="validateTPITOSRedFlagNumbers" />
+                                                            <ClientSideEvents ValueChanged="calculateRedFlagValues" Validation="validateTPITOSRedFlagNumbers" />
                                                             <MaskSettings Mask="999" PromptChar=" " ErrorText="Must be a valid number!" />
                                                             <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgTPITOS" EnableCustomValidation="true">
                                                                 <RequiredField IsRequired="false" ErrorText="Required" />
@@ -1105,6 +1268,22 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <tfoot>
+                                                <tr class="font-size-1-2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><label>Totals</label></td>
+                                                    <td>
+                                                        <label id="lblTotalRedFlagNumYes"></label>
+                                                    </td>
+                                                    <td>
+                                                        <label id="lblTotalRedFlagNumPossible"></label>
+                                                    </td>
+                                                    <td>
+                                                        <label id="lblTotalRedFlagPercentYes"></label>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -1118,7 +1297,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <dx:BootstrapListBox ID="lstBxRedFlags" runat="server" Caption="Types of Red Flags Observed" 
+                                        <dx:BootstrapListBox ID="lstBxRedFlags" runat="server" Caption="Types of Red Flags Observed" AllowCustomValues="true"
                                             SelectionMode="CheckColumn" EnableSelectAll="false"
                                             ValueField="CodeTPITOSRedFlagPK" ValueType="System.Int32" TextField="Description">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -1141,7 +1320,10 @@
         </asp:UpdatePanel>
     </div>
     <div class="page-footer">
-        <uc:Submit ID="submitTPITOS" runat="server" ValidationGroup="vgTPITOS" OnSubmitClick="submitTPITOS_Click" OnCancelClick="submitTPITOS_CancelClick" OnValidationFailed="submitTPITOS_ValidationFailed" />
+        <uc:Submit ID="submitTPITOS" runat="server" ValidationGroup="vgTPITOS"
+            ControlCssClass="center-content"
+            OnSubmitClick="submitTPITOS_Click" OnCancelClick="submitTPITOS_CancelClick" 
+            OnValidationFailed="submitTPITOS_ValidationFailed" />
     </div>
     <div class="modal" id="divDeleteTPITOSParticipantModal">
         <div class="modal-dialog">
