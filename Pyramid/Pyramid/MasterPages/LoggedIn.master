@@ -1,6 +1,7 @@
 ﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/Site.Master" AutoEventWireup="true" CodeBehind="LoggedIn.master.cs" Inherits="Pyramid.LoggedIn" %>
 
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register TagPrefix="uc" TagName="AutoLogoff" Src="~/User_Controls/AutoLogoff.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
@@ -25,43 +26,17 @@
     </asp:ContentPlaceHolder>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
-    <script>
-        $(document).ready(function () {
-            //Initialize the master page on page load
-            initializeMasterPage();
-
-            //Initialize the master page on AJAX postbacks
-            var requestManager = Sys.WebForms.PageRequestManager.getInstance();
-            requestManager.add_endRequest(initializeMasterPage);
-        });
-
-        function initializeMasterPage() {
-            //Start the auto logoff
-            startAutoLogoff();
-        }
-
-        function setViewOnlyVisibility() {
-            //Hide controls if this is a view
-            var isView = $('[ID$="hfViewOnly"]').val();
-            if (isView == 'True') {
-                $('.hide-on-view').addClass('hidden');
-            }
-            else {
-                $('.hide-on-view').removeClass('hidden');
-            }
-        }
-    </script>
     <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
     </asp:ContentPlaceHolder>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <nav id="navMain" class="navbar navbar-expand-lg bg-dark navbar-dark">
-        <a class="navbar-brand text-wrap" href="/Default.aspx" title="Return to default page">
-            <dx:BootstrapImage ID="bsImgLogo" runat="server" AlternateText="Site logo on navigation bar" ImageUrl="/Content/images/GenericLogo.png" Height="50" Width="100"></dx:BootstrapImage>
+        <a class="navbar-brand text-wrap p-0" href="/Default.aspx" title="Return to default page">
+            <dx:BootstrapImage ID="bsImgLogo" runat="server" AlternateText="Site logo on navigation bar" ImageUrl="/Content/images/CustomPIDSLogoSquare.png" Height="90px"></dx:BootstrapImage>
             <asp:Label ID="lblApplicationTitle" runat="server" Text=""></asp:Label>
         </a>
         <button class="navbar-toggler mt-2 mb-2" type="button" data-toggle="collapse" data-target="#divNavbarCollapse" aria-controls="divNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>&nbsp;Navigation Options
+            <span class="fas fa-bars"></span>&nbsp;Navigation Options
         </button>
         <div id="divNavbarCollapse" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto text-center">
@@ -70,9 +45,10 @@
                         Admin Menu
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="lnkAdminMenu">
-                        <a class="dropdown-item" href="/Admin/UserManagement.aspx" title="Manage Users"><i class="fas fa-users"></i>&nbsp;User Management</a>
-                        <a class="dropdown-item" href="/Admin/ProgramManagement.aspx" title="Manage programs, states, hubs, etc."><i class="fas fa-tasks"></i>&nbsp;Program Management</a>
-                        <a class="dropdown-item" href="/Admin/BulkTraining.aspx" title="Add large numbers of trainings for employees."><i class="fas fa-calendar-plus"></i>&nbsp;Bulk Training Addition</a>
+                        <a id="lnkUserManagement" runat="server" class="dropdown-item" href="/Admin/UserManagement.aspx" title="Manage Users"><i class="fas fa-users"></i>&nbsp;User Management</a>
+                        <a id="lnkProgramManagement" runat="server" class="dropdown-item" href="/Admin/ProgramManagement.aspx" title="Manage programs, hubs, cohorts, etc."><i class="fas fa-tasks"></i>&nbsp;Program Management</a>
+                        <a id="lnkBulkTraining" runat="server" class="dropdown-item" href="/Admin/BulkTraining.aspx" title="Add large numbers of trainings for Pyramid Model Professionals."><i class="fas fa-calendar-plus"></i>&nbsp;Bulk Training Addition</a>
+                        <a id="lnkStateSettings" runat="server" class="dropdown-item" href="/Pages/StateSettings.aspx" title=""><i class="fas fa-cog"></i>&nbsp;State Settings</a>
                         <a id="lnkReportCatalogMaintenance" runat="server" visible="false" class="dropdown-item" href="/Admin/ReportCatalogMaintenance.aspx" title="Maintain the report catalog"><i class="fas fa-tools"></i>&nbsp;Report Catalog Maintenance</a>
                         <a id="lnkReportDesigner" runat="server" visible="false" class="dropdown-item" href="/Reports/UserReports/ReportDesigner.aspx" title="Design custom reports"><i class="fas fa-ruler-combined"></i>&nbsp;Report Designer</a>
                         <a id="lnkErrorLog" runat="server" visible="false" class="dropdown-item" href="/Elmah.axd" target="_blank" title="View error log"><i class="fas fa-bug"></i>&nbsp;Error Log</a>
@@ -83,19 +59,24 @@
                         Dashboards
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="lnkDashboardMenu">
-                        <a class="dropdown-item" href="/Default.aspx" title="Return to home">Home</a>
-                        <a class="dropdown-item" href="/Pages/ASQSEDashboard.aspx" title="ASQ:SE Screenings">ASQ:SE Screenings</a>
-                        <a class="dropdown-item" href="/Pages/OtherSEScreenDashboard.aspx" title="Other Social Emotional Screenings">Other Social Emotional Screenings</a>
-                        <a class="dropdown-item" href="/Pages/BehaviorIncidentDashboard.aspx" title="Behavior Incident Reports">Behavior Incident Reports</a>
-                        <a class="dropdown-item" href="/Pages/BOQDashboard.aspx" title="Benchmarks Of Quality 2.0 Forms">Benchmarks Of Quality 2.0 Forms</a>
-                        <a class="dropdown-item" href="/Pages/BOQFCCDashboard.aspx" title="Benchmarks Of Quality FCC Forms">Benchmarks Of Quality FCC Forms</a>
-                        <a class="dropdown-item" href="/Pages/ChildrenDashboard.aspx" title="Children">Children</a>
-                        <a class="dropdown-item" href="/Pages/ClassroomDashboard.aspx" title="Classrooms">Classrooms</a>
-                        <a class="dropdown-item" href="/Pages/CoachingLogDashboard.aspx" title="Classroom Coaching Logs">Classroom Coaching Logs</a>
-                        <a class="dropdown-item" href="/Pages/ProgramEmployeeDashboard.aspx" title="Employees">Employees</a>
-                        <a class="dropdown-item" href="/Pages/TPITOSDashboard.aspx" title="TPITOS Observations">TPITOS Observations</a>
-                        <a class="dropdown-item" href="/Pages/TPOTDashboard.aspx" title="TPOT Observations">TPOT Observations</a>
-                        <a class="dropdown-item" href="/Pages/UploadedFiles.aspx" title="Uploaded Files">Uploaded Files</a>
+                        <a id="lnkHome" runat="server" class="dropdown-item" href="/Default.aspx" title="Return to home">Home</a>
+                        <a id="lnkASQSEDashboard" runat="server" class="dropdown-item" href="/Pages/ASQSEDashboard.aspx" title="ASQ:SE Screenings">ASQ:SE Screenings</a>
+                        <a id="lnkOSESDashboard" runat="server" class="dropdown-item" href="/Pages/OtherSEScreenDashboard.aspx" title="Other Social Emotional Assessments">Other Social Emotional Assessments</a>
+                        <a id="lnkBIRDashboard" runat="server" class="dropdown-item" href="/Pages/BehaviorIncidentDashboard.aspx" title="Behavior Incident Reports">Behavior Incident Reports</a>
+                        <a id="lnkBOQDashboard" runat="server" class="dropdown-item" href="/Pages/BOQDashboard.aspx" title="Benchmarks Of Quality 2.0 Forms">Benchmarks Of Quality 2.0 Forms</a>
+                        <a id="lnkBOQFCCDashboard" runat="server" class="dropdown-item" href="/Pages/BOQFCCDashboard.aspx" title="Benchmarks Of Quality FCC Forms">Benchmarks Of Quality FCC Forms</a>
+                        <a id="lnkChildDashboard" runat="server" class="dropdown-item" href="/Pages/ChildrenDashboard.aspx" title="Children">Children</a>
+                        <a id="lnkClassDashboard" runat="server" class="dropdown-item" href="/Pages/ClassroomDashboard.aspx" title="Classrooms">Classrooms</a>
+                        <a id="lnkCCLDashboard" runat="server" class="dropdown-item" href="/Pages/CoachingLogDashboard.aspx" title="Classroom Coaching Logs">Classroom Coaching Logs</a>
+                        <a id="lnkCWLTDashboard" runat="server" class="dropdown-item" href="/Pages/CWLTDashboard.aspx" title="Community Leadership Team">Community Leadership Team</a>
+                        <a id="lnkPEDashboard" runat="server" class="dropdown-item" href="/Pages/ProgramEmployeeDashboard.aspx" title="Pyramid Model Professionals">Pyramid Model Professionals</a>
+                        <a id="lnkLCDashboard" runat="server" class="dropdown-item" href="/Pages/LeadershipCoachDashboard.aspx" title="Leadership Coach Dashboard">Leadership Coach Dashboard</a>
+                        <a id="lnkMCDashboard" runat="server" class="dropdown-item" href="/Pages/MasterCadreDashboard.aspx" title="Master Cadre Dashboard">Master Cadre Dashboard</a>
+                        <a id="lnkPLTDashboard" runat="server" class="dropdown-item" href="/Pages/PLTDashboard.aspx" title="Program Leadership Team">Program Leadership Team</a>
+                        <a id="lnkSLTDashboard" runat="server" class="dropdown-item" href="/Pages/SLTDashboard.aspx" title="State Leadership Team">State Leadership Team</a>
+                        <a id="lnkTPITOSDashboard" runat="server" class="dropdown-item" href="/Pages/TPITOSDashboard.aspx" title="TPITOS Observations">TPITOS Observations</a>
+                        <a id="lnkTPOTDashboard" runat="server" class="dropdown-item" href="/Pages/TPOTDashboard.aspx" title="TPOT Observations">TPOT Observations</a>
+                        <a id="lnkULFDashboard" runat="server" class="dropdown-item" href="/Pages/UploadedFiles.aspx" title="Uploaded Files">Uploaded Files</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -137,6 +118,9 @@
         <div id="divTestSiteMessage" runat="server" class="alert alert-primary mt-2 text-center" visible="false">
             <i class="fas fa-info-circle"></i>&nbsp;This is a testing site, any information entered is subject to change or deletion without notice.
         </div>
+        <div id="divLockedProgram" runat="server" class="alert alert-warning mt-2 text-center" visible="false">
+            <i class="fas fa-exclamation-circle"></i>&nbsp;<asp:Label ID="lblLockedProgram" runat="server"></asp:Label>
+        </div>
         <div id="divMasterPageTitle" runat="server" class="mt-2">
             <h2><%: Page.Title %></h2>
             <hr />
@@ -149,34 +133,17 @@
                 <div class="row">
                     <div class="col text-center">
                         <p class="disclaimer"><asp:Literal ID="ltlStateDisclaimer" runat="server"></asp:Literal></p>
-                        <p>
-                            <a href="/SupportTicket.aspx" class="btn btn-loader btn-link w-100">
-                                <i class="fas fa-headset"></i>
-                                Submit a Support Ticket
-                            </a>
-                        </p>
-                        <p>&copy; <%: DateTime.Now.Year %> - Center for Human Services Research</p>
+                        <dx:BootstrapHyperLink ID="lnkConfidentiality" runat="server" Target="_blank" 
+                            NavigateUrl="/Pages/ViewFile.aspx" Text="User Agreement" 
+                            CssClasses-Control="btn btn-link m-2" CssClasses-Icon="fas fa-file-contract"></dx:BootstrapHyperLink>
+                        <a href="/SupportTicket.aspx" target="_blank" class="btn btn-link m-2">
+                            <i class="fas fa-headset"></i>
+                            Submit a Support Ticket
+                        </a>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
-    <div id="logWarning" class="modal fade">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Warning!</h4>
-                </div>
-                <div class="modal-body">
-                    <span>For security purposes, your session will expire in <span id="showSeconds">120</span> seconds</span>
-                    <br />
-                    <br />
-                    <span>Are you still there?</span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="resetTimer()"><i class="fas fa-check"></i> Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <uc:AutoLogoff ID="autoLogoff" runat="server" />
 </asp:Content>

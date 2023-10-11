@@ -15,12 +15,12 @@ namespace Pyramid.Models
     public partial class ScoreASQSE
     {
         public int ScoreASQSEPK { get; set; }
-        public int Version { get; set; }
-        public int MaxScore { get; set; }
         public int CutoffScore { get; set; }
-        public int IntervalCodeFK { get; set; }
+        public int MaxScore { get; set; }
         public int MonitoringScoreStart { get; set; }
         public int MonitoringScoreEnd { get; set; }
+        public int Version { get; set; }
+        public int IntervalCodeFK { get; set; }
     
         public virtual CodeASQSEInterval CodeASQSEInterval { get; set; }
     }

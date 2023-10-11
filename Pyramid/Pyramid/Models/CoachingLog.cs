@@ -14,6 +14,12 @@ namespace Pyramid.Models
     
     public partial class CoachingLog
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CoachingLog()
+        {
+            this.CoachingLogCoachees = new HashSet<CoachingLogCoachees>();
+        }
+    
         public int CoachingLogPK { get; set; }
         public string Creator { get; set; }
         public System.DateTime CreateDate { get; set; }
@@ -37,6 +43,7 @@ namespace Pyramid.Models
         public bool MEETReflectiveConversation { get; set; }
         public bool MEETRoleplay { get; set; }
         public bool MEETVideo { get; set; }
+        public string Narrative { get; set; }
         public bool OBSConductTPITOS { get; set; }
         public bool OBSConductTPOT { get; set; }
         public bool OBSEnvironment { get; set; }
@@ -50,11 +57,11 @@ namespace Pyramid.Models
         public bool OBSSideBySide { get; set; }
         public bool OBSVerbalSupport { get; set; }
         public int CoachFK { get; set; }
-        public int TeacherFK { get; set; }
         public int ProgramFK { get; set; }
     
         public virtual Program Program { get; set; }
-        public virtual ProgramEmployee Coach { get; set; }
-        public virtual ProgramEmployee Teacher { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CoachingLogCoachees> CoachingLogCoachees { get; set; }
+        public virtual ProgramEmployee ProgramEmployee { get; set; }
     }
 }

@@ -5,21 +5,48 @@ using Pyramid.Code;
 using Pyramid.Models;
 using System.Data.Entity;
 using Pyramid.MasterPages;
+using Pyramid.Reports.PreBuiltReports.MasterReports;
+using DevExpress.Web;
 
 namespace Pyramid.Pages
 {
-    public partial class ASQSE : System.Web.UI.Page
+    public partial class ASQSE : System.Web.UI.Page, IForm
     {
+        public string FormAbbreviation
+        {
+            get
+            {
+                return "ASQSE";
+            }
+        }
+
+        public CodeProgramRolePermission FormPermissions 
+        {
+            get 
+            {
+                return currentPermissions;
+            }
+            set
+            {
+                currentPermissions = value;
+            }
+        }
+
+        private CodeProgramRolePermission currentPermissions;
         private ProgramAndRoleFromSession currentProgramRole;
         private Models.ASQSE currentASQSE;
         private Models.ScoreASQSE currentScoreASQSE;
         private int currentASQSEPK = 0;
         private int currentProgramFK = 0;
+        private bool isEdit = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //Get the user's current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+
+            //Get the permission object
+            FormPermissions = Utilities.GetProgramRolePermissionsFromDatabase(FormAbbreviation, currentProgramRole.CodeProgramRoleFK.Value, currentProgramRole.IsProgramLocked.Value);
 
             //Get the ASQSE PK from the query string
             if (!string.IsNullOrWhiteSpace(Request.QueryString["ASQSEPK"]))
@@ -27,8 +54,17 @@ namespace Pyramid.Pages
                 int.TryParse(Request.QueryString["ASQSEPK"], out currentASQSEPK);
             }
 
+            //If the current PK is 0, try to get the value from the hidden field
+            if (currentASQSEPK == 0 && !string.IsNullOrWhiteSpace(hfASQSEPK.Value))
+            {
+                int.TryParse(hfASQSEPK.Value, out currentASQSEPK);
+            }
+
+            //Check to see if this is an edit
+            isEdit = currentASQSEPK > 0;
+
             //Don't allow aggregate viewers into this page
-            if(currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.AGGREGATE_DATA_VIEWER)
+            if(FormPermissions.AllowedToView == false)
             {
                 Response.Redirect("/Pages/ASQSEDashboard.aspx?messageType=NotAuthorized");
             }
@@ -68,16 +104,13 @@ namespace Pyramid.Pages
             }
 
             //Prevent users from viewing ASQSEs from other programs
-            if (currentASQSE.ASQSEPK > 0 && !currentProgramRole.ProgramFKs.Contains(currentASQSE.ProgramFK))
+            if (isEdit && !currentProgramRole.ProgramFKs.Contains(currentASQSE.ProgramFK))
             {
                 Response.Redirect(string.Format("/Pages/ASQSEDashboard.aspx?messageType={0}", "NOASQSE"));
             }
 
             //Get the proper program fk
-            currentProgramFK = (currentASQSE.ASQSEPK > 0 ? currentASQSE.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
-
-            //Set the max value for the form date
-            deFormDate.MaxDate = DateTime.Now;
+            currentProgramFK = (isEdit ? currentASQSE.ProgramFK : currentProgramRole.CurrentProgramFK.Value);
 
             if (!IsPostBack)
             {
@@ -88,7 +121,7 @@ namespace Pyramid.Pages
                 BindDropDowns();
 
                 //Check to see if this is an edit
-                if (currentASQSEPK > 0)
+                if (isEdit)
                 {
                     //This is an edit
                     //Populate the page
@@ -118,48 +151,51 @@ namespace Pyramid.Pages
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentASQSE.ASQSEPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (isEdit == false && action.ToLower() == "add" && FormPermissions.AllowedToAdd)
                 {
-                    //Show the submit button
-                    submitASQSE.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Add New ASQ:SE Screening";
                 }
-                else if (currentASQSE.ASQSEPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (isEdit == true && action.ToLower() == "edit" && FormPermissions.AllowedToEdit)
                 {
-                    //Show the submit button
-                    submitASQSE.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
                     //Enable page controls
                     EnableControls(true);
+
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Save and Download/Print";
 
                     //Set the page title
                     lblPageTitle.Text = "Edit ASQ:SE Screening";
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitASQSE.ShowSubmitButton = false;
-
                     //Hide certain controls
                     hfViewOnly.Value = "True";
 
                     //Disable page controls
                     EnableControls(false);
 
+                    //Set the print preview button text
+                    btnPrintPreview.Text = "Download/Print";
+
                     //Set the page title
                     lblPageTitle.Text = "View ASQ:SE Screening";
                 }
+
+                //Set the max value for the form date
+                deFormDate.MaxDate = DateTime.Now;
 
                 //Set focus to the form date field
                 deFormDate.Focus();
@@ -176,64 +212,14 @@ namespace Pyramid.Pages
         /// <param name="e">The Click event</param>
         protected void submitASQSE_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            //Save the form and get the success message type
+            string successMessageType = SaveForm(true);
+
+            //Only redirect if the save succeeded
+            if (!string.IsNullOrWhiteSpace(successMessageType))
             {
-                //To hold the success message type
-                string successMessageType = null;
-
-                //Fill the ASQSE fields from the form
-                currentASQSE.FormDate = Convert.ToDateTime(deFormDate.Value);
-                currentASQSE.HasDemographicInfoSheet = Convert.ToBoolean(ddDemographicSheet.Value);
-                currentASQSE.HasPhysicianInfoLetter = Convert.ToBoolean(ddPhysicianLetter.Value);
-                currentASQSE.ChildFK = Convert.ToInt32(ddChild.Value);
-                currentASQSE.TotalScore = Convert.ToInt32(txtTotalScore.Value);
-                currentASQSE.IntervalCodeFK = Convert.ToInt32(ddInterval.Value);
-                currentASQSE.Version = Convert.ToInt32(ddVersion.Value);
-
-                if (currentASQSEPK > 0)
-                {
-                    //This is an edit
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the success message
-                        successMessageType = "ASQSEEdited";
-
-                        //Set the edit-only fields
-                        currentASQSE.Editor = User.Identity.Name;
-                        currentASQSE.EditDate = DateTime.Now;
-
-                        //Get the existing ASQSE record
-                        Models.ASQSE existingASQ = context.ASQSE.Find(currentASQSE.ASQSEPK);
-
-                        //Overwrite the existing ASQSE record with the values from the form
-                        context.Entry(existingASQ).CurrentValues.SetValues(currentASQSE);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the ASQSE dashboard
-                    Response.Redirect(string.Format("/Pages/ASQSEDashboard.aspx?messageType={0}", successMessageType));
-                }
-                else
-                {
-                    //This is an add
-                    using (PyramidContext context = new PyramidContext())
-                    {
-                        //Set the success message
-                        successMessageType = "ASQSEAdded";
-
-                        //Set the create-only fields
-                        currentASQSE.Creator = User.Identity.Name;
-                        currentASQSE.CreateDate = DateTime.Now;
-                        currentASQSE.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
-
-                        //Add the ASQSE to the database
-                        context.ASQSE.Add(currentASQSE);
-                        context.SaveChanges();
-                    }
-
-                    //Redirect the user to the ASQSE dashboard
-                    Response.Redirect(string.Format("/Pages/ASQSEDashboard.aspx?messageType={0}", successMessageType));
-                }
+                //Redirect the user to the ASQSE dashboard
+                Response.Redirect(string.Format("/Pages/ASQSEDashboard.aspx?messageType={0}", successMessageType));
             }
         }
 
@@ -258,6 +244,36 @@ namespace Pyramid.Pages
         {
             //Tell the user that validation failed
             msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the print/download button
+        /// and it displays the form as a report
+        /// </summary>
+        /// <param name="sender">The btnPrintPreview LinkButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnPrintPreview_Click(object sender, EventArgs e)
+        {
+            //Make sure the validation succeeds
+            if (ASPxEdit.AreEditorsValid(this.Page, submitASQSE.ValidationGroup))
+            {
+                //Submit the form but don't show messages
+                SaveForm(false);
+
+                //Get the master page
+                MasterPages.Dashboard masterPage = (MasterPages.Dashboard)Master;
+
+                //Get the report
+                Reports.PreBuiltReports.FormReports.RptASQSE report = new Reports.PreBuiltReports.FormReports.RptASQSE();
+
+                //Display the report
+                masterPage.DisplayReport(currentProgramRole, report, "ASQ:SE Screening", currentASQSEPK);
+            }
+            else
+            {
+                //Tell the user that validation failed
+                msgSys.ShowMessageToUser("warning", "Validation Error(s)", "Validation failed, see above for details.", 22000);
+            }
         }
 
         #endregion
@@ -312,7 +328,7 @@ namespace Pyramid.Pages
         protected void ddChild_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Get the child pk and form date
-            int? childPK = (ddChild.Value == null ? (int?)null : Convert.ToInt32(ddChild.SelectedItem.Value));
+            int? childPK = (ddChild.Value == null ? (int?)null : Convert.ToInt32(ddChild.Value));
             DateTime? formDate = (deFormDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deFormDate.Value));
 
             if (childPK.HasValue && formDate.HasValue)
@@ -411,7 +427,7 @@ namespace Pyramid.Pages
         private void BindDropDowns()
         {
             //Bind the child and interval dropdowns
-            if (currentASQSE.ASQSEPK > 0)
+            if (isEdit)
             {
                 //If this is an edit, use the program fk from the behavior incident's classroom to filter
                 BindChildDropDown(currentASQSE.FormDate, currentProgramFK, currentASQSE.ChildFK);
@@ -448,8 +464,9 @@ namespace Pyramid.Pages
                                       select new
                                       {
                                           c.ChildPK,
-                                          IdAndName = "(" + cp.ProgramSpecificID + ") "
-                                            + c.FirstName + " " + c.LastName
+                                          IdAndName = (currentProgramRole.ViewPrivateChildInfo.Value ? 
+                                                "(" + cp.ProgramSpecificID + ") " + c.FirstName + " " + c.LastName :
+                                                cp.ProgramSpecificID)
 
                                       };
 
@@ -527,9 +544,96 @@ namespace Pyramid.Pages
             ddVersion.ClientEnabled = enabled;
             ddInterval.ClientEnabled = enabled;
             txtTotalScore.ClientEnabled = enabled;
-            submitASQSE.ShowSubmitButton = enabled;
             ddDemographicSheet.ClientEnabled = enabled;
             ddPhysicianLetter.ClientEnabled = enabled;
+
+            //Show/hide the submit button
+            submitASQSE.ShowSubmitButton = enabled;
+
+            //Use cancel confirmation if the controls are enabled and
+            //the customization option for cancel confirmation is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            submitASQSE.UseCancelConfirm = enabled && areConfirmationsEnabled;
+        }
+
+        /// <summary>
+        /// This method populates and saves the form
+        /// </summary>
+        /// <param name="showMessages">Whether to show messages from the save</param>
+        /// <returns>The success message type, null if the save failed</returns>
+        private string SaveForm(bool showMessages)
+        {
+            //To hold the success message type
+            string successMessageType = null;
+
+            //Determine if the user is allowed to save the form
+            if ((isEdit && FormPermissions.AllowedToEdit) || (isEdit == false && FormPermissions.AllowedToAdd))
+            {
+                //Fill the ASQSE fields from the form
+                currentASQSE.FormDate = Convert.ToDateTime(deFormDate.Value);
+                currentASQSE.HasDemographicInfoSheet = Convert.ToBoolean(ddDemographicSheet.Value);
+                currentASQSE.HasPhysicianInfoLetter = Convert.ToBoolean(ddPhysicianLetter.Value);
+                currentASQSE.ChildFK = Convert.ToInt32(ddChild.Value);
+                currentASQSE.TotalScore = Convert.ToInt32(txtTotalScore.Value);
+                currentASQSE.IntervalCodeFK = Convert.ToInt32(ddInterval.Value);
+                currentASQSE.Version = Convert.ToInt32(ddVersion.Value);
+
+                //Check to see if this is an add or edit
+                if (isEdit)
+                {
+                    //Set the success message
+                    successMessageType = "ASQSEEdited";
+
+                    //This is an edit
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the edit-only fields
+                        currentASQSE.Editor = User.Identity.Name;
+                        currentASQSE.EditDate = DateTime.Now;
+
+                        //Get the existing ASQSE record
+                        Models.ASQSE existingASQ = context.ASQSE.Find(currentASQSE.ASQSEPK);
+
+                        //Overwrite the existing ASQSE record with the values from the form
+                        context.Entry(existingASQ).CurrentValues.SetValues(currentASQSE);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfASQSEPK.Value = currentASQSE.ASQSEPK.ToString();
+                        currentASQSEPK = currentASQSE.ASQSEPK;
+                    }
+                }
+                else
+                {
+                    //Set the success message
+                    successMessageType = "ASQSEAdded";
+
+                    //This is an add
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        //Set the create-only fields
+                        currentASQSE.Creator = User.Identity.Name;
+                        currentASQSE.CreateDate = DateTime.Now;
+                        currentASQSE.ProgramFK = currentProgramRole.CurrentProgramFK.Value;
+
+                        //Add the ASQSE to the database
+                        context.ASQSE.Add(currentASQSE);
+                        context.SaveChanges();
+
+                        //Set the hidden field and local variable
+                        hfASQSEPK.Value = currentASQSE.ASQSEPK.ToString();
+                        currentASQSEPK = currentASQSE.ASQSEPK;
+                    }
+                }
+            }
+            else if(showMessages)
+            {
+                msgSys.ShowMessageToUser("danger", "Error", "You are not authorized to make changes!", 120000);
+            }
+
+            //Return the success message
+            return successMessageType;
         }
 
         /// <summary>
@@ -553,7 +657,7 @@ namespace Pyramid.Pages
 
                 //Display the child's age
                 lblAge.Text = ageMonths.ToString("0.##") + " months old";
-                lblAge.Visible = true;
+                lblAge.Visible = currentProgramRole.ViewPrivateChildInfo.Value;
             }
         }
 

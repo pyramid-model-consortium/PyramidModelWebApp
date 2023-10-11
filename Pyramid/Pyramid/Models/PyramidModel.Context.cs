@@ -27,78 +27,3181 @@ namespace Pyramid.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AspireAPIAudit> AspireAPIAudit { get; set; }
+        public virtual DbSet<AspireReliability> AspireReliability { get; set; }
+        public virtual DbSet<AspireTraining> AspireTraining { get; set; }
+        public virtual DbSet<AspireTrainingCrosswalk> AspireTrainingCrosswalk { get; set; }
         public virtual DbSet<ASQSE> ASQSE { get; set; }
+        public virtual DbSet<ASQSEChanged> ASQSEChanged { get; set; }
         public virtual DbSet<BehaviorIncident> BehaviorIncident { get; set; }
+        public virtual DbSet<BehaviorIncidentChanged> BehaviorIncidentChanged { get; set; }
         public virtual DbSet<BenchmarkOfQuality> BenchmarkOfQuality { get; set; }
+        public virtual DbSet<BenchmarkOfQualityChanged> BenchmarkOfQualityChanged { get; set; }
+        public virtual DbSet<BenchmarkOfQualityCWLT> BenchmarkOfQualityCWLT { get; set; }
+        public virtual DbSet<BenchmarkOfQualityCWLTChanged> BenchmarkOfQualityCWLTChanged { get; set; }
         public virtual DbSet<BenchmarkOfQualityFCC> BenchmarkOfQualityFCC { get; set; }
+        public virtual DbSet<BenchmarkOfQualityFCCChanged> BenchmarkOfQualityFCCChanged { get; set; }
+        public virtual DbSet<BenchmarkOfQualitySLT> BenchmarkOfQualitySLT { get; set; }
+        public virtual DbSet<BenchmarkOfQualitySLTChanged> BenchmarkOfQualitySLTChanged { get; set; }
+        public virtual DbSet<BOQCWLTParticipant> BOQCWLTParticipant { get; set; }
+        public virtual DbSet<BOQCWLTParticipantChanged> BOQCWLTParticipantChanged { get; set; }
+        public virtual DbSet<BOQSLTParticipant> BOQSLTParticipant { get; set; }
+        public virtual DbSet<BOQSLTParticipantChanged> BOQSLTParticipantChanged { get; set; }
         public virtual DbSet<Child> Child { get; set; }
+        public virtual DbSet<ChildChanged> ChildChanged { get; set; }
         public virtual DbSet<ChildClassroom> ChildClassroom { get; set; }
+        public virtual DbSet<ChildClassroomChanged> ChildClassroomChanged { get; set; }
         public virtual DbSet<ChildNote> ChildNote { get; set; }
+        public virtual DbSet<ChildNoteChanged> ChildNoteChanged { get; set; }
         public virtual DbSet<ChildProgram> ChildProgram { get; set; }
+        public virtual DbSet<ChildProgramChanged> ChildProgramChanged { get; set; }
         public virtual DbSet<ChildStatus> ChildStatus { get; set; }
+        public virtual DbSet<ChildStatusChanged> ChildStatusChanged { get; set; }
         public virtual DbSet<Classroom> Classroom { get; set; }
+        public virtual DbSet<ClassroomChanged> ClassroomChanged { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebrief> CoachingCircleLCMeetingDebrief { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefChanged> CoachingCircleLCMeetingDebriefChanged { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefSession> CoachingCircleLCMeetingDebriefSession { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefSessionAttendee> CoachingCircleLCMeetingDebriefSessionAttendee { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefSessionAttendeeChanged> CoachingCircleLCMeetingDebriefSessionAttendeeChanged { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefSessionChanged> CoachingCircleLCMeetingDebriefSessionChanged { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefTeamMember> CoachingCircleLCMeetingDebriefTeamMember { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingDebriefTeamMemberChanged> CoachingCircleLCMeetingDebriefTeamMemberChanged { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingSchedule> CoachingCircleLCMeetingSchedule { get; set; }
+        public virtual DbSet<CoachingCircleLCMeetingScheduleChanged> CoachingCircleLCMeetingScheduleChanged { get; set; }
+        public virtual DbSet<CodeActionPlanActionStepStatus> CodeActionPlanActionStepStatus { get; set; }
         public virtual DbSet<CodeActivity> CodeActivity { get; set; }
         public virtual DbSet<CodeAdminFollowUp> CodeAdminFollowUp { get; set; }
         public virtual DbSet<CodeASQSEInterval> CodeASQSEInterval { get; set; }
+        public virtual DbSet<CodeBOQCriticalElement> CodeBOQCriticalElement { get; set; }
+        public virtual DbSet<CodeBOQIndicator> CodeBOQIndicator { get; set; }
+        public virtual DbSet<CodeBOQIndicatorValue> CodeBOQIndicatorValue { get; set; }
+        public virtual DbSet<CodeBOQType> CodeBOQType { get; set; }
         public virtual DbSet<CodeChildLeaveReason> CodeChildLeaveReason { get; set; }
         public virtual DbSet<CodeChildStatus> CodeChildStatus { get; set; }
+        public virtual DbSet<CodeCoachingLog> CodeCoachingLog { get; set; }
+        public virtual DbSet<CodeCustomizationOptionType> CodeCustomizationOptionType { get; set; }
+        public virtual DbSet<CodeCustomizationOptionValue> CodeCustomizationOptionValue { get; set; }
         public virtual DbSet<CodeDischargeReason> CodeDischargeReason { get; set; }
+        public virtual DbSet<CodeEmployeeLeaveReason> CodeEmployeeLeaveReason { get; set; }
+        public virtual DbSet<CodeEssentialStrategiesUsed> CodeEssentialStrategiesUsed { get; set; }
         public virtual DbSet<CodeEthnicity> CodeEthnicity { get; set; }
         public virtual DbSet<CodeFileUploadType> CodeFileUploadType { get; set; }
+        public virtual DbSet<CodeForm> CodeForm { get; set; }
         public virtual DbSet<CodeGender> CodeGender { get; set; }
+        public virtual DbSet<CodeHouseholdIncome> CodeHouseholdIncome { get; set; }
+        public virtual DbSet<CodeJobType> CodeJobType { get; set; }
+        public virtual DbSet<CodeMasterCadreFundingSource> CodeMasterCadreFundingSource { get; set; }
+        public virtual DbSet<CodeMeetingFormat> CodeMeetingFormat { get; set; }
+        public virtual DbSet<CodeNewsEntryType> CodeNewsEntryType { get; set; }
         public virtual DbSet<CodeOthersInvolved> CodeOthersInvolved { get; set; }
         public virtual DbSet<CodeParticipantType> CodeParticipantType { get; set; }
         public virtual DbSet<CodePossibleMotivation> CodePossibleMotivation { get; set; }
         public virtual DbSet<CodeProblemBehavior> CodeProblemBehavior { get; set; }
+        public virtual DbSet<CodeProgramRole> CodeProgramRole { get; set; }
+        public virtual DbSet<CodeProgramRolePermission> CodeProgramRolePermission { get; set; }
+        public virtual DbSet<CodeProgramStatus> CodeProgramStatus { get; set; }
         public virtual DbSet<CodeProgramType> CodeProgramType { get; set; }
         public virtual DbSet<CodeRace> CodeRace { get; set; }
+        public virtual DbSet<CodeReportCriteriaDefault> CodeReportCriteriaDefault { get; set; }
+        public virtual DbSet<CodeReportCriteriaOption> CodeReportCriteriaOption { get; set; }
         public virtual DbSet<CodeScoreType> CodeScoreType { get; set; }
         public virtual DbSet<CodeScreenType> CodeScreenType { get; set; }
         public virtual DbSet<CodeStrategyResponse> CodeStrategyResponse { get; set; }
+        public virtual DbSet<CodeTeamPosition> CodeTeamPosition { get; set; }
         public virtual DbSet<CodeTermReason> CodeTermReason { get; set; }
-        public virtual DbSet<Cohort> Cohort { get; set; }
-        public virtual DbSet<ELMAH_Error> ELMAH_Error { get; set; }
-        public virtual DbSet<Hub> Hub { get; set; }
-        public virtual DbSet<JobFunction> JobFunction { get; set; }
-        public virtual DbSet<LoginHistory> LoginHistory { get; set; }
-        public virtual DbSet<Program> Program { get; set; }
-        public virtual DbSet<ProgramType> ProgramType { get; set; }
-        public virtual DbSet<ScoreASQSE> ScoreASQSE { get; set; }
-        public virtual DbSet<State> State { get; set; }
-        public virtual DbSet<Training> Training { get; set; }
-        public virtual DbSet<CodeJobType> CodeJobType { get; set; }
-        public virtual DbSet<OtherSEScreen> OtherSEScreen { get; set; }
-        public virtual DbSet<CodeProgramRole> CodeProgramRole { get; set; }
-        public virtual DbSet<UserProgramRole> UserProgramRole { get; set; }
-        public virtual DbSet<CodeTPITOSRedFlag> CodeTPITOSRedFlag { get; set; }
-        public virtual DbSet<CodeTPOTRedFlag> CodeTPOTRedFlag { get; set; }
-        public virtual DbSet<TPITOSRedFlags> TPITOSRedFlags { get; set; }
-        public virtual DbSet<TPOTRedFlags> TPOTRedFlags { get; set; }
-        public virtual DbSet<CoachingLog> CoachingLog { get; set; }
-        public virtual DbSet<CodeTPOTBehaviorResponse> CodeTPOTBehaviorResponse { get; set; }
-        public virtual DbSet<TPOTBehaviorResponses> TPOTBehaviorResponses { get; set; }
-        public virtual DbSet<TPITOSParticipant> TPITOSParticipant { get; set; }
-        public virtual DbSet<TPOTParticipant> TPOTParticipant { get; set; }
-        public virtual DbSet<ReportCatalog> ReportCatalog { get; set; }
-        public virtual DbSet<CodeReportCriteriaDefault> CodeReportCriteriaDefault { get; set; }
-        public virtual DbSet<CodeReportCriteriaOption> CodeReportCriteriaOption { get; set; }
-        public virtual DbSet<CodeEssentialStrategiesUsed> CodeEssentialStrategiesUsed { get; set; }
-        public virtual DbSet<TPITOS> TPITOS { get; set; }
-        public virtual DbSet<TPOT> TPOT { get; set; }
-        public virtual DbSet<CodeNewsEntryType> CodeNewsEntryType { get; set; }
-        public virtual DbSet<NewsItem> NewsItem { get; set; }
-        public virtual DbSet<NewsEntry> NewsEntry { get; set; }
-        public virtual DbSet<UserFileUpload> UserFileUpload { get; set; }
         public virtual DbSet<CodeTPITOSKeyPractice> CodeTPITOSKeyPractice { get; set; }
+        public virtual DbSet<CodeTPITOSRedFlag> CodeTPITOSRedFlag { get; set; }
+        public virtual DbSet<CodeTPOTBehaviorResponse> CodeTPOTBehaviorResponse { get; set; }
         public virtual DbSet<CodeTPOTKeyPractice> CodeTPOTKeyPractice { get; set; }
-        public virtual DbSet<CodeCoachingLog> CodeCoachingLog { get; set; }
-        public virtual DbSet<CodeCustomizationOptionType> CodeCustomizationOptionType { get; set; }
-        public virtual DbSet<CodeCustomizationOptionValue> CodeCustomizationOptionValue { get; set; }
-        public virtual DbSet<UserCustomizationOption> UserCustomizationOption { get; set; }
-        public virtual DbSet<CodeEmployeeLeaveReason> CodeEmployeeLeaveReason { get; set; }
-        public virtual DbSet<EmployeeClassroom> EmployeeClassroom { get; set; }
-        public virtual DbSet<ProgramEmployee> ProgramEmployee { get; set; }
+        public virtual DbSet<CodeTPOTRedFlag> CodeTPOTRedFlag { get; set; }
         public virtual DbSet<CodeTraining> CodeTraining { get; set; }
+        public virtual DbSet<CodeTrainingAccess> CodeTrainingAccess { get; set; }
+        public virtual DbSet<Cohort> Cohort { get; set; }
+        public virtual DbSet<CohortChanged> CohortChanged { get; set; }
+        public virtual DbSet<ConfidentialityAgreement> ConfidentialityAgreement { get; set; }
+        public virtual DbSet<CWLTActionPlan> CWLTActionPlan { get; set; }
+        public virtual DbSet<CWLTActionPlanActionStep> CWLTActionPlanActionStep { get; set; }
+        public virtual DbSet<CWLTActionPlanActionStepChanged> CWLTActionPlanActionStepChanged { get; set; }
+        public virtual DbSet<CWLTActionPlanActionStepStatus> CWLTActionPlanActionStepStatus { get; set; }
+        public virtual DbSet<CWLTActionPlanActionStepStatusChanged> CWLTActionPlanActionStepStatusChanged { get; set; }
+        public virtual DbSet<CWLTActionPlanChanged> CWLTActionPlanChanged { get; set; }
+        public virtual DbSet<CWLTActionPlanGroundRule> CWLTActionPlanGroundRule { get; set; }
+        public virtual DbSet<CWLTActionPlanGroundRuleChanged> CWLTActionPlanGroundRuleChanged { get; set; }
+        public virtual DbSet<CWLTActionPlanMeeting> CWLTActionPlanMeeting { get; set; }
+        public virtual DbSet<CWLTActionPlanMeetingChanged> CWLTActionPlanMeetingChanged { get; set; }
+        public virtual DbSet<CWLTAgency> CWLTAgency { get; set; }
+        public virtual DbSet<CWLTAgencyChanged> CWLTAgencyChanged { get; set; }
+        public virtual DbSet<CWLTAgencyType> CWLTAgencyType { get; set; }
+        public virtual DbSet<CWLTAgencyTypeChanged> CWLTAgencyTypeChanged { get; set; }
+        public virtual DbSet<CWLTMember> CWLTMember { get; set; }
+        public virtual DbSet<CWLTMemberAgencyAssignment> CWLTMemberAgencyAssignment { get; set; }
+        public virtual DbSet<CWLTMemberAgencyAssignmentChanged> CWLTMemberAgencyAssignmentChanged { get; set; }
+        public virtual DbSet<CWLTMemberChanged> CWLTMemberChanged { get; set; }
+        public virtual DbSet<CWLTMemberRole> CWLTMemberRole { get; set; }
+        public virtual DbSet<CWLTMemberRoleChanged> CWLTMemberRoleChanged { get; set; }
+        public virtual DbSet<ELMAH_Error> ELMAH_Error { get; set; }
+        public virtual DbSet<FormDueDate> FormDueDate { get; set; }
+        public virtual DbSet<FormDueDateChanged> FormDueDateChanged { get; set; }
+        public virtual DbSet<Hub> Hub { get; set; }
+        public virtual DbSet<HubChanged> HubChanged { get; set; }
+        public virtual DbSet<HubLCMeetingDebrief> HubLCMeetingDebrief { get; set; }
+        public virtual DbSet<HubLCMeetingDebriefChanged> HubLCMeetingDebriefChanged { get; set; }
+        public virtual DbSet<HubLCMeetingDebriefSession> HubLCMeetingDebriefSession { get; set; }
+        public virtual DbSet<HubLCMeetingDebriefSessionAttendee> HubLCMeetingDebriefSessionAttendee { get; set; }
+        public virtual DbSet<HubLCMeetingDebriefSessionAttendeeChanged> HubLCMeetingDebriefSessionAttendeeChanged { get; set; }
+        public virtual DbSet<HubLCMeetingDebriefSessionChanged> HubLCMeetingDebriefSessionChanged { get; set; }
+        public virtual DbSet<HubLCMeetingSchedule> HubLCMeetingSchedule { get; set; }
+        public virtual DbSet<HubLCMeetingScheduleChanged> HubLCMeetingScheduleChanged { get; set; }
+        public virtual DbSet<JobFunction> JobFunction { get; set; }
+        public virtual DbSet<JobFunctionChanged> JobFunctionChanged { get; set; }
+        public virtual DbSet<LoginHistory> LoginHistory { get; set; }
+        public virtual DbSet<NewsEntry> NewsEntry { get; set; }
+        public virtual DbSet<NewsEntryChanged> NewsEntryChanged { get; set; }
+        public virtual DbSet<NewsItem> NewsItem { get; set; }
+        public virtual DbSet<NewsItemChanged> NewsItemChanged { get; set; }
+        public virtual DbSet<OtherSEScreen> OtherSEScreen { get; set; }
+        public virtual DbSet<OtherSEScreenChanged> OtherSEScreenChanged { get; set; }
+        public virtual DbSet<PLTMember> PLTMember { get; set; }
+        public virtual DbSet<PLTMemberChanged> PLTMemberChanged { get; set; }
+        public virtual DbSet<PLTMemberRole> PLTMemberRole { get; set; }
+        public virtual DbSet<PLTMemberRoleChanged> PLTMemberRoleChanged { get; set; }
+        public virtual DbSet<Program> Program { get; set; }
+        public virtual DbSet<ProgramActionPlan> ProgramActionPlan { get; set; }
+        public virtual DbSet<ProgramActionPlanActionStep> ProgramActionPlanActionStep { get; set; }
+        public virtual DbSet<ProgramActionPlanActionStepChanged> ProgramActionPlanActionStepChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanActionStepStatus> ProgramActionPlanActionStepStatus { get; set; }
+        public virtual DbSet<ProgramActionPlanActionStepStatusChanged> ProgramActionPlanActionStepStatusChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanChanged> ProgramActionPlanChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanFCC> ProgramActionPlanFCC { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCActionStep> ProgramActionPlanFCCActionStep { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCActionStepChanged> ProgramActionPlanFCCActionStepChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCActionStepStatus> ProgramActionPlanFCCActionStepStatus { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCActionStepStatusChanged> ProgramActionPlanFCCActionStepStatusChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCChanged> ProgramActionPlanFCCChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCGroundRule> ProgramActionPlanFCCGroundRule { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCGroundRuleChanged> ProgramActionPlanFCCGroundRuleChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCMeeting> ProgramActionPlanFCCMeeting { get; set; }
+        public virtual DbSet<ProgramActionPlanFCCMeetingChanged> ProgramActionPlanFCCMeetingChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanGroundRule> ProgramActionPlanGroundRule { get; set; }
+        public virtual DbSet<ProgramActionPlanGroundRuleChanged> ProgramActionPlanGroundRuleChanged { get; set; }
+        public virtual DbSet<ProgramActionPlanMeeting> ProgramActionPlanMeeting { get; set; }
+        public virtual DbSet<ProgramActionPlanMeetingChanged> ProgramActionPlanMeetingChanged { get; set; }
+        public virtual DbSet<ProgramChanged> ProgramChanged { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebrief> ProgramLCMeetingDebrief { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebriefChanged> ProgramLCMeetingDebriefChanged { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebriefSession> ProgramLCMeetingDebriefSession { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebriefSessionAttendee> ProgramLCMeetingDebriefSessionAttendee { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebriefSessionAttendeeChanged> ProgramLCMeetingDebriefSessionAttendeeChanged { get; set; }
+        public virtual DbSet<ProgramLCMeetingDebriefSessionChanged> ProgramLCMeetingDebriefSessionChanged { get; set; }
+        public virtual DbSet<ProgramLCMeetingSchedule> ProgramLCMeetingSchedule { get; set; }
+        public virtual DbSet<ProgramLCMeetingScheduleChanged> ProgramLCMeetingScheduleChanged { get; set; }
+        public virtual DbSet<ProgramStatus> ProgramStatus { get; set; }
+        public virtual DbSet<ProgramStatusChanged> ProgramStatusChanged { get; set; }
+        public virtual DbSet<ProgramType> ProgramType { get; set; }
+        public virtual DbSet<ProgramTypeChanged> ProgramTypeChanged { get; set; }
+        public virtual DbSet<ReportCatalog> ReportCatalog { get; set; }
+        public virtual DbSet<ScoreASQSE> ScoreASQSE { get; set; }
+        public virtual DbSet<SLTActionPlan> SLTActionPlan { get; set; }
+        public virtual DbSet<SLTActionPlanActionStep> SLTActionPlanActionStep { get; set; }
+        public virtual DbSet<SLTActionPlanActionStepChanged> SLTActionPlanActionStepChanged { get; set; }
+        public virtual DbSet<SLTActionPlanActionStepStatus> SLTActionPlanActionStepStatus { get; set; }
+        public virtual DbSet<SLTActionPlanActionStepStatusChanged> SLTActionPlanActionStepStatusChanged { get; set; }
+        public virtual DbSet<SLTActionPlanChanged> SLTActionPlanChanged { get; set; }
+        public virtual DbSet<SLTActionPlanGroundRule> SLTActionPlanGroundRule { get; set; }
+        public virtual DbSet<SLTActionPlanGroundRuleChanged> SLTActionPlanGroundRuleChanged { get; set; }
+        public virtual DbSet<SLTActionPlanMeeting> SLTActionPlanMeeting { get; set; }
+        public virtual DbSet<SLTActionPlanMeetingChanged> SLTActionPlanMeetingChanged { get; set; }
+        public virtual DbSet<SLTAgency> SLTAgency { get; set; }
+        public virtual DbSet<SLTAgencyChanged> SLTAgencyChanged { get; set; }
+        public virtual DbSet<SLTMember> SLTMember { get; set; }
+        public virtual DbSet<SLTMemberAgencyAssignment> SLTMemberAgencyAssignment { get; set; }
+        public virtual DbSet<SLTMemberAgencyAssignmentChanged> SLTMemberAgencyAssignmentChanged { get; set; }
+        public virtual DbSet<SLTMemberChanged> SLTMemberChanged { get; set; }
+        public virtual DbSet<SLTMemberRole> SLTMemberRole { get; set; }
+        public virtual DbSet<SLTMemberRoleChanged> SLTMemberRoleChanged { get; set; }
+        public virtual DbSet<SLTMemberWorkGroupAssignment> SLTMemberWorkGroupAssignment { get; set; }
+        public virtual DbSet<SLTMemberWorkGroupAssignmentChanged> SLTMemberWorkGroupAssignmentChanged { get; set; }
+        public virtual DbSet<SLTWorkGroup> SLTWorkGroup { get; set; }
+        public virtual DbSet<SLTWorkGroupChanged> SLTWorkGroupChanged { get; set; }
+        public virtual DbSet<State> State { get; set; }
+        public virtual DbSet<StateSettings> StateSettings { get; set; }
+        public virtual DbSet<StateSettingsChanged> StateSettingsChanged { get; set; }
+        public virtual DbSet<TPITOS> TPITOS { get; set; }
+        public virtual DbSet<TPITOSChanged> TPITOSChanged { get; set; }
+        public virtual DbSet<TPITOSParticipant> TPITOSParticipant { get; set; }
+        public virtual DbSet<TPITOSParticipantChanged> TPITOSParticipantChanged { get; set; }
+        public virtual DbSet<TPITOSRedFlags> TPITOSRedFlags { get; set; }
+        public virtual DbSet<TPITOSRedFlagsChanged> TPITOSRedFlagsChanged { get; set; }
+        public virtual DbSet<TPOT> TPOT { get; set; }
+        public virtual DbSet<TPOTBehaviorResponses> TPOTBehaviorResponses { get; set; }
+        public virtual DbSet<TPOTBehaviorResponsesChanged> TPOTBehaviorResponsesChanged { get; set; }
+        public virtual DbSet<TPOTChanged> TPOTChanged { get; set; }
+        public virtual DbSet<TPOTParticipant> TPOTParticipant { get; set; }
+        public virtual DbSet<TPOTParticipantChanged> TPOTParticipantChanged { get; set; }
+        public virtual DbSet<TPOTRedFlags> TPOTRedFlags { get; set; }
+        public virtual DbSet<TPOTRedFlagsChanged> TPOTRedFlagsChanged { get; set; }
+        public virtual DbSet<UnmatchedAspireTraining> UnmatchedAspireTraining { get; set; }
+        public virtual DbSet<UserCustomizationOption> UserCustomizationOption { get; set; }
+        public virtual DbSet<UserFileUpload> UserFileUpload { get; set; }
+        public virtual DbSet<UserFileUploadChanged> UserFileUploadChanged { get; set; }
+        public virtual DbSet<UserProgramRole> UserProgramRole { get; set; }
+        public virtual DbSet<UserProgramRoleChanged> UserProgramRoleChanged { get; set; }
+        public virtual DbSet<UserReportHistory> UserReportHistory { get; set; }
+        public virtual DbSet<BOQCWLTView> BOQCWLTView { get; set; }
+        public virtual DbSet<BOQSLTView> BOQSLTView { get; set; }
+        public virtual DbSet<LCMeetingDebriefView> LCMeetingDebriefView { get; set; }
+        public virtual DbSet<LCMeetingScheduleView> LCMeetingScheduleView { get; set; }
+        public virtual DbSet<CoachingLog> CoachingLog { get; set; }
+        public virtual DbSet<CoachingLogChanged> CoachingLogChanged { get; set; }
+        public virtual DbSet<CoachingLogCoachees> CoachingLogCoachees { get; set; }
+        public virtual DbSet<CoachingLogCoacheesChanged> CoachingLogCoacheesChanged { get; set; }
+        public virtual DbSet<ProgramAddress> ProgramAddress { get; set; }
+        public virtual DbSet<ProgramAddressChanged> ProgramAddressChanged { get; set; }
+        public virtual DbSet<CodeLCLResponse> CodeLCLResponse { get; set; }
+        public virtual DbSet<FormSchedule> FormSchedule { get; set; }
+        public virtual DbSet<FormScheduleChanged> FormScheduleChanged { get; set; }
+        public virtual DbSet<LCLInvolvedCoach> LCLInvolvedCoach { get; set; }
+        public virtual DbSet<LCLInvolvedCoachChanged> LCLInvolvedCoachChanged { get; set; }
+        public virtual DbSet<LCLResponse> LCLResponse { get; set; }
+        public virtual DbSet<LCLResponseChanged> LCLResponseChanged { get; set; }
+        public virtual DbSet<LCLTeamMemberEngagement> LCLTeamMemberEngagement { get; set; }
+        public virtual DbSet<LCLTeamMemberEngagementChanged> LCLTeamMemberEngagementChanged { get; set; }
+        public virtual DbSet<LeadershipCoachLog> LeadershipCoachLog { get; set; }
+        public virtual DbSet<LeadershipCoachLogChanged> LeadershipCoachLogChanged { get; set; }
+        public virtual DbSet<CodeMasterCadreActivity> CodeMasterCadreActivity { get; set; }
+        public virtual DbSet<MasterCadreTrainingTrackerItemDate> MasterCadreTrainingTrackerItemDate { get; set; }
+        public virtual DbSet<MasterCadreTrainingTrackerItemDateChanged> MasterCadreTrainingTrackerItemDateChanged { get; set; }
+        public virtual DbSet<MasterCadreTrainingDebrief> MasterCadreTrainingDebrief { get; set; }
+        public virtual DbSet<MasterCadreTrainingTrackerItem> MasterCadreTrainingTrackerItem { get; set; }
+        public virtual DbSet<Employee> Employee { get; set; }
+        public virtual DbSet<EmployeeChanged> EmployeeChanged { get; set; }
+        public virtual DbSet<ProgramEmployee> ProgramEmployee { get; set; }
+        public virtual DbSet<ProgramEmployeeChanged> ProgramEmployeeChanged { get; set; }
+        public virtual DbSet<Training> Training { get; set; }
+        public virtual DbSet<TrainingChanged> TrainingChanged { get; set; }
+        public virtual DbSet<EmployeeClassroomChanged> EmployeeClassroomChanged { get; set; }
+        public virtual DbSet<EmployeeClassroom> EmployeeClassroom { get; set; }
+        public virtual DbSet<MasterCadreTrainingDebriefChanged> MasterCadreTrainingDebriefChanged { get; set; }
+        public virtual DbSet<MasterCadreTrainingTrackerItemChanged> MasterCadreTrainingTrackerItemChanged { get; set; }
+    
+        public virtual ObjectResult<string> ELMAH_GetErrorsXml(string application, Nullable<int> pageIndex, Nullable<int> pageSize, ObjectParameter totalCount)
+        {
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ELMAH_GetErrorsXml", applicationParameter, pageIndexParameter, pageSizeParameter, totalCount);
+        }
+    
+        public virtual ObjectResult<string> ELMAH_GetErrorXml(string application, Nullable<System.Guid> errorId)
+        {
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var errorIdParameter = errorId.HasValue ?
+                new ObjectParameter("ErrorId", errorId) :
+                new ObjectParameter("ErrorId", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ELMAH_GetErrorXml", applicationParameter, errorIdParameter);
+        }
+    
+        public virtual int ELMAH_LogError(Nullable<System.Guid> errorId, string application, string host, string type, string source, string message, string user, string allXml, Nullable<int> statusCode, Nullable<System.DateTime> timeUtc)
+        {
+            var errorIdParameter = errorId.HasValue ?
+                new ObjectParameter("ErrorId", errorId) :
+                new ObjectParameter("ErrorId", typeof(System.Guid));
+    
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var hostParameter = host != null ?
+                new ObjectParameter("Host", host) :
+                new ObjectParameter("Host", typeof(string));
+    
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            var sourceParameter = source != null ?
+                new ObjectParameter("Source", source) :
+                new ObjectParameter("Source", typeof(string));
+    
+            var messageParameter = message != null ?
+                new ObjectParameter("Message", message) :
+                new ObjectParameter("Message", typeof(string));
+    
+            var userParameter = user != null ?
+                new ObjectParameter("User", user) :
+                new ObjectParameter("User", typeof(string));
+    
+            var allXmlParameter = allXml != null ?
+                new ObjectParameter("AllXml", allXml) :
+                new ObjectParameter("AllXml", typeof(string));
+    
+            var statusCodeParameter = statusCode.HasValue ?
+                new ObjectParameter("StatusCode", statusCode) :
+                new ObjectParameter("StatusCode", typeof(int));
+    
+            var timeUtcParameter = timeUtc.HasValue ?
+                new ObjectParameter("TimeUtc", timeUtc) :
+                new ObjectParameter("TimeUtc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ELMAH_LogError", errorIdParameter, applicationParameter, hostParameter, typeParameter, sourceParameter, messageParameter, userParameter, allXmlParameter, statusCodeParameter, timeUtcParameter);
+        }
+    
+        public virtual ObjectResult<rspASQSE_Result> rspASQSE(Nullable<int> aSQSEPK)
+        {
+            var aSQSEPKParameter = aSQSEPK.HasValue ?
+                new ObjectParameter("ASQSEPK", aSQSEPK) :
+                new ObjectParameter("ASQSEPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspASQSE_Result>("rspASQSE", aSQSEPKParameter);
+        }
+    
+        public virtual ObjectResult<rspASQSEDataDump_Result> rspASQSEDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspASQSEDataDump_Result>("rspASQSEDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspASQSEPercentByMonth_Result> rspASQSEPercentByMonth(string classroomFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspASQSEPercentByMonth_Result>("rspASQSEPercentByMonth", classroomFKsParameter, startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspASQSETrend_Result> rspASQSETrend(string childFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var childFKsParameter = childFKs != null ?
+                new ObjectParameter("ChildFKs", childFKs) :
+                new ObjectParameter("ChildFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspASQSETrend_Result>("rspASQSETrend", childFKsParameter, startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBIR_Result> rspBIR(Nullable<int> behaviorIncidentPK)
+        {
+            var behaviorIncidentPKParameter = behaviorIncidentPK.HasValue ?
+                new ObjectParameter("BehaviorIncidentPK", behaviorIncidentPK) :
+                new ObjectParameter("BehaviorIncidentPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIR_Result>("rspBIR", behaviorIncidentPKParameter);
+        }
+    
+        public virtual ObjectResult<rspBIRAllInfo_Result> rspBIRAllInfo(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string childFKs, string classroomFKs, string raceFKs, string ethnicityFKs, string genderFKs, string problemBehaviorFKs, string activityFKs, string othersInvolvedFKs, string possibleMotivationFKs, string strategyResponseFKs, string adminFollowUpFKs, Nullable<bool> iEP, Nullable<bool> dLL, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var childFKsParameter = childFKs != null ?
+                new ObjectParameter("ChildFKs", childFKs) :
+                new ObjectParameter("ChildFKs", typeof(string));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var raceFKsParameter = raceFKs != null ?
+                new ObjectParameter("RaceFKs", raceFKs) :
+                new ObjectParameter("RaceFKs", typeof(string));
+    
+            var ethnicityFKsParameter = ethnicityFKs != null ?
+                new ObjectParameter("EthnicityFKs", ethnicityFKs) :
+                new ObjectParameter("EthnicityFKs", typeof(string));
+    
+            var genderFKsParameter = genderFKs != null ?
+                new ObjectParameter("GenderFKs", genderFKs) :
+                new ObjectParameter("GenderFKs", typeof(string));
+    
+            var problemBehaviorFKsParameter = problemBehaviorFKs != null ?
+                new ObjectParameter("ProblemBehaviorFKs", problemBehaviorFKs) :
+                new ObjectParameter("ProblemBehaviorFKs", typeof(string));
+    
+            var activityFKsParameter = activityFKs != null ?
+                new ObjectParameter("ActivityFKs", activityFKs) :
+                new ObjectParameter("ActivityFKs", typeof(string));
+    
+            var othersInvolvedFKsParameter = othersInvolvedFKs != null ?
+                new ObjectParameter("OthersInvolvedFKs", othersInvolvedFKs) :
+                new ObjectParameter("OthersInvolvedFKs", typeof(string));
+    
+            var possibleMotivationFKsParameter = possibleMotivationFKs != null ?
+                new ObjectParameter("PossibleMotivationFKs", possibleMotivationFKs) :
+                new ObjectParameter("PossibleMotivationFKs", typeof(string));
+    
+            var strategyResponseFKsParameter = strategyResponseFKs != null ?
+                new ObjectParameter("StrategyResponseFKs", strategyResponseFKs) :
+                new ObjectParameter("StrategyResponseFKs", typeof(string));
+    
+            var adminFollowUpFKsParameter = adminFollowUpFKs != null ?
+                new ObjectParameter("AdminFollowUpFKs", adminFollowUpFKs) :
+                new ObjectParameter("AdminFollowUpFKs", typeof(string));
+    
+            var iEPParameter = iEP.HasValue ?
+                new ObjectParameter("IEP", iEP) :
+                new ObjectParameter("IEP", typeof(bool));
+    
+            var dLLParameter = dLL.HasValue ?
+                new ObjectParameter("DLL", dLL) :
+                new ObjectParameter("DLL", typeof(bool));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRAllInfo_Result>("rspBIRAllInfo", startDateParameter, endDateParameter, childFKsParameter, classroomFKsParameter, raceFKsParameter, ethnicityFKsParameter, genderFKsParameter, problemBehaviorFKsParameter, activityFKsParameter, othersInvolvedFKsParameter, possibleMotivationFKsParameter, strategyResponseFKsParameter, adminFollowUpFKsParameter, iEPParameter, dLLParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBIRCounts_Result> rspBIRCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomsFKs, string programFKs, string hubFks, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomsFKsParameter = classroomsFKs != null ?
+                new ObjectParameter("ClassroomsFKs", classroomsFKs) :
+                new ObjectParameter("ClassroomsFKs", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFksParameter = hubFks != null ?
+                new ObjectParameter("HubFks", hubFks) :
+                new ObjectParameter("HubFks", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRCounts_Result>("rspBIRCounts", startDateParameter, endDateParameter, classroomsFKsParameter, programFKsParameter, hubFksParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBIRDataDump_Result> rspBIRDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRDataDump_Result>("rspBIRDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBIRExcel_ChildrenAndBIRs_Result> rspBIRExcel_ChildrenAndBIRs(string programFKs, Nullable<System.DateTime> schoolYear)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var schoolYearParameter = schoolYear.HasValue ?
+                new ObjectParameter("SchoolYear", schoolYear) :
+                new ObjectParameter("SchoolYear", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRExcel_ChildrenAndBIRs_Result>("rspBIRExcel_ChildrenAndBIRs", programFKsParameter, schoolYearParameter);
+        }
+    
+        public virtual ObjectResult<rspBIRExcel_ProgramInfo_Result> rspBIRExcel_ProgramInfo(string programFKs, Nullable<System.DateTime> schoolYear)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var schoolYearParameter = schoolYear.HasValue ?
+                new ObjectParameter("SchoolYear", schoolYear) :
+                new ObjectParameter("SchoolYear", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRExcel_ProgramInfo_Result>("rspBIRExcel_ProgramInfo", programFKsParameter, schoolYearParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQ_Result> rspBOQ(Nullable<int> benchmarkOfQualityPK)
+        {
+            var benchmarkOfQualityPKParameter = benchmarkOfQualityPK.HasValue ?
+                new ObjectParameter("BenchmarkOfQualityPK", benchmarkOfQualityPK) :
+                new ObjectParameter("BenchmarkOfQualityPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQ_Result>("rspBOQ", benchmarkOfQualityPKParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQChange_Result> rspBOQChange(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQChange_Result>("rspBOQChange", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQCWLT_Result> rspBOQCWLT(Nullable<int> benchmarkOfQualityCWLTPK)
+        {
+            var benchmarkOfQualityCWLTPKParameter = benchmarkOfQualityCWLTPK.HasValue ?
+                new ObjectParameter("BenchmarkOfQualityCWLTPK", benchmarkOfQualityCWLTPK) :
+                new ObjectParameter("BenchmarkOfQualityCWLTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQCWLT_Result>("rspBOQCWLT", benchmarkOfQualityCWLTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQCWLTChange_Result> rspBOQCWLTChange(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQCWLTChange_Result>("rspBOQCWLTChange", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQCWLTTrend_Result> rspBOQCWLTTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQCWLTTrend_Result>("rspBOQCWLTTrend", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQDataDump_Result> rspBOQDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQDataDump_Result>("rspBOQDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQFCC_Result> rspBOQFCC(Nullable<int> benchmarkOfQualityFCCPK)
+        {
+            var benchmarkOfQualityFCCPKParameter = benchmarkOfQualityFCCPK.HasValue ?
+                new ObjectParameter("BenchmarkOfQualityFCCPK", benchmarkOfQualityFCCPK) :
+                new ObjectParameter("BenchmarkOfQualityFCCPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQFCC_Result>("rspBOQFCC", benchmarkOfQualityFCCPKParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQFCCChange_Result> rspBOQFCCChange(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQFCCChange_Result>("rspBOQFCCChange", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQFCCDataDump_Result> rspBOQFCCDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQFCCDataDump_Result>("rspBOQFCCDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQFCCTrend_Result> rspBOQFCCTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQFCCTrend_Result>("rspBOQFCCTrend", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQSLT_Result> rspBOQSLT(Nullable<int> benchmarkOfQualitySLTPK)
+        {
+            var benchmarkOfQualitySLTPKParameter = benchmarkOfQualitySLTPK.HasValue ?
+                new ObjectParameter("BenchmarkOfQualitySLTPK", benchmarkOfQualitySLTPK) :
+                new ObjectParameter("BenchmarkOfQualitySLTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQSLT_Result>("rspBOQSLT", benchmarkOfQualitySLTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQSLTChange_Result> rspBOQSLTChange(string stateFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQSLTChange_Result>("rspBOQSLTChange", stateFKsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQSLTTrend_Result> rspBOQSLTTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQSLTTrend_Result>("rspBOQSLTTrend", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspBOQTrend_Result> rspBOQTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBOQTrend_Result>("rspBOQTrend", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCCLCounts_Result> rspCCLCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string employeeFKs, string coachFKs, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var coachFKsParameter = coachFKs != null ?
+                new ObjectParameter("CoachFKs", coachFKs) :
+                new ObjectParameter("CoachFKs", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCCLCounts_Result>("rspCCLCounts", startDateParameter, endDateParameter, employeeFKsParameter, coachFKsParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCCLDuration_Result> rspCCLDuration(string employeeFKs, string coachFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var coachFKsParameter = coachFKs != null ?
+                new ObjectParameter("CoachFKs", coachFKs) :
+                new ObjectParameter("CoachFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCCLDuration_Result>("rspCCLDuration", employeeFKsParameter, coachFKsParameter, startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCCLTrend_Result> rspCCLTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string employeeFKs, string coachFKs, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var coachFKsParameter = coachFKs != null ?
+                new ObjectParameter("CoachFKs", coachFKs) :
+                new ObjectParameter("CoachFKs", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCCLTrend_Result>("rspCCLTrend", startDateParameter, endDateParameter, employeeFKsParameter, coachFKsParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChild_BasicInfo_Result> rspChild_BasicInfo(Nullable<int> childProgramPK)
+        {
+            var childProgramPKParameter = childProgramPK.HasValue ?
+                new ObjectParameter("ChildProgramPK", childProgramPK) :
+                new ObjectParameter("ChildProgramPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChild_BasicInfo_Result>("rspChild_BasicInfo", childProgramPKParameter);
+        }
+    
+        public virtual ObjectResult<rspChild_ClassroomAssignments_Result> rspChild_ClassroomAssignments(Nullable<int> childProgramPK)
+        {
+            var childProgramPKParameter = childProgramPK.HasValue ?
+                new ObjectParameter("ChildProgramPK", childProgramPK) :
+                new ObjectParameter("ChildProgramPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChild_ClassroomAssignments_Result>("rspChild_ClassroomAssignments", childProgramPKParameter);
+        }
+    
+        public virtual ObjectResult<rspChild_Notes_Result> rspChild_Notes(Nullable<int> childProgramPK)
+        {
+            var childProgramPKParameter = childProgramPK.HasValue ?
+                new ObjectParameter("ChildProgramPK", childProgramPK) :
+                new ObjectParameter("ChildProgramPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChild_Notes_Result>("rspChild_Notes", childProgramPKParameter);
+        }
+    
+        public virtual ObjectResult<rspChild_StatusHistory_Result> rspChild_StatusHistory(Nullable<int> childProgramPK)
+        {
+            var childProgramPKParameter = childProgramPK.HasValue ?
+                new ObjectParameter("ChildProgramPK", childProgramPK) :
+                new ObjectParameter("ChildProgramPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChild_StatusHistory_Result>("rspChild_StatusHistory", childProgramPKParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDataDump_Children_Result> rspChildDataDump_Children(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDataDump_Children_Result>("rspChildDataDump_Children", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDataDump_Classrooms_Result> rspChildDataDump_Classrooms(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDataDump_Classrooms_Result>("rspChildDataDump_Classrooms", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDataDump_Notes_Result> rspChildDataDump_Notes(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDataDump_Notes_Result>("rspChildDataDump_Notes", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDataDump_StatusHistory_Result> rspChildDataDump_StatusHistory(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDataDump_StatusHistory_Result>("rspChildDataDump_StatusHistory", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDemographics_Result> rspChildDemographics(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string raceFKs, string ethnicityFKs, string genderFKs, Nullable<bool> iEP, Nullable<bool> dLL, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var raceFKsParameter = raceFKs != null ?
+                new ObjectParameter("RaceFKs", raceFKs) :
+                new ObjectParameter("RaceFKs", typeof(string));
+    
+            var ethnicityFKsParameter = ethnicityFKs != null ?
+                new ObjectParameter("EthnicityFKs", ethnicityFKs) :
+                new ObjectParameter("EthnicityFKs", typeof(string));
+    
+            var genderFKsParameter = genderFKs != null ?
+                new ObjectParameter("GenderFKs", genderFKs) :
+                new ObjectParameter("GenderFKs", typeof(string));
+    
+            var iEPParameter = iEP.HasValue ?
+                new ObjectParameter("IEP", iEP) :
+                new ObjectParameter("IEP", typeof(bool));
+    
+            var dLLParameter = dLL.HasValue ?
+                new ObjectParameter("DLL", dLL) :
+                new ObjectParameter("DLL", typeof(bool));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDemographics_Result>("rspChildDemographics", startDateParameter, endDateParameter, classroomFKsParameter, raceFKsParameter, ethnicityFKsParameter, genderFKsParameter, iEPParameter, dLLParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildDischargeDetails_Result> rspChildDischargeDetails(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string raceFKs, string ethnicityFKs, string genderFKs, Nullable<bool> iEP, Nullable<bool> dLL, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var raceFKsParameter = raceFKs != null ?
+                new ObjectParameter("RaceFKs", raceFKs) :
+                new ObjectParameter("RaceFKs", typeof(string));
+    
+            var ethnicityFKsParameter = ethnicityFKs != null ?
+                new ObjectParameter("EthnicityFKs", ethnicityFKs) :
+                new ObjectParameter("EthnicityFKs", typeof(string));
+    
+            var genderFKsParameter = genderFKs != null ?
+                new ObjectParameter("GenderFKs", genderFKs) :
+                new ObjectParameter("GenderFKs", typeof(string));
+    
+            var iEPParameter = iEP.HasValue ?
+                new ObjectParameter("IEP", iEP) :
+                new ObjectParameter("IEP", typeof(bool));
+    
+            var dLLParameter = dLL.HasValue ?
+                new ObjectParameter("DLL", dLL) :
+                new ObjectParameter("DLL", typeof(bool));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildDischargeDetails_Result>("rspChildDischargeDetails", startDateParameter, endDateParameter, classroomFKsParameter, raceFKsParameter, ethnicityFKsParameter, genderFKsParameter, iEPParameter, dLLParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspChildInactivityReport_Result> rspChildInactivityReport(Nullable<System.DateTime> pointInTime, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var pointInTimeParameter = pointInTime.HasValue ?
+                new ObjectParameter("PointInTime", pointInTime) :
+                new ObjectParameter("PointInTime", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspChildInactivityReport_Result>("rspChildInactivityReport", pointInTimeParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspClassroom_BasicInfo_Result> rspClassroom_BasicInfo(Nullable<int> classroomPK)
+        {
+            var classroomPKParameter = classroomPK.HasValue ?
+                new ObjectParameter("ClassroomPK", classroomPK) :
+                new ObjectParameter("ClassroomPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspClassroom_BasicInfo_Result>("rspClassroom_BasicInfo", classroomPKParameter);
+        }
+    
+        public virtual ObjectResult<rspClassroom_ChildClassroomAssignments_Result> rspClassroom_ChildClassroomAssignments(Nullable<int> classroomPK)
+        {
+            var classroomPKParameter = classroomPK.HasValue ?
+                new ObjectParameter("ClassroomPK", classroomPK) :
+                new ObjectParameter("ClassroomPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspClassroom_ChildClassroomAssignments_Result>("rspClassroom_ChildClassroomAssignments", classroomPKParameter);
+        }
+    
+        public virtual ObjectResult<rspClassroom_EmployeeClassroomAssignments_Result> rspClassroom_EmployeeClassroomAssignments(Nullable<int> classroomPK)
+        {
+            var classroomPKParameter = classroomPK.HasValue ?
+                new ObjectParameter("ClassroomPK", classroomPK) :
+                new ObjectParameter("ClassroomPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspClassroom_EmployeeClassroomAssignments_Result>("rspClassroom_EmployeeClassroomAssignments", classroomPKParameter);
+        }
+    
+        public virtual ObjectResult<rspClassroomDataDump_Result> rspClassroomDataDump(string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspClassroomDataDump_Result>("rspClassroomDataDump", programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCWLTDataDump_Agencies_Result> rspCWLTDataDump_Agencies(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCWLTDataDump_Agencies_Result>("rspCWLTDataDump_Agencies", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCWLTDataDump_AgencyAssignments_Result> rspCWLTDataDump_AgencyAssignments(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCWLTDataDump_AgencyAssignments_Result>("rspCWLTDataDump_AgencyAssignments", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCWLTDataDump_BOQParticipants_Result> rspCWLTDataDump_BOQParticipants(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCWLTDataDump_BOQParticipants_Result>("rspCWLTDataDump_BOQParticipants", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCWLTDataDump_BOQs_Result> rspCWLTDataDump_BOQs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCWLTDataDump_BOQs_Result>("rspCWLTDataDump_BOQs", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspCWLTDataDump_TeamMembers_Result> rspCWLTDataDump_TeamMembers(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCWLTDataDump_TeamMembers_Result>("rspCWLTDataDump_TeamMembers", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspEmployeeTrainingReport_Result> rspEmployeeTrainingReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspEmployeeTrainingReport_Result>("rspEmployeeTrainingReport", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspEnrolledChildren_Result> rspEnrolledChildren(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string childFKs, string classroomFKs, string raceFKs, string ethnicityFKs, string genderFKs, Nullable<bool> iEP, Nullable<bool> dLL, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var childFKsParameter = childFKs != null ?
+                new ObjectParameter("ChildFKs", childFKs) :
+                new ObjectParameter("ChildFKs", typeof(string));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var raceFKsParameter = raceFKs != null ?
+                new ObjectParameter("RaceFKs", raceFKs) :
+                new ObjectParameter("RaceFKs", typeof(string));
+    
+            var ethnicityFKsParameter = ethnicityFKs != null ?
+                new ObjectParameter("EthnicityFKs", ethnicityFKs) :
+                new ObjectParameter("EthnicityFKs", typeof(string));
+    
+            var genderFKsParameter = genderFKs != null ?
+                new ObjectParameter("GenderFKs", genderFKs) :
+                new ObjectParameter("GenderFKs", typeof(string));
+    
+            var iEPParameter = iEP.HasValue ?
+                new ObjectParameter("IEP", iEP) :
+                new ObjectParameter("IEP", typeof(bool));
+    
+            var dLLParameter = dLL.HasValue ?
+                new ObjectParameter("DLL", dLL) :
+                new ObjectParameter("DLL", typeof(bool));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspEnrolledChildren_Result>("rspEnrolledChildren", startDateParameter, endDateParameter, childFKsParameter, classroomFKsParameter, raceFKsParameter, ethnicityFKsParameter, genderFKsParameter, iEPParameter, dLLParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspFormsDue_Result> rspFormsDue(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspFormsDue_Result>("rspFormsDue", programFKsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<rspInvalidForms_Result> rspInvalidForms(Nullable<bool> viewPrivateChildInfo, Nullable<bool> viewPrivateEmployeeInfo, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var viewPrivateChildInfoParameter = viewPrivateChildInfo.HasValue ?
+                new ObjectParameter("ViewPrivateChildInfo", viewPrivateChildInfo) :
+                new ObjectParameter("ViewPrivateChildInfo", typeof(bool));
+    
+            var viewPrivateEmployeeInfoParameter = viewPrivateEmployeeInfo.HasValue ?
+                new ObjectParameter("ViewPrivateEmployeeInfo", viewPrivateEmployeeInfo) :
+                new ObjectParameter("ViewPrivateEmployeeInfo", typeof(bool));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspInvalidForms_Result>("rspInvalidForms", viewPrivateChildInfoParameter, viewPrivateEmployeeInfoParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_CCDebriefs_Result> rspLeadershipCoachDataDump_CCDebriefs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_CCDebriefs_Result>("rspLeadershipCoachDataDump_CCDebriefs", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_CCDebriefSessionAttendees_Result> rspLeadershipCoachDataDump_CCDebriefSessionAttendees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_CCDebriefSessionAttendees_Result>("rspLeadershipCoachDataDump_CCDebriefSessionAttendees", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_CCDebriefSessions_Result> rspLeadershipCoachDataDump_CCDebriefSessions(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_CCDebriefSessions_Result>("rspLeadershipCoachDataDump_CCDebriefSessions", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_CCDebriefTeamMembers_Result> rspLeadershipCoachDataDump_CCDebriefTeamMembers(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_CCDebriefTeamMembers_Result>("rspLeadershipCoachDataDump_CCDebriefTeamMembers", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_CCMeetingSchedules_Result> rspLeadershipCoachDataDump_CCMeetingSchedules(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_CCMeetingSchedules_Result>("rspLeadershipCoachDataDump_CCMeetingSchedules", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_HubDebriefs_Result> rspLeadershipCoachDataDump_HubDebriefs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_HubDebriefs_Result>("rspLeadershipCoachDataDump_HubDebriefs", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_HubDebriefSessions_Result> rspLeadershipCoachDataDump_HubDebriefSessions(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_HubDebriefSessions_Result>("rspLeadershipCoachDataDump_HubDebriefSessions", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_HubMeetingSchedules_Result> rspLeadershipCoachDataDump_HubMeetingSchedules(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_HubMeetingSchedules_Result>("rspLeadershipCoachDataDump_HubMeetingSchedules", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_ProgramDebriefs_Result> rspLeadershipCoachDataDump_ProgramDebriefs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_ProgramDebriefs_Result>("rspLeadershipCoachDataDump_ProgramDebriefs", startDateParameter, endDateParameter, programFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_ProgramDebriefSessions_Result> rspLeadershipCoachDataDump_ProgramDebriefSessions(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_ProgramDebriefSessions_Result>("rspLeadershipCoachDataDump_ProgramDebriefSessions", startDateParameter, endDateParameter, programFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_ProgramMeetingSchedules_Result> rspLeadershipCoachDataDump_ProgramMeetingSchedules(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_ProgramMeetingSchedules_Result>("rspLeadershipCoachDataDump_ProgramMeetingSchedules", startDateParameter, endDateParameter, programFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLoginHistory_Result> rspLoginHistory(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLoginHistory_Result>("rspLoginHistory", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspOSESDataDump_Result> rspOSESDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspOSESDataDump_Result>("rspOSESDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspOtherSEScreen_Result> rspOtherSEScreen(Nullable<int> otherSEScreenPK)
+        {
+            var otherSEScreenPKParameter = otherSEScreenPK.HasValue ?
+                new ObjectParameter("OtherSEScreenPK", otherSEScreenPK) :
+                new ObjectParameter("OtherSEScreenPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspOtherSEScreen_Result>("rspOtherSEScreen", otherSEScreenPKParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployee_BasicInfo_Result> rspProgramEmployee_BasicInfo(Nullable<int> programEmployeePK)
+        {
+            var programEmployeePKParameter = programEmployeePK.HasValue ?
+                new ObjectParameter("ProgramEmployeePK", programEmployeePK) :
+                new ObjectParameter("ProgramEmployeePK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployee_BasicInfo_Result>("rspProgramEmployee_BasicInfo", programEmployeePKParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployee_ClassroomAssignments_Result> rspProgramEmployee_ClassroomAssignments(Nullable<int> programEmployeePK)
+        {
+            var programEmployeePKParameter = programEmployeePK.HasValue ?
+                new ObjectParameter("ProgramEmployeePK", programEmployeePK) :
+                new ObjectParameter("ProgramEmployeePK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployee_ClassroomAssignments_Result>("rspProgramEmployee_ClassroomAssignments", programEmployeePKParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployee_JobFunctions_Result> rspProgramEmployee_JobFunctions(Nullable<int> programEmployeePK)
+        {
+            var programEmployeePKParameter = programEmployeePK.HasValue ?
+                new ObjectParameter("ProgramEmployeePK", programEmployeePK) :
+                new ObjectParameter("ProgramEmployeePK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployee_JobFunctions_Result>("rspProgramEmployee_JobFunctions", programEmployeePKParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployee_Trainings_Result> rspProgramEmployee_Trainings(Nullable<int> programEmployeePK)
+        {
+            var programEmployeePKParameter = programEmployeePK.HasValue ?
+                new ObjectParameter("ProgramEmployeePK", programEmployeePK) :
+                new ObjectParameter("ProgramEmployeePK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployee_Trainings_Result>("rspProgramEmployee_Trainings", programEmployeePKParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployeeDataDump_ClassroomAssignments_Result> rspProgramEmployeeDataDump_ClassroomAssignments(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployeeDataDump_ClassroomAssignments_Result>("rspProgramEmployeeDataDump_ClassroomAssignments", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployeeDataDump_Employees_Result> rspProgramEmployeeDataDump_Employees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployeeDataDump_Employees_Result>("rspProgramEmployeeDataDump_Employees", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployeeDataDump_JobFunctions_Result> rspProgramEmployeeDataDump_JobFunctions(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployeeDataDump_JobFunctions_Result>("rspProgramEmployeeDataDump_JobFunctions", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramEmployeeDataDump_Trainings_Result> rspProgramEmployeeDataDump_Trainings(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramEmployeeDataDump_Trainings_Result>("rspProgramEmployeeDataDump_Trainings", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramManagementDataDump_Cohorts_Result> rspProgramManagementDataDump_Cohorts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramManagementDataDump_Cohorts_Result>("rspProgramManagementDataDump_Cohorts", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramManagementDataDump_Hubs_Result> rspProgramManagementDataDump_Hubs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramManagementDataDump_Hubs_Result>("rspProgramManagementDataDump_Hubs", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramManagementDataDump_Programs_Result> rspProgramManagementDataDump_Programs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramManagementDataDump_Programs_Result>("rspProgramManagementDataDump_Programs", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramManagementDataDump_ProgramStatuses_Result> rspProgramManagementDataDump_ProgramStatuses(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramManagementDataDump_ProgramStatuses_Result>("rspProgramManagementDataDump_ProgramStatuses", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramManagementDataDump_ProgramTypes_Result> rspProgramManagementDataDump_ProgramTypes(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramManagementDataDump_ProgramTypes_Result>("rspProgramManagementDataDump_ProgramTypes", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_Agencies_Result> rspSLTDataDump_Agencies(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_Agencies_Result>("rspSLTDataDump_Agencies", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_AgencyAssignments_Result> rspSLTDataDump_AgencyAssignments(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_AgencyAssignments_Result>("rspSLTDataDump_AgencyAssignments", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_BOQParticipants_Result> rspSLTDataDump_BOQParticipants(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_BOQParticipants_Result>("rspSLTDataDump_BOQParticipants", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_BOQs_Result> rspSLTDataDump_BOQs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_BOQs_Result>("rspSLTDataDump_BOQs", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_CWLTAgencyTypes_Result> rspSLTDataDump_CWLTAgencyTypes(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_CWLTAgencyTypes_Result>("rspSLTDataDump_CWLTAgencyTypes", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspSLTDataDump_TeamMembers_Result> rspSLTDataDump_TeamMembers(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspSLTDataDump_TeamMembers_Result>("rspSLTDataDump_TeamMembers", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOS_BasicInfo_Result> rspTPITOS_BasicInfo(Nullable<int> tPITOSPK)
+        {
+            var tPITOSPKParameter = tPITOSPK.HasValue ?
+                new ObjectParameter("TPITOSPK", tPITOSPK) :
+                new ObjectParameter("TPITOSPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOS_BasicInfo_Result>("rspTPITOS_BasicInfo", tPITOSPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOS_Participants_Result> rspTPITOS_Participants(Nullable<int> tPITOSPK)
+        {
+            var tPITOSPKParameter = tPITOSPK.HasValue ?
+                new ObjectParameter("TPITOSPK", tPITOSPK) :
+                new ObjectParameter("TPITOSPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOS_Participants_Result>("rspTPITOS_Participants", tPITOSPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOS_RedFlagsObserved_Result> rspTPITOS_RedFlagsObserved(Nullable<int> tPITOSPK)
+        {
+            var tPITOSPKParameter = tPITOSPK.HasValue ?
+                new ObjectParameter("TPITOSPK", tPITOSPK) :
+                new ObjectParameter("TPITOSPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOS_RedFlagsObserved_Result>("rspTPITOS_RedFlagsObserved", tPITOSPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSChange_Result> rspTPITOSChange(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSChange_Result>("rspTPITOSChange", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSDataDump_Result> rspTPITOSDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSDataDump_Result>("rspTPITOSDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSKeyPracticeCounts_Result> rspTPITOSKeyPracticeCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSKeyPracticeCounts_Result>("rspTPITOSKeyPracticeCounts", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSParticipantDataDump_Result> rspTPITOSParticipantDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSParticipantDataDump_Result>("rspTPITOSParticipantDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSRedFlagCounts_Result> rspTPITOSRedFlagCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSRedFlagCounts_Result>("rspTPITOSRedFlagCounts", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSRedFlagsDataDump_Result> rspTPITOSRedFlagsDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSRedFlagsDataDump_Result>("rspTPITOSRedFlagsDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSRedFlagTrend_Chart_Result> rspTPITOSRedFlagTrend_Chart(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSRedFlagTrend_Chart_Result>("rspTPITOSRedFlagTrend_Chart", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSRedFlagTrend_Details_Result> rspTPITOSRedFlagTrend_Details(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSRedFlagTrend_Details_Result>("rspTPITOSRedFlagTrend_Details", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPITOSTrend_Result> rspTPITOSTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPITOSTrend_Result>("rspTPITOSTrend", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOT_BasicInfo_Result> rspTPOT_BasicInfo(Nullable<int> tPOTPK)
+        {
+            var tPOTPKParameter = tPOTPK.HasValue ?
+                new ObjectParameter("TPOTPK", tPOTPK) :
+                new ObjectParameter("TPOTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOT_BasicInfo_Result>("rspTPOT_BasicInfo", tPOTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOT_BehaviorResponses_Result> rspTPOT_BehaviorResponses(Nullable<int> tPOTPK)
+        {
+            var tPOTPKParameter = tPOTPK.HasValue ?
+                new ObjectParameter("TPOTPK", tPOTPK) :
+                new ObjectParameter("TPOTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOT_BehaviorResponses_Result>("rspTPOT_BehaviorResponses", tPOTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOT_Participants_Result> rspTPOT_Participants(Nullable<int> tPOTPK)
+        {
+            var tPOTPKParameter = tPOTPK.HasValue ?
+                new ObjectParameter("TPOTPK", tPOTPK) :
+                new ObjectParameter("TPOTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOT_Participants_Result>("rspTPOT_Participants", tPOTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOT_RedFlagsObserved_Result> rspTPOT_RedFlagsObserved(Nullable<int> tPOTPK)
+        {
+            var tPOTPKParameter = tPOTPK.HasValue ?
+                new ObjectParameter("TPOTPK", tPOTPK) :
+                new ObjectParameter("TPOTPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOT_RedFlagsObserved_Result>("rspTPOT_RedFlagsObserved", tPOTPKParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTBehaviorResponsesDataDump_Result> rspTPOTBehaviorResponsesDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTBehaviorResponsesDataDump_Result>("rspTPOTBehaviorResponsesDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTChange_Result> rspTPOTChange(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTChange_Result>("rspTPOTChange", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTDataDump_Result> rspTPOTDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTDataDump_Result>("rspTPOTDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTKeyPracticeCounts_Result> rspTPOTKeyPracticeCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTKeyPracticeCounts_Result>("rspTPOTKeyPracticeCounts", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTParticipantDataDump_Result> rspTPOTParticipantDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTParticipantDataDump_Result>("rspTPOTParticipantDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTRedFlagCounts_Result> rspTPOTRedFlagCounts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTRedFlagCounts_Result>("rspTPOTRedFlagCounts", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTRedFlagsDataDump_Result> rspTPOTRedFlagsDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTRedFlagsDataDump_Result>("rspTPOTRedFlagsDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTRedFlagTrend_Chart_Result> rspTPOTRedFlagTrend_Chart(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTRedFlagTrend_Chart_Result>("rspTPOTRedFlagTrend_Chart", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTRedFlagTrend_Details_Result> rspTPOTRedFlagTrend_Details(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTRedFlagTrend_Details_Result>("rspTPOTRedFlagTrend_Details", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTPOTTrend_Result> rspTPOTTrend(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string classroomFKs, string employeeFKs, string employeeRole, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var classroomFKsParameter = classroomFKs != null ?
+                new ObjectParameter("ClassroomFKs", classroomFKs) :
+                new ObjectParameter("ClassroomFKs", typeof(string));
+    
+            var employeeFKsParameter = employeeFKs != null ?
+                new ObjectParameter("EmployeeFKs", employeeFKs) :
+                new ObjectParameter("EmployeeFKs", typeof(string));
+    
+            var employeeRoleParameter = employeeRole != null ?
+                new ObjectParameter("EmployeeRole", employeeRole) :
+                new ObjectParameter("EmployeeRole", typeof(string));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTPOTTrend_Result>("rspTPOTTrend", startDateParameter, endDateParameter, classroomFKsParameter, employeeFKsParameter, employeeRoleParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTracking_Result> rspTracking(Nullable<int> year, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTracking_Result>("rspTracking", yearParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspTrainingsInTimePeriod_Result> rspTrainingsInTimePeriod(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspTrainingsInTimePeriod_Result>("rspTrainingsInTimePeriod", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual int spDeleteAspireReliabilityRecords(Nullable<int> aspireID, string deleter, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var aspireIDParameter = aspireID.HasValue ?
+                new ObjectParameter("AspireID", aspireID) :
+                new ObjectParameter("AspireID", typeof(int));
+    
+            var deleterParameter = deleter != null ?
+                new ObjectParameter("Deleter", deleter) :
+                new ObjectParameter("Deleter", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spDeleteAspireReliabilityRecords", aspireIDParameter, deleterParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual int spDeleteAspireTrainings(Nullable<int> aspireID, string deleter, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var aspireIDParameter = aspireID.HasValue ?
+                new ObjectParameter("AspireID", aspireID) :
+                new ObjectParameter("AspireID", typeof(int));
+    
+            var deleterParameter = deleter != null ?
+                new ObjectParameter("Deleter", deleter) :
+                new ObjectParameter("Deleter", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spDeleteAspireTrainings", aspireIDParameter, deleterParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetAllCoaches_Result> spGetAllCoaches(Nullable<int> programFK, Nullable<System.DateTime> eventDate)
+        {
+            var programFKParameter = programFK.HasValue ?
+                new ObjectParameter("ProgramFK", programFK) :
+                new ObjectParameter("ProgramFK", typeof(int));
+    
+            var eventDateParameter = eventDate.HasValue ?
+                new ObjectParameter("EventDate", eventDate) :
+                new ObjectParameter("EventDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllCoaches_Result>("spGetAllCoaches", programFKParameter, eventDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetAllFileUploads_Result> spGetAllFileUploads(string programFKs, string hubFKs, string stateFKs, string cohortFKs, Nullable<int> roleFK, string username)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var roleFKParameter = roleFK.HasValue ?
+                new ObjectParameter("RoleFK", roleFK) :
+                new ObjectParameter("RoleFK", typeof(int));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllFileUploads_Result>("spGetAllFileUploads", programFKsParameter, hubFKsParameter, stateFKsParameter, cohortFKsParameter, roleFKParameter, usernameParameter);
+        }
+    
+        public virtual ObjectResult<spGetASQSEsByScoreType_Result> spGetASQSEsByScoreType(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetASQSEsByScoreType_Result>("spGetASQSEsByScoreType", programFKsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetBehaviorIncidentCountByProblemBehavior_Result> spGetBehaviorIncidentCountByProblemBehavior(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBehaviorIncidentCountByProblemBehavior_Result>("spGetBehaviorIncidentCountByProblemBehavior", programFKsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetBOQCWLTIndicatorValues_Result> spGetBOQCWLTIndicatorValues(Nullable<int> bOQPK)
+        {
+            var bOQPKParameter = bOQPK.HasValue ?
+                new ObjectParameter("BOQPK", bOQPK) :
+                new ObjectParameter("BOQPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBOQCWLTIndicatorValues_Result>("spGetBOQCWLTIndicatorValues", bOQPKParameter);
+        }
+    
+        public virtual ObjectResult<spGetBOQFCCIndicatorValues_Result> spGetBOQFCCIndicatorValues(Nullable<int> bOQFCCPK)
+        {
+            var bOQFCCPKParameter = bOQFCCPK.HasValue ?
+                new ObjectParameter("BOQFCCPK", bOQFCCPK) :
+                new ObjectParameter("BOQFCCPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBOQFCCIndicatorValues_Result>("spGetBOQFCCIndicatorValues", bOQFCCPKParameter);
+        }
+    
+        public virtual ObjectResult<spGetBOQIndicatorValues_Result> spGetBOQIndicatorValues(Nullable<int> bOQPK)
+        {
+            var bOQPKParameter = bOQPK.HasValue ?
+                new ObjectParameter("BOQPK", bOQPK) :
+                new ObjectParameter("BOQPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBOQIndicatorValues_Result>("spGetBOQIndicatorValues", bOQPKParameter);
+        }
+    
+        public virtual ObjectResult<spGetBOQSLTIndicatorValues_Result> spGetBOQSLTIndicatorValues(Nullable<int> bOQPK)
+        {
+            var bOQPKParameter = bOQPK.HasValue ?
+                new ObjectParameter("BOQPK", bOQPK) :
+                new ObjectParameter("BOQPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBOQSLTIndicatorValues_Result>("spGetBOQSLTIndicatorValues", bOQPKParameter);
+        }
+    
+        public virtual ObjectResult<spGetChildrenCountByRace_Result> spGetChildrenCountByRace(string programFKs, Nullable<System.DateTime> pointInTime)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var pointInTimeParameter = pointInTime.HasValue ?
+                new ObjectParameter("PointInTime", pointInTime) :
+                new ObjectParameter("PointInTime", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetChildrenCountByRace_Result>("spGetChildrenCountByRace", programFKsParameter, pointInTimeParameter);
+        }
     
         public virtual ObjectResult<spGetChildStatusHistory_Result> spGetChildStatusHistory(Nullable<int> childPK, Nullable<int> programFK)
         {
@@ -111,6 +3214,141 @@ namespace Pyramid.Models
                 new ObjectParameter("ProgramFK", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetChildStatusHistory_Result>("spGetChildStatusHistory", childPKParameter, programFKParameter);
+        }
+    
+        public virtual ObjectResult<spGetClassroomCountBySubstituteStatus_Result> spGetClassroomCountBySubstituteStatus(string programFKs)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetClassroomCountBySubstituteStatus_Result>("spGetClassroomCountBySubstituteStatus", programFKsParameter);
+        }
+    
+        public virtual ObjectResult<spGetCountsForDashboardMaster_Result> spGetCountsForDashboardMaster(Nullable<System.DateTime> pointInTime, string programFKs, string hubFKs, string cohortFKs, string stateFKs, Nullable<int> roleFK, string username)
+        {
+            var pointInTimeParameter = pointInTime.HasValue ?
+                new ObjectParameter("PointInTime", pointInTime) :
+                new ObjectParameter("PointInTime", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            var roleFKParameter = roleFK.HasValue ?
+                new ObjectParameter("RoleFK", roleFK) :
+                new ObjectParameter("RoleFK", typeof(int));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCountsForDashboardMaster_Result>("spGetCountsForDashboardMaster", pointInTimeParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter, roleFKParameter, usernameParameter);
+        }
+    
+        public virtual ObjectResult<spGetOtherSEScreensByScoreType_Result> spGetOtherSEScreensByScoreType(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOtherSEScreensByScoreType_Result>("spGetOtherSEScreensByScoreType", programFKsParameter, startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetUserCustomizationOptions_Result> spGetUserCustomizationOptions(string username)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetUserCustomizationOptions_Result>("spGetUserCustomizationOptions", usernameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spImportAspireReliabilityRecords(Nullable<int> aspireID)
+        {
+            var aspireIDParameter = aspireID.HasValue ?
+                new ObjectParameter("AspireID", aspireID) :
+                new ObjectParameter("AspireID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spImportAspireReliabilityRecords", aspireIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spImportAspireTrainings(Nullable<int> aspireID)
+        {
+            var aspireIDParameter = aspireID.HasValue ?
+                new ObjectParameter("AspireID", aspireID) :
+                new ObjectParameter("AspireID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spImportAspireTrainings", aspireIDParameter);
+        }
+    
+        [DbFunction("PyramidContext", "SplitString")]
+        public virtual IQueryable<string> SplitString(string list, string delim)
+        {
+            var listParameter = list != null ?
+                new ObjectParameter("List", list) :
+                new ObjectParameter("List", typeof(string));
+    
+            var delimParameter = delim != null ?
+                new ObjectParameter("Delim", delim) :
+                new ObjectParameter("Delim", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<string>("[PyramidContext].[SplitString](@List, @Delim)", listParameter, delimParameter);
+        }
+    
+        [DbFunction("PyramidContext", "SplitStringToInt")]
+        public virtual IQueryable<Nullable<int>> SplitStringToInt(string list, string delim)
+        {
+            var listParameter = list != null ?
+                new ObjectParameter("List", list) :
+                new ObjectParameter("List", typeof(string));
+    
+            var delimParameter = delim != null ?
+                new ObjectParameter("Delim", delim) :
+                new ObjectParameter("Delim", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[PyramidContext].[SplitStringToInt](@List, @Delim)", listParameter, delimParameter);
+        }
+    
+        public virtual ObjectResult<spValidateCWLTMemberStartLeaveDates_Result> spValidateCWLTMemberStartLeaveDates(Nullable<int> cWLTMemberPK, Nullable<int> hubFK, Nullable<System.DateTime> startDate, Nullable<System.DateTime> leaveDate)
+        {
+            var cWLTMemberPKParameter = cWLTMemberPK.HasValue ?
+                new ObjectParameter("CWLTMemberPK", cWLTMemberPK) :
+                new ObjectParameter("CWLTMemberPK", typeof(int));
+    
+            var hubFKParameter = hubFK.HasValue ?
+                new ObjectParameter("HubFK", hubFK) :
+                new ObjectParameter("HubFK", typeof(int));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var leaveDateParameter = leaveDate.HasValue ?
+                new ObjectParameter("LeaveDate", leaveDate) :
+                new ObjectParameter("LeaveDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spValidateCWLTMemberStartLeaveDates_Result>("spValidateCWLTMemberStartLeaveDates", cWLTMemberPKParameter, hubFKParameter, startDateParameter, leaveDateParameter);
         }
     
         public virtual ObjectResult<spValidateEnrollmentDischargeDates_Result> spValidateEnrollmentDischargeDates(Nullable<int> childPK, Nullable<int> programFK, Nullable<System.DateTime> enrollmentDate, Nullable<System.DateTime> dischargeDate)
@@ -155,52 +3393,25 @@ namespace Pyramid.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spValidateHireTermDates_Result>("spValidateHireTermDates", programEmployeePKParameter, programFKParameter, hireDateParameter, termDateParameter);
         }
     
-        public virtual ObjectResult<spGetAllTeachersTAs_Result> spGetAllTeachersTAs(string programFKs)
+        public virtual ObjectResult<spValidateSLTMemberStartLeaveDates_Result> spValidateSLTMemberStartLeaveDates(Nullable<int> sLTMemberPK, Nullable<int> stateFK, Nullable<System.DateTime> startDate, Nullable<System.DateTime> leaveDate)
         {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
+            var sLTMemberPKParameter = sLTMemberPK.HasValue ?
+                new ObjectParameter("SLTMemberPK", sLTMemberPK) :
+                new ObjectParameter("SLTMemberPK", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllTeachersTAs_Result>("spGetAllTeachersTAs", programFKsParameter);
-        }
+            var stateFKParameter = stateFK.HasValue ?
+                new ObjectParameter("StateFK", stateFK) :
+                new ObjectParameter("StateFK", typeof(int));
     
-        public virtual ObjectResult<spGetClassroomCountBySubstituteStatus_Result> spGetClassroomCountBySubstituteStatus(string programFKs)
-        {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetClassroomCountBySubstituteStatus_Result>("spGetClassroomCountBySubstituteStatus", programFKsParameter);
-        }
+            var leaveDateParameter = leaveDate.HasValue ?
+                new ObjectParameter("LeaveDate", leaveDate) :
+                new ObjectParameter("LeaveDate", typeof(System.DateTime));
     
-        public virtual ObjectResult<spGetAllCoaches_Result> spGetAllCoaches(Nullable<int> programFK, Nullable<System.DateTime> eventDate)
-        {
-            var programFKParameter = programFK.HasValue ?
-                new ObjectParameter("ProgramFK", programFK) :
-                new ObjectParameter("ProgramFK", typeof(int));
-    
-            var eventDateParameter = eventDate.HasValue ?
-                new ObjectParameter("EventDate", eventDate) :
-                new ObjectParameter("EventDate", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllCoaches_Result>("spGetAllCoaches", programFKParameter, eventDateParameter);
-        }
-    
-        public virtual ObjectResult<spGetAllObservers_Result> spGetAllObservers(Nullable<int> programFK, Nullable<System.DateTime> eventDate, string includedTrainings)
-        {
-            var programFKParameter = programFK.HasValue ?
-                new ObjectParameter("ProgramFK", programFK) :
-                new ObjectParameter("ProgramFK", typeof(int));
-    
-            var eventDateParameter = eventDate.HasValue ?
-                new ObjectParameter("EventDate", eventDate) :
-                new ObjectParameter("EventDate", typeof(System.DateTime));
-    
-            var includedTrainingsParameter = includedTrainings != null ?
-                new ObjectParameter("IncludedTrainings", includedTrainings) :
-                new ObjectParameter("IncludedTrainings", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllObservers_Result>("spGetAllObservers", programFKParameter, eventDateParameter, includedTrainingsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spValidateSLTMemberStartLeaveDates_Result>("spValidateSLTMemberStartLeaveDates", sLTMemberPKParameter, stateFKParameter, startDateParameter, leaveDateParameter);
         }
     
         public virtual ObjectResult<spValidateTPITOSParticipants_Result> spValidateTPITOSParticipants(Nullable<int> tPITOSPK, Nullable<System.DateTime> observationDate)
@@ -229,80 +3440,37 @@ namespace Pyramid.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spValidateTPOTParticipants_Result>("spValidateTPOTParticipants", tPOTPKParameter, observationDateParameter);
         }
     
-        public virtual ObjectResult<spGetAllFileUploads_Result> spGetAllFileUploads(string programFKs, Nullable<int> hubFK, Nullable<int> stateFK, string cohortFKs)
+        public virtual ObjectResult<rspCoachingLogCoacheeDataDump_Result> rspCoachingLogCoacheeDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
         {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
             var programFKsParameter = programFKs != null ?
                 new ObjectParameter("ProgramFKs", programFKs) :
                 new ObjectParameter("ProgramFKs", typeof(string));
     
-            var hubFKParameter = hubFK.HasValue ?
-                new ObjectParameter("HubFK", hubFK) :
-                new ObjectParameter("HubFK", typeof(int));
-    
-            var stateFKParameter = stateFK.HasValue ?
-                new ObjectParameter("StateFK", stateFK) :
-                new ObjectParameter("StateFK", typeof(int));
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
     
             var cohortFKsParameter = cohortFKs != null ?
                 new ObjectParameter("CohortFKs", cohortFKs) :
                 new ObjectParameter("CohortFKs", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllFileUploads_Result>("spGetAllFileUploads", programFKsParameter, hubFKParameter, stateFKParameter, cohortFKsParameter);
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCoachingLogCoacheeDataDump_Result>("rspCoachingLogCoacheeDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
         }
     
-        public virtual ObjectResult<rspBIRExcel_ProgramInfo_Result> rspBIRExcel_ProgramInfo(string programFKs, Nullable<System.DateTime> schoolYear)
+        public virtual ObjectResult<rspCoachingLogDataDump_Result> rspCoachingLogDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
         {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
-    
-            var schoolYearParameter = schoolYear.HasValue ?
-                new ObjectParameter("SchoolYear", schoolYear) :
-                new ObjectParameter("SchoolYear", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRExcel_ProgramInfo_Result>("rspBIRExcel_ProgramInfo", programFKsParameter, schoolYearParameter);
-        }
-    
-        public virtual ObjectResult<spGetCountsForDashboardMaster_Result> spGetCountsForDashboardMaster(Nullable<System.DateTime> pointInTime, string programFKs, Nullable<int> hubFK, Nullable<int> stateFK)
-        {
-            var pointInTimeParameter = pointInTime.HasValue ?
-                new ObjectParameter("PointInTime", pointInTime) :
-                new ObjectParameter("PointInTime", typeof(System.DateTime));
-    
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
-    
-            var hubFKParameter = hubFK.HasValue ?
-                new ObjectParameter("HubFK", hubFK) :
-                new ObjectParameter("HubFK", typeof(int));
-    
-            var stateFKParameter = stateFK.HasValue ?
-                new ObjectParameter("StateFK", stateFK) :
-                new ObjectParameter("StateFK", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCountsForDashboardMaster_Result>("spGetCountsForDashboardMaster", pointInTimeParameter, programFKsParameter, hubFKParameter, stateFKParameter);
-        }
-    
-        public virtual ObjectResult<rspBIRExcel_ChildrenAndBIRs_Result> rspBIRExcel_ChildrenAndBIRs(string programFKs, Nullable<System.DateTime> schoolYear)
-        {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
-    
-            var schoolYearParameter = schoolYear.HasValue ?
-                new ObjectParameter("SchoolYear", schoolYear) :
-                new ObjectParameter("SchoolYear", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspBIRExcel_ChildrenAndBIRs_Result>("rspBIRExcel_ChildrenAndBIRs", programFKsParameter, schoolYearParameter);
-        }
-    
-        public virtual ObjectResult<spGetBehaviorIncidentCountByProblemBehavior_Result> spGetBehaviorIncidentCountByProblemBehavior(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
-        {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
-    
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
                 new ObjectParameter("StartDate", typeof(System.DateTime));
@@ -311,28 +3479,57 @@ namespace Pyramid.Models
                 new ObjectParameter("EndDate", endDate) :
                 new ObjectParameter("EndDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBehaviorIncidentCountByProblemBehavior_Result>("spGetBehaviorIncidentCountByProblemBehavior", programFKsParameter, startDateParameter, endDateParameter);
-        }
-    
-        public virtual ObjectResult<spGetChildrenCountByRace_Result> spGetChildrenCountByRace(string programFKs, Nullable<System.DateTime> pointInTime)
-        {
             var programFKsParameter = programFKs != null ?
                 new ObjectParameter("ProgramFKs", programFKs) :
                 new ObjectParameter("ProgramFKs", typeof(string));
     
-            var pointInTimeParameter = pointInTime.HasValue ?
-                new ObjectParameter("PointInTime", pointInTime) :
-                new ObjectParameter("PointInTime", typeof(System.DateTime));
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetChildrenCountByRace_Result>("spGetChildrenCountByRace", programFKsParameter, pointInTimeParameter);
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCoachingLogDataDump_Result>("rspCoachingLogDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
         }
     
-        public virtual ObjectResult<spGetASQSEsByScoreType_Result> spGetASQSEsByScoreType(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        public virtual ObjectResult<rspCoachingLog_Result> rspCoachingLog(Nullable<int> coachingLogPK, Nullable<bool> viewPrivateEmployeeInfo)
         {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
+            var coachingLogPKParameter = coachingLogPK.HasValue ?
+                new ObjectParameter("CoachingLogPK", coachingLogPK) :
+                new ObjectParameter("CoachingLogPK", typeof(int));
     
+            var viewPrivateEmployeeInfoParameter = viewPrivateEmployeeInfo.HasValue ?
+                new ObjectParameter("ViewPrivateEmployeeInfo", viewPrivateEmployeeInfo) :
+                new ObjectParameter("ViewPrivateEmployeeInfo", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspCoachingLog_Result>("rspCoachingLog", coachingLogPKParameter, viewPrivateEmployeeInfoParameter);
+        }
+    
+        public virtual ObjectResult<spGetAllObservers_Result> spGetAllObservers(Nullable<int> programFK, Nullable<System.DateTime> eventDate, string includedTrainings)
+        {
+            var programFKParameter = programFK.HasValue ?
+                new ObjectParameter("ProgramFK", programFK) :
+                new ObjectParameter("ProgramFK", typeof(int));
+    
+            var eventDateParameter = eventDate.HasValue ?
+                new ObjectParameter("EventDate", eventDate) :
+                new ObjectParameter("EventDate", typeof(System.DateTime));
+    
+            var includedTrainingsParameter = includedTrainings != null ?
+                new ObjectParameter("IncludedTrainings", includedTrainings) :
+                new ObjectParameter("IncludedTrainings", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAllObservers_Result>("spGetAllObservers", programFKParameter, eventDateParameter, includedTrainingsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachDataDump_HubDebriefSessionAttendees_Result> rspLeadershipCoachDataDump_HubDebriefSessionAttendees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string hubFKs, string stateFKs)
+        {
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
                 new ObjectParameter("StartDate", typeof(System.DateTime));
@@ -341,15 +3538,19 @@ namespace Pyramid.Models
                 new ObjectParameter("EndDate", endDate) :
                 new ObjectParameter("EndDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetASQSEsByScoreType_Result>("spGetASQSEsByScoreType", programFKsParameter, startDateParameter, endDateParameter);
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_HubDebriefSessionAttendees_Result>("rspLeadershipCoachDataDump_HubDebriefSessionAttendees", startDateParameter, endDateParameter, hubFKsParameter, stateFKsParameter);
         }
     
-        public virtual ObjectResult<spGetOtherSEScreensByScoreType_Result> spGetOtherSEScreensByScoreType(string programFKs, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        public virtual ObjectResult<rspLeadershipCoachDataDump_ProgramDebriefSessionAttendees_Result> rspLeadershipCoachDataDump_ProgramDebriefSessionAttendees(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string stateFKs)
         {
-            var programFKsParameter = programFKs != null ?
-                new ObjectParameter("ProgramFKs", programFKs) :
-                new ObjectParameter("ProgramFKs", typeof(string));
-    
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
                 new ObjectParameter("StartDate", typeof(System.DateTime));
@@ -358,16 +3559,162 @@ namespace Pyramid.Models
                 new ObjectParameter("EndDate", endDate) :
                 new ObjectParameter("EndDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOtherSEScreensByScoreType_Result>("spGetOtherSEScreensByScoreType", programFKsParameter, startDateParameter, endDateParameter);
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachDataDump_ProgramDebriefSessionAttendees_Result>("rspLeadershipCoachDataDump_ProgramDebriefSessionAttendees", startDateParameter, endDateParameter, programFKsParameter, stateFKsParameter);
         }
     
-        public virtual ObjectResult<spGetUserCustomizationOptions_Result> spGetUserCustomizationOptions(string username)
+        public virtual ObjectResult<rspLCLAnalysisExport_Result> rspLCLAnalysisExport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
         {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetUserCustomizationOptions_Result>("spGetUserCustomizationOptions", usernameParameter);
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLCLAnalysisExport_Result>("rspLCLAnalysisExport", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspLeadershipCoachLogDataDump_Result> rspLeadershipCoachLogDataDump(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspLeadershipCoachLogDataDump_Result>("rspLeadershipCoachLogDataDump", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<string> rspLeadershipCoachLogDataDump_LeadershipCoaches(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string programFKs, string hubFKs, string cohortFKs, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var programFKsParameter = programFKs != null ?
+                new ObjectParameter("ProgramFKs", programFKs) :
+                new ObjectParameter("ProgramFKs", typeof(string));
+    
+            var hubFKsParameter = hubFKs != null ?
+                new ObjectParameter("HubFKs", hubFKs) :
+                new ObjectParameter("HubFKs", typeof(string));
+    
+            var cohortFKsParameter = cohortFKs != null ?
+                new ObjectParameter("CohortFKs", cohortFKs) :
+                new ObjectParameter("CohortFKs", typeof(string));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("rspLeadershipCoachLogDataDump_LeadershipCoaches", startDateParameter, endDateParameter, programFKsParameter, hubFKsParameter, cohortFKsParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspProgramAddress_BasicInfo_Result> rspProgramAddress_BasicInfo(Nullable<int> addressPK)
+        {
+            var addressPKParameter = addressPK.HasValue ?
+                new ObjectParameter("AddressPK", addressPK) :
+                new ObjectParameter("AddressPK", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspProgramAddress_BasicInfo_Result>("rspProgramAddress_BasicInfo", addressPKParameter);
+        }
+    
+        public virtual ObjectResult<rspMasterCadreDataDump_TrainingDebriefs_Result> rspMasterCadreDataDump_TrainingDebriefs(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspMasterCadreDataDump_TrainingDebriefs_Result>("rspMasterCadreDataDump_TrainingDebriefs", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspMasterCadreDataDump_ActivityTrackerDates_Result> rspMasterCadreDataDump_ActivityTrackerDates(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspMasterCadreDataDump_ActivityTrackerDates_Result>("rspMasterCadreDataDump_ActivityTrackerDates", startDateParameter, endDateParameter, stateFKsParameter);
+        }
+    
+        public virtual ObjectResult<rspMasterCadreDataDump_ActivityTrackers_Result> rspMasterCadreDataDump_ActivityTrackers(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, string stateFKs)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var stateFKsParameter = stateFKs != null ?
+                new ObjectParameter("StateFKs", stateFKs) :
+                new ObjectParameter("StateFKs", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<rspMasterCadreDataDump_ActivityTrackers_Result>("rspMasterCadreDataDump_ActivityTrackers", startDateParameter, endDateParameter, stateFKsParameter);
         }
     }
 }

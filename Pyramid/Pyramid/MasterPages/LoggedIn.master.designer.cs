@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid {
-    
-    
-    public partial class LoggedIn {
-        
+namespace Pyramid
+{
+
+
+    public partial class LoggedIn
+    {
+
         /// <summary>
         /// HeadContent control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-        
+
         /// <summary>
         /// ScriptContent control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder ScriptContent;
-        
+
         /// <summary>
         /// bsImgLogo control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapImage bsImgLogo;
-        
+
         /// <summary>
         /// lblApplicationTitle control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblApplicationTitle;
-        
+
         /// <summary>
         /// liAdminMenu control.
         /// </summary>
@@ -56,7 +58,43 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liAdminMenu;
-        
+
+        /// <summary>
+        /// lnkUserManagement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkUserManagement;
+
+        /// <summary>
+        /// lnkProgramManagement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkProgramManagement;
+
+        /// <summary>
+        /// lnkBulkTraining control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkBulkTraining;
+
+        /// <summary>
+        /// lnkStateSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkStateSettings;
+
         /// <summary>
         /// lnkReportCatalogMaintenance control.
         /// </summary>
@@ -65,7 +103,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkReportCatalogMaintenance;
-        
+
         /// <summary>
         /// lnkReportDesigner control.
         /// </summary>
@@ -74,7 +112,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkReportDesigner;
-        
+
         /// <summary>
         /// lnkErrorLog control.
         /// </summary>
@@ -83,7 +121,169 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkErrorLog;
-        
+
+        /// <summary>
+        /// lnkHome control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkHome;
+
+        /// <summary>
+        /// lnkASQSEDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkASQSEDashboard;
+
+        /// <summary>
+        /// lnkOSESDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkOSESDashboard;
+
+        /// <summary>
+        /// lnkBIRDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkBIRDashboard;
+
+        /// <summary>
+        /// lnkBOQDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkBOQDashboard;
+
+        /// <summary>
+        /// lnkBOQFCCDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkBOQFCCDashboard;
+
+        /// <summary>
+        /// lnkChildDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkChildDashboard;
+
+        /// <summary>
+        /// lnkClassDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkClassDashboard;
+
+        /// <summary>
+        /// lnkCCLDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkCCLDashboard;
+
+        /// <summary>
+        /// lnkCWLTDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkCWLTDashboard;
+
+        /// <summary>
+        /// lnkPEDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkPEDashboard;
+
+        /// <summary>
+        /// lnkLCDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkLCDashboard;
+
+        /// <summary>
+        /// lnkMCDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkMCDashboard;
+
+        /// <summary>
+        /// lnkPLTDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkPLTDashboard;
+
+        /// <summary>
+        /// lnkSLTDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkSLTDashboard;
+
+        /// <summary>
+        /// lnkTPITOSDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkTPITOSDashboard;
+
+        /// <summary>
+        /// lnkTPOTDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkTPOTDashboard;
+
+        /// <summary>
+        /// lnkULFDashboard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkULFDashboard;
+
         /// <summary>
         /// lnkUserOptions control.
         /// </summary>
@@ -92,7 +292,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkUserOptions;
-        
+
         /// <summary>
         /// lblUserProgram control.
         /// </summary>
@@ -101,7 +301,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUserProgram;
-        
+
         /// <summary>
         /// lblUserRole control.
         /// </summary>
@@ -110,7 +310,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUserRole;
-        
+
         /// <summary>
         /// lbLogOut control.
         /// </summary>
@@ -119,7 +319,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbLogOut;
-        
+
         /// <summary>
         /// lnkHelpDropdown control.
         /// </summary>
@@ -128,7 +328,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkHelpDropdown;
-        
+
         /// <summary>
         /// lnkHelp control.
         /// </summary>
@@ -137,7 +337,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkHelp;
-        
+
         /// <summary>
         /// lnkSupportTicket control.
         /// </summary>
@@ -146,7 +346,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkSupportTicket;
-        
+
         /// <summary>
         /// divTestSiteMessage control.
         /// </summary>
@@ -155,7 +355,25 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTestSiteMessage;
-        
+
+        /// <summary>
+        /// divLockedProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLockedProgram;
+
+        /// <summary>
+        /// lblLockedProgram control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLockedProgram;
+
         /// <summary>
         /// divMasterPageTitle control.
         /// </summary>
@@ -164,7 +382,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMasterPageTitle;
-        
+
         /// <summary>
         /// MainContent control.
         /// </summary>
@@ -173,7 +391,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
+
         /// <summary>
         /// divMasterPageFooter control.
         /// </summary>
@@ -182,7 +400,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMasterPageFooter;
-        
+
         /// <summary>
         /// ltlStateDisclaimer control.
         /// </summary>
@@ -191,5 +409,23 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltlStateDisclaimer;
+
+        /// <summary>
+        /// lnkConfidentiality control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapHyperLink lnkConfidentiality;
+
+        /// <summary>
+        /// autoLogoff control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Pyramid.User_Controls.AutoLogoff autoLogoff;
     }
 }

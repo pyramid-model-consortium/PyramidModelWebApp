@@ -14,18 +14,28 @@ namespace Pyramid.Models
     
     public partial class ReportCatalog
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ReportCatalog()
+        {
+            this.UserReportHistory = new HashSet<UserReportHistory>();
+        }
+    
         public int ReportCatalogPK { get; set; }
         public string CriteriaOptions { get; set; }
         public string CriteriaDefaults { get; set; }
+        public string Creator { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public string DocumentationLink { get; set; }
         public string Keywords { get; set; }
+        public bool OnlyExportAllowed { get; set; }
         public string OptionalCriteriaOptions { get; set; }
         public string ReportCategory { get; set; }
         public string ReportClass { get; set; }
         public string ReportDescription { get; set; }
         public string ReportName { get; set; }
         public string RolesAuthorizedToRun { get; set; }
-        public string Creator { get; set; }
-        public System.DateTime CreateDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserReportHistory> UserReportHistory { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace Pyramid.Models
     {
         public int ProgramEmployeePK { get; set; }
         public System.DateTime HireDate { get; set; }
+        public string ObserverID { get; set; }
         public string ObserverName { get; set; }
         public Nullable<System.DateTime> TermDate { get; set; }
         public string TermReasonSpecify { get; set; }

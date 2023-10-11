@@ -69,6 +69,8 @@ namespace Pyramid.Models
         public Nullable<int> Indicator47 { get; set; }
         public string TeamMembers { get; set; }
         public int ProgramFK { get; set; }
+        public int VersionNumber { get; set; }
+        public bool IsComplete { get; set; }
     
         public virtual Program Program { get; set; }
     }

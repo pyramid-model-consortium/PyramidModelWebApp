@@ -23,7 +23,10 @@ namespace Pyramid.Models
         public string DischargeReasonSpecify { get; set; }
         public System.DateTime EnrollmentDate { get; set; }
         public bool HasIEP { get; set; }
+        public bool HasParentPermission { get; set; }
         public bool IsDLL { get; set; }
+        public string ParentPermissionDocumentFileName { get; set; }
+        public string ParentPermissionDocumentFilePath { get; set; }
         public string ProgramSpecificID { get; set; }
         public int ChildFK { get; set; }
         public Nullable<int> DischargeCodeFK { get; set; }

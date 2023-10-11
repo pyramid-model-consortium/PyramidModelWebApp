@@ -17,14 +17,20 @@ namespace Pyramid.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CodeProgramRole()
         {
+            this.CodeProgramRolePermission = new HashSet<CodeProgramRolePermission>();
             this.UserProgramRole = new HashSet<UserProgramRole>();
         }
     
         public int CodeProgramRolePK { get; set; }
+        public bool DisplayOnHelpPage { get; set; }
+        public string RoleDescription { get; set; }
         public string RoleName { get; set; }
         public string RolesAuthorizedToModify { get; set; }
-        public bool AllowedToEdit { get; set; }
+        public bool ViewPrivateChildInfo { get; set; }
+        public bool ViewPrivateEmployeeInfo { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CodeProgramRolePermission> CodeProgramRolePermission { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProgramRole> UserProgramRole { get; set; }
     }

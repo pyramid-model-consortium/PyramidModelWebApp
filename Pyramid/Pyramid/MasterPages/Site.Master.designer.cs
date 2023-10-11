@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid {
-    
-    
-    public partial class SiteMaster {
-        
+namespace Pyramid
+{
+
+
+    public partial class SiteMaster
+    {
+
         /// <summary>
         /// HeadContent control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-        
+
         /// <summary>
         /// AllScriptManager control.
         /// </summary>
@@ -29,16 +31,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager AllScriptManager;
-        
-        /// <summary>
-        /// dummyPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel dummyPanel;
-        
+
         /// <summary>
         /// pnlMainContent control.
         /// </summary>
@@ -47,7 +40,16 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlMainContent;
-        
+
+        /// <summary>
+        /// hfBodyWidth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfBodyWidth;
+
         /// <summary>
         /// hfCustomizationOptionCookieName control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfCustomizationOptionCookieName;
-        
+
         /// <summary>
         /// hfCustomizationOptionCookieSection control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfCustomizationOptionCookieSection;
-        
+
         /// <summary>
         /// MainContent control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
+
         /// <summary>
         /// btnDoNothing control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Pyramid {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDoNothing;
-        
+
         /// <summary>
         /// ScriptContent control.
         /// </summary>

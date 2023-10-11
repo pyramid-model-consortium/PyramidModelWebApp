@@ -1,5 +1,7 @@
 ﻿<%@ Master Language="C#" MasterPageFile="~/MasterPages/LoggedIn.master" AutoEventWireup="true" CodeBehind="Dashboard.master.cs" Inherits="Pyramid.MasterPages.Dashboard" %>
 
+<%@ Register Assembly="DevExpress.XtraReports.v22.2.Web.WebForms, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.XtraReports.Web" TagPrefix="dx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
         #divNavPills {
@@ -50,10 +52,28 @@
         });
 
         function initializeDashboardMasterPage() {
-            $('.count-link').on('click', function (e) {
+            $('.count-link').off('click').on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
             });
+            
+            //Set up the form report modal
+            var reportModal = $('#divFormReportModal');
+
+            //Show/hide the modal
+            var hfShowReportModal = $('[ID$="hfShowReportModal"]');
+
+            if (hfShowReportModal.val() == 'show') {
+                //Show the modal
+                reportModal.modal('show');
+
+                //Reset the hidden field
+                hfShowReportModal.val('hide')
+            }
+            else {
+                //Hide the modal
+                reportModal.modal('hide');
+            }
         }
     </script>
 
@@ -71,21 +91,21 @@
                     <div id="divNavPills" class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                         <a id="lnkHomeDashboard" class="nav-link mb-2 p-1 btn btn-loader btn-outline-primary" href="/Default.aspx">Home</a>
                         <!-- ASQSE -->
-                        <div class="btn-group mb-2" role="group">
+                        <div id="divASQSEDashboardLink" runat="server" class="btn-group mb-2" role="group">
                             <a id="lnkASQSEDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ASQSEDashboard.aspx">ASQ:SE Screenings</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes ASQ:SE screenings performed in the past year.">
                                 <span id="spanASQSECount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
-                        <!-- Other SE Screens -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
-                            <a id="lnkOtherSEScreenDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/OtherSEScreenDashboard.aspx">Other Social Emotional Screenings</a>
-                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes other social emotional screenings performed in the past year.">
+                        <!-- Other SE Assessments -->
+                        <div id="divOSESDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkOtherSEScreenDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/OtherSEScreenDashboard.aspx">Other Social Emotional Assessments</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes other social emotional assessments performed in the past year.">
                                 <span id="spanOtherSEScreenCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
                         <!-- Behavior Incidents Reports -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divBIRDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkBehaviorIncidentDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/BehaviorIncidentDashboard.aspx">Behavior Incident Reports</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Behavior Incident Reports that occurred during the past year.">
                                 <span id="spanBehaviorIncidentCount" runat="server" class="badge badge-pill badge-dark"></span>
@@ -106,49 +126,69 @@
                             </a>
                         </div>
                         <!-- Children -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divChildDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkChildrenDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ChildrenDashboard.aspx">Children</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all active children as of today.  (Active means that the child has not been discharged)">
                                 <span id="spanChildCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
                         <!-- Classrooms -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divClassDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkClassroomDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ClassroomDashboard.aspx">Classrooms</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all classrooms.">
                                 <span id="spanClassroomCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
                         <!-- Classroom Coaching Logs -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divCCLDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkCoachingLogDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/CoachingLogDashboard.aspx">Classroom Coaching Logs</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes Classroom Coaching Logs that were performed in the past year.">
                                 <span id="spanCoachingLogCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
+                        <!-- Community Leadership Team -->
+                        <div id="divCWLTDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkCWLTDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/CWLTDashboard.aspx">Community Leadership Team</a>
+                        </div>
                         <!-- Employees -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
-                            <a id="lnkEmployeeDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ProgramEmployeeDashboard.aspx">Employees</a>
-                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all currently active employees.">
+                        <div id="divPEDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkEmployeeDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/ProgramEmployeeDashboard.aspx">Pyramid Model Professionals</a>
+                            <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes all currently active professionals.">
                                 <span id="spanEmployeeCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
+                        <!-- Leadership Coach Dashboard -->
+                        <div id="divLCDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkLCDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/LeadershipCoachDashboard.aspx">Leadership Coach Dashboard</a>
+                        </div>
+                        <!-- Master Cadre Dashboard -->
+                        <div id="divMCDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkMCDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/MasterCadreDashboard.aspx">Master Cadre Dashboard</a>
+                        </div>
+                        <!-- Program Leadership Team -->
+                        <div id="divPLTDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkPLTDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/PLTDashboard.aspx">Program Leadership Team</a>
+                        </div>
+                        <!-- State Leadership Team -->
+                        <div id="divSLTDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
+                            <a id="lnkSLTDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/SLTDashboard.aspx">State Leadership Team</a>
+                        </div>
                         <!-- TPITOS -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divTPITOSDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkTPITOSDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/TPITOSDashboard.aspx">TPITOS Observations</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes TPITOS Observations performed in the past year.">
                                 <span id="spanTPITOSCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
                         <!-- TPOTs -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divTPOTDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkTPOTDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/TPOTDashboard.aspx">TPOT Observations</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes TPOT Observations performed in the past year.">
                                 <span id="spanTPOTCount" runat="server" class="badge badge-pill badge-dark"></span>
                             </a>
                         </div>
                         <!-- Uploaded Files -->
-                        <div class="btn-group mb-2 flex-wrap" role="group">
+                        <div id="divULFDashboardLink" runat="server" class="btn-group mb-2 flex-wrap" role="group">
                             <a id="lnkUploadedFileDashboard" class="btn btn-loader btn-outline-primary flex-grow-1" href="/Pages/UploadedFiles.aspx">Uploaded Files</a>
                             <a class="btn btn-outline-primary d-flex align-items-center count-link" data-toggle="popover" data-trigger="hover" data-content="This count includes files uploaded in the past year.">
                                 <span id="spanFileUploadCount" runat="server" class="badge badge-pill badge-dark"></span>
@@ -166,6 +206,27 @@
             </div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
+        </div>
+    </div>
+    <div id="divFormReportModal" class="modal fade">
+        <div class="modal-xl modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Download/Print Preview</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <asp:UpdatePanel ID="upFormReport" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <asp:HiddenField ID="hfShowReportModal" runat="server" Value="hide" />
+                            <dx:ASPxWebDocumentViewer ID="formReportViewer" runat="server" ClientSideEvents-BeforeRender="resizeWindow"></dx:ASPxWebDocumentViewer>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnClose" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i>&nbsp;Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </asp:Content>

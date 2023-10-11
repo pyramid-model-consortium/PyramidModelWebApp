@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="ASQ:SE Screening" Language="C#" MasterPageFile="~/MasterPages/Dashboard.master" AutoEventWireup="true" CodeBehind="ASQSE.aspx.cs" Inherits="Pyramid.Pages.ASQSE" %>
 
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
 
@@ -27,6 +27,9 @@
             //Allow date format for DataTables sorting
             $.fn.dataTable.moment('MM/DD/YYYY');
 
+            //Show/hide the view only fields
+            setViewOnlyVisibility();
+
             //Initialize the datatables
             if (!$.fn.dataTable.isDataTable('#tblScores')) {
                 $('#tblScores').DataTable({
@@ -48,9 +51,17 @@
                 });
             }
             $('.dataTables_filter input').removeClass('form-control-sm');
-            
-            //Show/hide the view only fields
-            setViewOnlyVisibility();
+        }
+
+        function setViewOnlyVisibility() {
+            //Hide controls if this is a view
+            var isView = $('[ID$="hfViewOnly"]').val();
+            if (isView == 'True') {
+                $('.hide-on-view').addClass('hidden');
+            }
+            else {
+                $('.hide-on-view').removeClass('hidden');
+            }
         }
     </script>
 </asp:Content>
@@ -58,21 +69,25 @@
     <asp:Label ID="lblPageTitle" Text="ASQ:SE" CssClass="h2" runat="server"></asp:Label>
     <hr />
     <asp:HiddenField ID="hfViewOnly" runat="server" Value="False" />
-    <asp:UpdatePanel ID="upMessaging" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <uc:Messaging ID="msgSys" runat="server" />
-        </ContentTemplate>
-        <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="submitASQSE" />
-        </Triggers>
-    </asp:UpdatePanel>
     <asp:UpdatePanel ID="upASQSE" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
+            <uc:Messaging ID="msgSys" runat="server" />
+            <asp:HiddenField ID="hfASQSEPK" runat="server" Value="" />
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card bg-light">
                         <div class="card-header">
-                            ASQ:SE Screening
+                            <div class="row">
+                                <div class="col-md-8">
+                                    ASQ:SE Screening
+                                </div>
+                                <div class="col-md-4">
+                                    <dx:BootstrapButton ID="btnPrintPreview" runat="server" Text="Save and Download/Print" OnClick="btnPrintPreview_Click" 
+                                        SettingsBootstrap-RenderOption="primary" ValidationGroup="vgASQSE" data-validation-group="vgASQSE">
+                                        <CssClasses Icon="fas fa-print" Control="float-right btn-loader" />
+                                    </dx:BootstrapButton>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -207,7 +222,11 @@
                 </div>
             </div>
             <div class="page-footer">
-                <uc:Submit ID="submitASQSE" runat="server" ValidationGroup="vgASQSE" OnSubmitClick="submitASQSE_Click" OnCancelClick="submitASQSE_CancelClick" OnValidationFailed="submitASQSE_ValidationFailed" />
+                <uc:Submit ID="submitASQSE" runat="server" ValidationGroup="vgASQSE"
+                    ControlCssClass="center-content"
+                    OnSubmitClick="submitASQSE_Click" 
+                    OnCancelClick="submitASQSE_CancelClick"
+                    OnValidationFailed="submitASQSE_ValidationFailed" />
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>

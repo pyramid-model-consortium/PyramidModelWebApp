@@ -1,22 +1,115 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Pyramid.Models;
-
 
 namespace Pyramid.Models
 {
-    // You can add User data for the user by adding more properties to your User class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class PyramidUser : IdentityUser
+    public class AspNetUserChange
     {
+        [Required]
+        [Key]
+        public int AspNetUserChangePK { get; set; }
+        [Required]
+        public DateTime ChangeDatetime { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string ChangeType { get; set; }
+        [Required]
+        [MaxLength(128)]
+        public string Id { get; set; }
+        [Required]
+        [MaxLength(512)]
         public string FirstName { get; set; }
+        [Required]
+        [MaxLength(512)]
         public string LastName { get; set; }
         public Nullable<DateTime> UpdateTime { get; set; }
+        [MaxLength(256)]
+        public string Email { get; set; }
+        [Required]
+        public bool EmailConfirmed { get; set; }
+        public string PasswordHash { get; set; }
+        public string SecurityStamp { get; set; }
+        public string PhoneNumber { get; set; }
+        [MaxLength(40)]
+        public string WorkPhoneNumber { get; set; }
+        [Required]
+        public bool PhoneNumberConfirmed { get; set; }
+        [Required]
+        public bool TwoFactorEnabled { get; set; }
+        public Nullable<DateTime> LockoutEndDateUtc { get; set; }
+        [Required]
+        public bool LockoutEnabled { get; set; }
+        [Required]
+        public int AccessFailedCount { get; set; }
+        [Required]
+        [MaxLength(256)]
+        public string UserName { get; set; }
+        [Required]
+        public bool AccountEnabled { get; set; }
+        [Required]
+        [MaxLength(256)]
+        public string CreatedBy { get; set; }
+        [Required]
+        public DateTime CreateTime { get; set; }
+        [MaxLength(256)]
+        public string UpdatedBy { get; set; }
+        [MaxLength(50)]
+        public string ZIPCode { get; set; }
+
+        [MaxLength(100)]
+        public string City { get;  set; }
+
+        [MaxLength(50)]
+        public string State { get; set; }
+
+        [MaxLength(256)]
+        public string RegionLocation { get; set; }
+
+        [MaxLength(300)]
+        public string Street { get; set; }
+    }
+
+    // You can add User data for the user by adding more properties to your User class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    public partial class PyramidUser : IdentityUser
+    {
+        [Required]
+        [MaxLength(512)]
+        public string FirstName { get; set; }
+        [Required]
+        [MaxLength(512)]
+        public string LastName { get; set; }
+        [Required]
+        public bool AccountEnabled { get; set; }
+        [MaxLength(40)]
+        public string WorkPhoneNumber { get; set; }
+        [Required]
+        [MaxLength(256)]
+        public string CreatedBy { get; set; }
+        [Required]
+        public DateTime CreateTime { get; set; }
+        [MaxLength(256)]
+        public string UpdatedBy { get; set; }
+        public Nullable<DateTime> UpdateTime { get; set; }
+        [MaxLength(50)]
+        public string ZIPCode { get; set; }
+
+        [MaxLength(100)]
+        public string City { get; set; }
+
+        [MaxLength(50)]
+        public string State { get; set; }
+        [MaxLength(256)]
+        public string RegionLocation { get; set; }
+
+        [MaxLength(300)]
+        public string Street { get; set; }
+
 
         public ClaimsIdentity GenerateUserIdentity(ApplicationUserManager manager)
         {
@@ -38,6 +131,8 @@ namespace Pyramid.Models
             : base("PyramidIdentity", throwIfV1Schema: false)
         {
         }
+
+        public DbSet<AspNetUserChange> UserChanges { get; set; }
 
         public static ApplicationDbContext Create()
         {

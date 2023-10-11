@@ -18,9 +18,13 @@ namespace Pyramid.Models
         public CodeGender()
         {
             this.Child = new HashSet<Child>();
+            this.CWLTMember = new HashSet<CWLTMember>();
+            this.SLTMember = new HashSet<SLTMember>();
+            this.Employee = new HashSet<Employee>();
         }
     
         public int CodeGenderPK { get; set; }
+        public string Abbreviation { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public int OrderBy { get; set; }
@@ -28,5 +32,11 @@ namespace Pyramid.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Child> Child { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CWLTMember> CWLTMember { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SLTMember> SLTMember { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Employee> Employee { get; set; }
     }
 }

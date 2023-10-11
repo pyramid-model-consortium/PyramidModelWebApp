@@ -25,12 +25,21 @@ namespace Pyramid.Models
             this.ChildStatus = new HashSet<ChildStatus>();
             this.Classroom = new HashSet<Classroom>();
             this.LoginHistory = new HashSet<LoginHistory>();
-            this.ProgramType = new HashSet<ProgramType>();
+            this.NewsEntry = new HashSet<NewsEntry>();
             this.OtherSEScreen = new HashSet<OtherSEScreen>();
+            this.PLTMember = new HashSet<PLTMember>();
+            this.ProgramStatus = new HashSet<ProgramStatus>();
+            this.ProgramActionPlan = new HashSet<ProgramActionPlan>();
+            this.ProgramActionPlanFCC = new HashSet<ProgramActionPlanFCC>();
+            this.ProgramLCMeetingDebrief = new HashSet<ProgramLCMeetingDebrief>();
+            this.ProgramLCMeetingSchedule = new HashSet<ProgramLCMeetingSchedule>();
+            this.ProgramType = new HashSet<ProgramType>();
+            this.UserFileUpload = new HashSet<UserFileUpload>();
             this.UserProgramRole = new HashSet<UserProgramRole>();
             this.CoachingLog = new HashSet<CoachingLog>();
-            this.NewsEntry = new HashSet<NewsEntry>();
-            this.UserFileUpload = new HashSet<UserFileUpload>();
+            this.ProgramAddress = new HashSet<ProgramAddress>();
+            this.FormSchedule = new HashSet<FormSchedule>();
+            this.LeadershipCoachLog = new HashSet<LeadershipCoachLog>();
             this.ProgramEmployee = new HashSet<ProgramEmployee>();
         }
     
@@ -40,12 +49,13 @@ namespace Pyramid.Models
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
         public string Location { get; set; }
+        public Nullable<System.DateTime> ProgramEndDate { get; set; }
         public string ProgramName { get; set; }
+        public System.DateTime ProgramStartDate { get; set; }
         public int CohortFK { get; set; }
         public int HubFK { get; set; }
         public int StateFK { get; set; }
-        public Nullable<System.DateTime> ProgramEndDate { get; set; }
-        public System.DateTime ProgramStartDate { get; set; }
+        public string IDNumber { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ASQSE> ASQSE { get; set; }
@@ -65,19 +75,37 @@ namespace Pyramid.Models
         public virtual Hub Hub { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LoginHistory> LoginHistory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NewsEntry> NewsEntry { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OtherSEScreen> OtherSEScreen { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PLTMember> PLTMember { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgramStatus> ProgramStatus { get; set; }
         public virtual State State { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgramActionPlan> ProgramActionPlan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgramActionPlanFCC> ProgramActionPlanFCC { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgramLCMeetingDebrief> ProgramLCMeetingDebrief { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgramLCMeetingSchedule> ProgramLCMeetingSchedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramType> ProgramType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OtherSEScreen> OtherSEScreen { get; set; }
+        public virtual ICollection<UserFileUpload> UserFileUpload { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProgramRole> UserProgramRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CoachingLog> CoachingLog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NewsEntry> NewsEntry { get; set; }
+        public virtual ICollection<ProgramAddress> ProgramAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserFileUpload> UserFileUpload { get; set; }
+        public virtual ICollection<FormSchedule> FormSchedule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LeadershipCoachLog> LeadershipCoachLog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProgramEmployee> ProgramEmployee { get; set; }
     }

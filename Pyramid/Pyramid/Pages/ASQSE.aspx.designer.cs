@@ -31,13 +31,13 @@ namespace Pyramid.Pages {
         protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
         
         /// <summary>
-        /// upMessaging control.
+        /// upASQSE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upMessaging;
+        protected global::System.Web.UI.UpdatePanel upASQSE;
         
         /// <summary>
         /// msgSys control.
@@ -49,13 +49,22 @@ namespace Pyramid.Pages {
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
         
         /// <summary>
-        /// upASQSE control.
+        /// hfASQSEPK control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upASQSE;
+        protected global::System.Web.UI.WebControls.HiddenField hfASQSEPK;
+        
+        /// <summary>
+        /// btnPrintPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnPrintPreview;
         
         /// <summary>
         /// lblProgram control.

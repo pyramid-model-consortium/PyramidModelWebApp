@@ -25,7 +25,7 @@ namespace Pyramid.Models
         public int ClassroomFK { get; set; }
         public int JobTypeCodeFK { get; set; }
         public Nullable<int> LeaveReasonCodeFK { get; set; }
-        public int EmployeeFK { get; set; }
+        public int ProgramEmployeeFK { get; set; }
     
         public virtual Classroom Classroom { get; set; }
         public virtual CodeEmployeeLeaveReason CodeEmployeeLeaveReason { get; set; }

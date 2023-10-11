@@ -21,11 +21,11 @@ namespace Pyramid.Models
         }
     
         public int CodeTPOTRedFlagPK { get; set; }
+        public string Abbreviation { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public int OrderBy { get; set; }
         public System.DateTime StartDate { get; set; }
-        public string Abbreviation { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TPOTRedFlags> TPOTRedFlags { get; set; }

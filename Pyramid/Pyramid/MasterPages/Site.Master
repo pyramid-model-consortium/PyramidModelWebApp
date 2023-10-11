@@ -33,8 +33,8 @@
                 <asp:ScriptReference Name="SiteSpecific" />
             </Scripts>
         </asp:ScriptManager>
-        <asp:UpdatePanel ID="dummyPanel" runat="server"></asp:UpdatePanel>
         <asp:Panel ID="pnlMainContent" runat="server" DefaultButton="btnDoNothing">
+            <asp:HiddenField ID="hfBodyWidth" runat="server" Value="" />
             <asp:HiddenField ID="hfCustomizationOptionCookieName" runat="server" Value="" />
             <asp:HiddenField ID="hfCustomizationOptionCookieSection" runat="server" Value="" />
             <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
@@ -48,14 +48,8 @@
         </asp:Panel>
         <!-- The following div only shows if the user is using IE -->
         <div id="divRestrictedBrowser" class="alert alert-danger text-center hidden">
-            <h3 style="padding-top: 15%; padding-bottom:25%;"><i class="fas fa-exclamation-triangle"></i>&nbsp;You are using Internet Explorer as your browser!
-                <br />
-                <br />
-                Internet Explorer is not allowed when accessing this system!
-                <br />
-                <br />
-                Please use Google Chrome or another modern browser!
-            </h3>
+            <i class="fas fa-exclamation-triangle"></i>&nbsp;You are using Internet Explorer as your browser and it is not permitted when accessing this system!
+            <p class="mt-4">Please use Google Chrome or another modern browser.</p>
         </div>
     </form>
     <script type="text/javascript">
@@ -84,6 +78,15 @@
             }
         }
 
+        //This function triggers a window resize
+        //This is used to fix a problem with the ASPxWebDocumentViewer in mobile mode being blank on load
+        function resizeWindow() {
+            //Resize the window after 500 milliseconds
+            setTimeout(function () {
+                $(window).trigger('resize');
+            }, 500);
+        }
+
         //This method fires after every page load and AJAX postback
         function initializeSiteMasterPage() {
             //Check to see if the browser is restricted
@@ -103,13 +106,17 @@
                 divBodyContent.after(divRestricted);
             }
 
+            //Set up the form report modal
+            var body = $('body');
+
+            //Get the width of the report modal
+            var bodyWidth = body.width();
+
+            //Set the width hidden field
+            $('[ID$="hfBodyWidth"]').val(bodyWidth);
+
             //Initialize popovers
             $('[data-toggle="popover"]').popover();
-
-            //Create phone masks
-            $('.phone-textbox').inputmask('999-999-9999', {
-                clearIncomplete: true
-            });
 
             //Create datepickers
             $('.datepicker-textbox').inputmask('99/99/9999').datepicker({
@@ -153,31 +160,41 @@
                 //Get this button
                 var button = $(this);
 
-                //Create the loading button based on this button
-                var loadingButton = button.clone();
+                //Get the validation group
+                var validationGroup = button.data('validation-group');
 
-                //Set the loading button's attributes, content, and click event
-                loadingButton.attr('id', this.id + '_loading');
-                loadingButton.removeClass('btn-loader');
-                loadingButton.addClass('btn-loading');
-                loadingButton.html('<span class="spinner-border spinner-border-sm"></span>&nbsp;Loading...');
-                loadingButton.off('click').on('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
+                //Make sure validation passes (if the validation group exists)
+                if (!validationGroup || ASPxClientEdit.ValidateGroup(validationGroup)) {
+                    //Create the loading button based on this button
+                    var loadingButton = button.clone();
 
-                //Put the loading button after this button
-                button.after(loadingButton);
+                    //Set the loading button's attributes, content, and click event
+                    loadingButton.attr('id', this.id + '_loading');
+                    loadingButton.removeClass('btn-loader');
+                    loadingButton.addClass('btn-loading');
+                    loadingButton.html('<span class="spinner-border spinner-border-sm"></span>&nbsp;Loading...');
+                    loadingButton.off('click').on('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
 
-                //Hide this button
-                button.hide();
+                    //Put the loading button after this button
+                    button.after(loadingButton);
 
-                //Show the loading button
-                loadingButton.show();
+                    //Hide this button
+                    button.hide();
+
+                    //Show the loading button
+                    loadingButton.show();
+                }
+                else if (validationGroup) {
+                    //Call the clientValidationFailed method
+                    clientValidationFailed();
+                }
             });
 
             //Prevent a click event
-            $('[ID$="btnDoNothing"]').on('click', function (e) {
+            $('[ID$="btnDoNothing"]').off('click').on('click', function (e) {
                 e.preventDefault();
             });
 
@@ -187,6 +204,9 @@
             //Initialize the messaging controls
             initializeMessagingControls();
 
+            //Initialize the collapse modules
+            initializeCollapseModules();
+
             //Add click events for the delete buttons in the gridviews
             $('.delete-gridview').off('click').on('click', function (e) {
                 //Prevent the click event
@@ -195,13 +215,21 @@
                 //Get the button
                 var thisButton = $(this);
 
-                //Get the pk of the program to delete
+                //Get the PK of the item to delete
                 var deletePK = thisButton.data('pk');
                 var hiddenField = thisButton.data('hf');
+                var additionalValue = thisButton.data('additional');
+                var additionalHiddenField = thisButton.data('additional-hf');
                 var modal = thisButton.data('target');
 
-                //Set the hidden field value
+                //Set the PK hidden field value
                 $('[ID$="' + hiddenField + '"]').val(deletePK);
+
+                //Check if there are additional values
+                if (additionalValue && additionalHiddenField) {
+                    //There are additional values, set the proper hidden field value
+                    $('[ID$="' + additionalHiddenField + '"]').val(additionalValue);
+                }
 
                 //Open the modal
                 $(modal).modal();
@@ -303,6 +331,10 @@
             });
         }
 
+        //Hide cancelling buttons and show the cancel buttons
+        $('.btn-cancelling').hide();
+        $('.btn-cancel').show();
+
         //This function is used to initialize the submit controls
         function initializeSubmitControls() {
             //Show the submit buttons
@@ -310,6 +342,17 @@
 
             //Hide the submitting buttons
             $('[ID$="lbSubmitting"]').hide();
+
+            //Focus on the first invalid control (if any)
+            setTimeout(function () {
+                //Get the first invalid control
+                var firstInvalid = $('.is-invalid').first();
+
+                if (firstInvalid) {
+                    //Focus that control
+                    firstInvalid.focus();
+                }
+            }, 100);
 
             //Get the submit controls
             var submitControls = $('.submit-control');
@@ -319,31 +362,46 @@
                 //Get the submit control div
                 var divSubmitControl = $(this);
 
-                //Get the button for this submit control
+                //Get the submit button information for this submit control
                 var btnSubmit = divSubmitControl.find('[ID$="btnSubmit"]');
+                var btnConfirmSubmit = divSubmitControl.find('[ID$="btnConfirmSubmit"]');
+                var useSubmitConfirmation = divSubmitControl.find('[ID$="hfUseSubmitConfirmation"]').val();
+                var submitConfirmationModal = divSubmitControl.find('.submit-confirm-modal');
+
+                //Get the validation group
+                var validationGroup = divSubmitControl.find('[ID$="hfValidationGroup"]').val();
 
                 //Only continue if the submit button exists
                 if (btnSubmit.length > 0) {
                     //Set the click event for the submit button
-                    btnSubmit.off('click').on('click', function () {
-                        //Get the validation group
-                        var validationGroup = divSubmitControl.find('[ID$="hfValidationGroup"]').val();
-
+                    btnSubmit.off('click').on('click', function (e) {
+                        //Validate
                         if (ASPxClientEdit.ValidateGroup(validationGroup)) {
-                            //If the validation succeeds, prevent clicks on the submit button
-                            btnSubmit.off('click').on('click', function (e) {
+                            //Check if using submit confirmation
+                            if (useSubmitConfirmation != null && useSubmitConfirmation.toLowerCase() === 'true') {
+                                //Prevent the postback
                                 e.preventDefault();
                                 e.stopPropagation();
-                            });
 
-                            //Hide the submit buttons for ALL submit controls
-                            $('[ID$="btnSubmit"]').hide();
+                                //Show the confirmation modal
+                                submitConfirmationModal.modal('show');
+                            }
+                            else {
+                                //If the validation succeeds, prevent clicks on the submit button
+                                btnSubmit.off('click').on('click', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
 
-                            //Show the submitting buttons for ALL submit controls and prevent clicks on them
-                            $('[ID$="lbSubmitting"]').show().off('click').on('click', function (e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                            });
+                                //Hide the submit buttons for ALL submit controls
+                                $('[ID$="btnSubmit"]').hide();
+
+                                //Show the submitting buttons for ALL submit controls and prevent clicks on them
+                                $('[ID$="lbSubmitting"]').show().off('click').on('click', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
+                            }
                         }
                         else {
                             //Call the client validation failed method
@@ -351,6 +409,155 @@
                         }
                     });
                 }
+
+                if (btnConfirmSubmit.length > 0) {
+                    //Set the click event for the submit confirmation button
+                    btnConfirmSubmit.off('click').on('click', function (e) {
+                        //Validate
+                        if (ASPxClientEdit.ValidateGroup(validationGroup)) {
+                            //Hide the confirmation modal
+                            submitConfirmationModal.modal('hide');
+
+                            if (btnSubmit.length > 0) {
+                                //If the validation succeeds, prevent clicks on the submit button
+                                btnSubmit.off('click').on('click', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
+
+                                //Hide the submit buttons for ALL submit controls
+                                $('[ID$="btnSubmit"]').hide();
+
+                                //Show the submitting buttons for ALL submit controls and prevent clicks on them
+                                $('[ID$="lbSubmitting"]').show().off('click').on('click', function (e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
+                            }
+                        }
+                        else {
+                            //Hide the confirmation modal
+                            submitConfirmationModal.modal('hide');
+
+                            //Call the client validation failed method
+                            clientValidationFailed();
+                        }
+                    });
+                }
+
+                //Set focus based on modal usage
+                submitConfirmationModal.on('shown.bs.modal', function () {
+                    //Set focus to the first button in the modal
+                    submitConfirmationModal.find('.modal-footer button').first().focus();
+                });
+
+                submitConfirmationModal.on('hidden.bs.modal', function () {
+                    //Set focus to the submit button
+                    btnSubmit.focus();
+                });
+
+                //Get the cancel button information for this submit control
+                var btnCancel = divSubmitControl.find('[ID$="btnCancel"]');
+                var btnConfirmCancel = divSubmitControl.find('[ID$="btnConfirmCancel"]');
+                var useCancelConfirmation = divSubmitControl.find('[ID$="hfUseCancelConfirmation"]').val();
+                var cancelConfirmationModal = divSubmitControl.find('.cancel-confirm-modal');
+
+                if (btnCancel.length > 0) {
+                    //Set the click event for the cancel button
+                    btnCancel.off('click').on('click', function (e) {
+                        //Check if using cancel confirmation
+                        if (useCancelConfirmation != null && useCancelConfirmation.toLowerCase() === 'true') {
+                            //Prevent the postback
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            //Show the confirmation modal
+                            cancelConfirmationModal.modal('show');
+                        }
+                        else {
+                            //Create the cancelling button based on this button
+                            var cancellingButton = btnCancel.clone();
+
+                            //Set the button's attributes, content, and click event
+                            cancellingButton.attr('id', this.id + '_cancelling');
+                            cancellingButton.addClass('btn-cancelling');
+                            cancellingButton.html('<span class="spinner-border spinner-border-sm"></span>&nbsp;Cancelling...');
+                            cancellingButton.off('click').on('click', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+
+                            //Put the cancelling button after this button
+                            btnCancel.after(cancellingButton);
+
+                            //Hide this button
+                            btnCancel.hide();
+
+                            //Show the cancelling button
+                            cancellingButton.show();
+                        }
+                    });
+                }
+
+                if (btnConfirmCancel.length > 0) {
+                    //Set the click event for the cancel confirmation button
+                    btnConfirmCancel.off('click').on('click', function (e) {
+                        //Hide the confirmation modal
+                        cancelConfirmationModal.modal('hide');
+
+                        if (btnCancel.length > 0) {
+                            //Create the cancelling button based on this button
+                            var cancellingButton = btnCancel.clone();
+
+                            //Set the button's attributes, content, and click event
+                            cancellingButton.attr('id', this.id + '_cancelling');
+                            cancellingButton.addClass('btn-cancelling');
+                            cancellingButton.html('<span class="spinner-border spinner-border-sm"></span>&nbsp;Cancelling...');
+                            cancellingButton.off('click').on('click', function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+
+                            //Put the cancelling button after this button
+                            btnCancel.after(cancellingButton);
+
+                            //Hide this button
+                            btnCancel.hide();
+
+                            //Show the cancelling button
+                            cancellingButton.show();
+                        }
+                    });
+                }
+
+                //Set focus based on modal usage
+                cancelConfirmationModal.on('shown.bs.modal', function () {
+                    //Set focus to the first button in the modal
+                    cancelConfirmationModal.find('.modal-footer button').first().focus();
+                });
+
+                cancelConfirmationModal.on('hidden.bs.modal', function () {
+                    //Set focus to the cancel button
+                    btnCancel.focus();
+                });
+            });
+        }
+
+        //This function initializes the collapse modules
+        function initializeCollapseModules() {
+            //Set up events for the collapse modules
+            $('.collapse-module').each(function (index) {
+                //Get the current module
+                var currentModule = $(this);
+
+                //Bind the show and hide collapse events
+                currentModule.find('.collapse').off('show.bs.collapse').on('show.bs.collapse', function () {
+                    //Show the toggle section
+                    currentModule.find('.collapse-module-toggle-section').fadeIn();
+                }).off('hide.bs.collapse').on('hide.bs.collapse', function () {
+                    //Hide the toggle section
+                    currentModule.find('.collapse-module-toggle-section').fadeOut();
+                });
             });
         }
 
@@ -364,10 +571,11 @@
                 //Get the first invalid control
                 var firstInvalid = $('.is-invalid').first();
 
-                //Focus that control
-                firstInvalid.focus();
+                if (firstInvalid) {
+                    //Focus that control
+                    firstInvalid.focus();
+                }
             }, 100);
-
         }
 
         //This function returns a customization option value

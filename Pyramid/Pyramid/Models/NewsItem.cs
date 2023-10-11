@@ -16,12 +16,12 @@ namespace Pyramid.Models
     {
         public int NewsItemPK { get; set; }
         public string Contents { get; set; }
-        public int ItemNum { get; set; }
-        public int NewsEntryFK { get; set; }
         public string Creator { get; set; }
         public System.DateTime CreateDate { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
+        public int ItemNum { get; set; }
+        public int NewsEntryFK { get; set; }
     
         public virtual NewsEntry NewsEntry { get; set; }
     }

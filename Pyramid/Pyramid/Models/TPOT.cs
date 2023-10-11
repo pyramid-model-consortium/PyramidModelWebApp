@@ -29,7 +29,7 @@ namespace Pyramid.Models
         public System.DateTime CreateDate { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
-        public bool IsValid { get; set; }
+        public bool IsComplete { get; set; }
         public Nullable<int> Item1NumNo { get; set; }
         public Nullable<int> Item1NumYes { get; set; }
         public Nullable<int> Item2NumNo { get; set; }

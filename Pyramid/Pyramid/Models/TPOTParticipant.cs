@@ -15,13 +15,13 @@ namespace Pyramid.Models
     public partial class TPOTParticipant
     {
         public int TPOTParticipantPK { get; set; }
-        public int ParticipantTypeCodeFK { get; set; }
-        public int ProgramEmployeeFK { get; set; }
-        public int TPOTFK { get; set; }
         public string Creator { get; set; }
         public System.DateTime CreateDate { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
+        public int ParticipantTypeCodeFK { get; set; }
+        public int ProgramEmployeeFK { get; set; }
+        public int TPOTFK { get; set; }
     
         public virtual CodeParticipantType CodeParticipantType { get; set; }
         public virtual TPOT TPOT { get; set; }

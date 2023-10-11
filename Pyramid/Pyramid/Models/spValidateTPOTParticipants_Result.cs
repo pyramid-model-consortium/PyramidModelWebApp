@@ -14,6 +14,7 @@ namespace Pyramid.Models
     public partial class spValidateTPOTParticipants_Result
     {
         public Nullable<int> ProgramEmployeePK { get; set; }
+        public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }
         public Nullable<bool> IsValid { get; set; }
     }

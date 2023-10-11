@@ -21,6 +21,7 @@ namespace Pyramid.Models
         }
     
         public int CodePossibleMotivationPK { get; set; }
+        public string Abbreviation { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public int OrderBy { get; set; }

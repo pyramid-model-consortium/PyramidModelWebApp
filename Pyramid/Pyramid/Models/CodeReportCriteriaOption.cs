@@ -16,6 +16,7 @@ namespace Pyramid.Models
     {
         public int CodeReportCriteriaOptionPK { get; set; }
         public string Abbreviation { get; set; }
+        public bool CanBeOptional { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public int OrderBy { get; set; }

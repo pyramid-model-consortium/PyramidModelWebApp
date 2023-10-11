@@ -17,6 +17,8 @@ namespace Pyramid.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CodeTraining()
         {
+            this.AspireTrainingCrosswalk = new HashSet<AspireTrainingCrosswalk>();
+            this.CodeTrainingAccess = new HashSet<CodeTrainingAccess>();
             this.Training = new HashSet<Training>();
         }
     
@@ -28,6 +30,10 @@ namespace Pyramid.Models
         public string RolesAuthorizedToModify { get; set; }
         public System.DateTime StartDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AspireTrainingCrosswalk> AspireTrainingCrosswalk { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CodeTrainingAccess> CodeTrainingAccess { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Training> Training { get; set; }
     }

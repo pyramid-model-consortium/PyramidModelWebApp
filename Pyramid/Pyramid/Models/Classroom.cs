@@ -21,6 +21,7 @@ namespace Pyramid.Models
             this.ChildClassroom = new HashSet<ChildClassroom>();
             this.TPITOS = new HashSet<TPITOS>();
             this.TPOT = new HashSet<TPOT>();
+            this.FormSchedule = new HashSet<FormSchedule>();
             this.EmployeeClassroom = new HashSet<EmployeeClassroom>();
         }
     
@@ -46,6 +47,8 @@ namespace Pyramid.Models
         public virtual ICollection<TPITOS> TPITOS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TPOT> TPOT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FormSchedule> FormSchedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EmployeeClassroom> EmployeeClassroom { get; set; }
     }

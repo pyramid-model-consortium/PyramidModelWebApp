@@ -23,11 +23,11 @@ namespace Pyramid.Models
         public int CodeCustomizationOptionValuePK { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
+        public bool IsDefault { get; set; }
         public int OrderBy { get; set; }
         public System.DateTime StartDate { get; set; }
-        public int CustomizationOptionTypeCodeFK { get; set; }
-        public bool IsDefault { get; set; }
         public string Value { get; set; }
+        public int CustomizationOptionTypeCodeFK { get; set; }
     
         public virtual CodeCustomizationOptionType CodeCustomizationOptionType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

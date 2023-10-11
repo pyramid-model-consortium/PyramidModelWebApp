@@ -69,16 +69,26 @@ namespace Pyramid
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //To hold the body width 
+            double bodyWidth = 0.00;
+
+            //Try to get the body width
+            if (double.TryParse(hfBodyWidth.Value, out bodyWidth))
+            {
+                //Put the body width in session
+                Utilities.SetSessionValue(Utilities.SessionKey.BODY_WIDTH, bodyWidth);
+            }
+
             if (!IsPostBack)
             {
                 //Set the hidden field values for the customization cookie
-                hfCustomizationOptionCookieName.Value = Utilities.CustomizationOptionCookieName;
-                hfCustomizationOptionCookieSection.Value = Utilities.CustomizationOptionCookieSection;
+                hfCustomizationOptionCookieName.Value = UserCustomizationOption.CustomizationOptionCookie.COOKIE_NAME;
+                hfCustomizationOptionCookieSection.Value = UserCustomizationOption.CustomizationOptionCookie.COOKIE_SECTION;
 
                 try
                 {
                     //Get the customization cookie
-                    HttpCookie customizationCookie = Request.Cookies[Utilities.CustomizationOptionCookieName];
+                    HttpCookie customizationCookie = Request.Cookies[UserCustomizationOption.CustomizationOptionCookie.COOKIE_NAME];
 
                     //If the customization cookie is null, refill from the database
                     if (customizationCookie == null)
@@ -92,7 +102,7 @@ namespace Pyramid
                         }
 
                         //Set the customization cookie
-                        Utilities.SetCustomizationOptionCookie(userCustomizationOptions);
+                        UserCustomizationOption.SetCustomizationOptionCookie(userCustomizationOptions);
                     }
                 }
                 catch (Exception ex)

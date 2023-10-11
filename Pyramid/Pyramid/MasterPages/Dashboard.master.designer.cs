@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.MasterPages {
-    
-    
-    public partial class Dashboard {
-        
+namespace Pyramid.MasterPages
+{
+
+
+    public partial class Dashboard
+    {
+
         /// <summary>
         /// HeadContent control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-        
+
         /// <summary>
         /// ScriptContent control.
         /// </summary>
@@ -29,7 +31,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder ScriptContent;
-        
+
+        /// <summary>
+        /// divASQSEDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divASQSEDashboardLink;
+
         /// <summary>
         /// spanASQSECount control.
         /// </summary>
@@ -38,7 +49,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanASQSECount;
-        
+
+        /// <summary>
+        /// divOSESDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divOSESDashboardLink;
+
         /// <summary>
         /// spanOtherSEScreenCount control.
         /// </summary>
@@ -47,7 +67,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanOtherSEScreenCount;
-        
+
+        /// <summary>
+        /// divBIRDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBIRDashboardLink;
+
         /// <summary>
         /// spanBehaviorIncidentCount control.
         /// </summary>
@@ -56,7 +85,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanBehaviorIncidentCount;
-        
+
         /// <summary>
         /// divBOQDashboardLink control.
         /// </summary>
@@ -65,7 +94,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBOQDashboardLink;
-        
+
         /// <summary>
         /// spanBOQCount control.
         /// </summary>
@@ -74,7 +103,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanBOQCount;
-        
+
         /// <summary>
         /// divBOQFCCDashboardLink control.
         /// </summary>
@@ -83,7 +112,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBOQFCCDashboardLink;
-        
+
         /// <summary>
         /// spanBOQFCCCount control.
         /// </summary>
@@ -92,7 +121,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanBOQFCCCount;
-        
+
+        /// <summary>
+        /// divChildDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divChildDashboardLink;
+
         /// <summary>
         /// spanChildCount control.
         /// </summary>
@@ -101,7 +139,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanChildCount;
-        
+
+        /// <summary>
+        /// divClassDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divClassDashboardLink;
+
         /// <summary>
         /// spanClassroomCount control.
         /// </summary>
@@ -110,7 +157,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanClassroomCount;
-        
+
+        /// <summary>
+        /// divCCLDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCCLDashboardLink;
+
         /// <summary>
         /// spanCoachingLogCount control.
         /// </summary>
@@ -119,7 +175,25 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanCoachingLogCount;
-        
+
+        /// <summary>
+        /// divCWLTDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCWLTDashboardLink;
+
+        /// <summary>
+        /// divPEDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPEDashboardLink;
+
         /// <summary>
         /// spanEmployeeCount control.
         /// </summary>
@@ -128,7 +202,52 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanEmployeeCount;
-        
+
+        /// <summary>
+        /// divLCDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLCDashboardLink;
+
+        /// <summary>
+        /// divMCDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMCDashboardLink;
+
+        /// <summary>
+        /// divPLTDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPLTDashboardLink;
+
+        /// <summary>
+        /// divSLTDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSLTDashboardLink;
+
+        /// <summary>
+        /// divTPITOSDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTPITOSDashboardLink;
+
         /// <summary>
         /// spanTPITOSCount control.
         /// </summary>
@@ -137,7 +256,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanTPITOSCount;
-        
+
+        /// <summary>
+        /// divTPOTDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divTPOTDashboardLink;
+
         /// <summary>
         /// spanTPOTCount control.
         /// </summary>
@@ -146,7 +274,16 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanTPOTCount;
-        
+
+        /// <summary>
+        /// divULFDashboardLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divULFDashboardLink;
+
         /// <summary>
         /// spanFileUploadCount control.
         /// </summary>
@@ -155,7 +292,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanFileUploadCount;
-        
+
         /// <summary>
         /// divMasterPageTitle control.
         /// </summary>
@@ -164,7 +301,7 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMasterPageTitle;
-        
+
         /// <summary>
         /// MainContent control.
         /// </summary>
@@ -173,5 +310,32 @@ namespace Pyramid.MasterPages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+
+        /// <summary>
+        /// upFormReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upFormReport;
+
+        /// <summary>
+        /// hfShowReportModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfShowReportModal;
+
+        /// <summary>
+        /// formReportViewer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.XtraReports.Web.ASPxWebDocumentViewer formReportViewer;
     }
 }

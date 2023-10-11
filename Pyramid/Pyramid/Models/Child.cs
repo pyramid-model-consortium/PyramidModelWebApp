@@ -32,8 +32,11 @@ namespace Pyramid.Models
         public System.DateTime CreateDate { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
+        public string EthnicitySpecify { get; set; }
         public string FirstName { get; set; }
+        public string GenderSpecify { get; set; }
         public string LastName { get; set; }
+        public string RaceSpecify { get; set; }
         public int EthnicityCodeFK { get; set; }
         public int GenderCodeFK { get; set; }
         public int RaceCodeFK { get; set; }

@@ -15,15 +15,18 @@ namespace Pyramid.Models
     public partial class Training
     {
         public int TrainingPK { get; set; }
+        public Nullable<int> AspireEventAttendeeID { get; set; }
         public string Creator { get; set; }
         public System.DateTime CreateDate { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> EditDate { get; set; }
+        public Nullable<System.DateTime> ExpirationDate { get; set; }
+        public bool IsAspireTraining { get; set; }
         public System.DateTime TrainingDate { get; set; }
-        public int ProgramEmployeeFK { get; set; }
+        public int EmployeeFK { get; set; }
         public int TrainingCodeFK { get; set; }
     
-        public virtual ProgramEmployee ProgramEmployee { get; set; }
         public virtual CodeTraining CodeTraining { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

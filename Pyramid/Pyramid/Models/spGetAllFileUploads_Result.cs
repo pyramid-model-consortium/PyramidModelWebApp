@@ -30,5 +30,6 @@ namespace Pyramid.Models
         public Nullable<int> TypeCodeFK { get; set; }
         public string TypeDescription { get; set; }
         public string FileUploadedBy { get; set; }
+        public string RolesAuthorizedToModify { get; set; }
     }
 }

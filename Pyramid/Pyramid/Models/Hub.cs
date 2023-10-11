@@ -17,8 +17,14 @@ namespace Pyramid.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Hub()
         {
-            this.Program = new HashSet<Program>();
+            this.BenchmarkOfQualityCWLT = new HashSet<BenchmarkOfQualityCWLT>();
+            this.CWLTActionPlan = new HashSet<CWLTActionPlan>();
+            this.CWLTAgency = new HashSet<CWLTAgency>();
+            this.CWLTMember = new HashSet<CWLTMember>();
+            this.HubLCMeetingDebrief = new HashSet<HubLCMeetingDebrief>();
+            this.HubLCMeetingSchedule = new HashSet<HubLCMeetingSchedule>();
             this.NewsEntry = new HashSet<NewsEntry>();
+            this.Program = new HashSet<Program>();
             this.UserFileUpload = new HashSet<UserFileUpload>();
         }
     
@@ -30,11 +36,23 @@ namespace Pyramid.Models
         public string Name { get; set; }
         public int StateFK { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BenchmarkOfQualityCWLT> BenchmarkOfQualityCWLT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CWLTActionPlan> CWLTActionPlan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CWLTAgency> CWLTAgency { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CWLTMember> CWLTMember { get; set; }
         public virtual State State { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Program> Program { get; set; }
+        public virtual ICollection<HubLCMeetingDebrief> HubLCMeetingDebrief { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HubLCMeetingSchedule> HubLCMeetingSchedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NewsEntry> NewsEntry { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Program> Program { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserFileUpload> UserFileUpload { get; set; }
     }
