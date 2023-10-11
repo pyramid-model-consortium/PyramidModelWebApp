@@ -4,6 +4,7 @@ using System.Web;
 using DevExpress.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Pyramid.Models;
 
 namespace Pyramid.Account
 {
@@ -58,19 +59,35 @@ namespace Pyramid.Account
             {
                 //Get the user manager and sign in manager
                 var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
 
-                //Change the password and get the result
-                IdentityResult result = manager.ChangePassword(User.Identity.GetUserId(), txtCurrentPassword.Text, txtNewPassword.Text);
-                if (result.Succeeded)
+                //Get the user
+                PyramidUser currentUser = manager.FindById(User.Identity.GetUserId());
+
+                if (currentUser != null)
                 {
-                    //Redirect the user back to the Manage page on success
-                    Response.Redirect("~/Account/Manage?m=ChangePwdSuccess");
+                    //Change the password and get the result
+                    IdentityResult result = manager.ChangePassword(currentUser.Id, txtCurrentPassword.Text, txtNewPassword.Text);
+
+                    //Set the edit fields
+                    currentUser.UpdatedBy = (string.IsNullOrWhiteSpace(User.Identity.Name) ? "NoLoginName" : User.Identity.Name);
+                    currentUser.UpdateTime = DateTime.Now;
+                    manager.Update(currentUser);
+
+                    if (result.Succeeded)
+                    {
+                        //Redirect the user back to the Manage page on success
+                        Response.Redirect("~/Account/Manage?m=ChangePwdSuccess");
+                    }
+                    else
+                    {
+                        //Show the user why the change failed
+                        msgSys.ShowMessageToUser("danger", "Error", result.Errors.FirstOrDefault(), 120000);
+                    }
                 }
                 else
                 {
-                    //Show the user why the change failed
-                    msgSys.ShowMessageToUser("danger", "Error", result.Errors.FirstOrDefault(), 120000);
+                    //Show an error message
+                    msgSys.ShowMessageToUser("danger", "Error", "Could not find the user record!", 120000);
                 }
             }
         }

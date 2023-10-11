@@ -9,7 +9,6 @@ using System.Data.Entity;
 using Pyramid.Models;
 using Pyramid.Code;
 using DevExpress.Web;
-using System.Text;
 
 namespace Pyramid.Account
 {
@@ -34,6 +33,9 @@ namespace Pyramid.Account
                     {
                         case "LogOutSuccess":
                             msgSys.ShowMessageToUser("primary", "Logged Out", "You have successfully logged out of PIDS!", 10000);
+                            break;
+                        case "DeclinedConfidentiality":
+                            msgSys.ShowMessageToUser("warning", "Declined User Agreement", "Until you accept the user agreement, you will not be able to access the system.", 12000);
                             break;
                         default:
                             break;
@@ -63,7 +65,7 @@ namespace Pyramid.Account
                 PyramidUser user = manager.FindByName(txtUsername.Text);
 
                 //Make sure that the user is confirmed
-                if (user != null && manager.IsEmailConfirmed(user.Id))
+                if (user != null && manager.IsEmailConfirmed(user.Id) && user.AccountEnabled == true)
                 {
                     //Try to sign the user in
                     var result = signinManager.PasswordSignIn(txtUsername.Text, txtPassword.Text, false, user.LockoutEnabled);
@@ -72,7 +74,6 @@ namespace Pyramid.Account
                     {
                         case SignInStatus.Success:
                             //The user successfully logged in
-
                             List<UserProgramRole> userProgramRoles;
                             List<spGetUserCustomizationOptions_Result> userCustomizationOptions;
                             using (PyramidContext context = new PyramidContext())
@@ -107,7 +108,7 @@ namespace Pyramid.Account
                             }
 
                             //Set the user customization options cookie
-                            Utilities.SetCustomizationOptionCookie(userCustomizationOptions);
+                            UserCustomizationOption.SetCustomizationOptionCookie(userCustomizationOptions);
 
                             //Redirect the user based on the number of roles they have
                             if (userProgramRoles.Count > 1)
@@ -117,123 +118,19 @@ namespace Pyramid.Account
                             }
                             else
                             {
-                                //To hold the role information
-                                ProgramAndRoleFromSession roleInfo = new ProgramAndRoleFromSession();
-
                                 //Get the UserProgramRole
                                 UserProgramRole userRole = userProgramRoles.FirstOrDefault();
 
-                                //Set the session variables for the program roles
-                                roleInfo.RoleFK = userRole.CodeProgramRole.CodeProgramRolePK;
-                                roleInfo.RoleName = userRole.CodeProgramRole.RoleName;
-                                roleInfo.AllowedToEdit = userRole.CodeProgramRole.AllowedToEdit;
-                                roleInfo.CurrentProgramFK = userRole.ProgramFK;
-                                roleInfo.ProgramName = userRole.Program.ProgramName;
-
-                                //Get the hub and state information
-                                using(PyramidContext context = new PyramidContext())
-                                {
-                                    Program currentProgram = context.Program.AsNoTracking()
-                                                                .Include(p => p.Hub)
-                                                                .Include(p => p.State)
-                                                                .Include(p => p.ProgramType)
-                                                                .Where(p => p.ProgramPK == userRole.ProgramFK).FirstOrDefault();
-
-                                    roleInfo.HubFK = currentProgram.HubFK;
-                                    roleInfo.HubName = currentProgram.Hub.Name;
-                                    roleInfo.StateFK = currentProgram.StateFK;
-                                    roleInfo.StateName = currentProgram.State.Name;
-                                    roleInfo.StateLogoFileName = currentProgram.State.LogoFilename;
-                                    roleInfo.StateCatchphrase = currentProgram.State.Catchphrase;
-                                    roleInfo.StateDisclaimer = currentProgram.State.Disclaimer;
-
-                                    //Set the allowed program fks
-                                    if (roleInfo.RoleFK == (int)Utilities.ProgramRoleFKs.HUB_DATA_VIEWER) {
-                                        //Hub viewer, allow them to see the programs in that hub
-                                        var hubPrograms = context.Program.AsNoTracking()
-                                                                    .Where(p => p.HubFK == roleInfo.HubFK.Value)
-                                                                    .ToList();
-                                        roleInfo.ProgramFKs = hubPrograms
-                                                                .Select(hp => hp.ProgramPK)
-                                                                .ToList();
-
-                                        //Allow them to see all cohorts in their hub
-                                        roleInfo.CohortFKs = hubPrograms
-                                                                    .Select(hp => hp.CohortFK)
-                                                                    .Distinct()
-                                                                    .ToList();
-
-                                        //Don't restrict their view of the BOQs
-                                        roleInfo.ShowBOQ = true;
-                                        roleInfo.ShowBOQFCC = true;
-                                    }
-                                    else if(roleInfo.RoleFK == (int)Utilities.ProgramRoleFKs.APPLICATION_ADMIN)
-                                    {
-                                        //App admin, allow them to see all programs in a state
-                                        roleInfo.ProgramFKs = context.Program.AsNoTracking()
-                                                                    .Where(p => p.StateFK == roleInfo.StateFK.Value)
-                                                                    .Select(p => p.ProgramPK).ToList();
-
-                                        //Allow them to see all cohorts in a state
-                                        roleInfo.CohortFKs = context.Cohort.AsNoTracking()
-                                                                    .Where(c => c.StateFK == roleInfo.StateFK.Value)
-                                                                    .Select(c => c.CohortPK).ToList();
-
-                                        //Don't restrict their view of the BOQs
-                                        roleInfo.ShowBOQ = true;
-                                        roleInfo.ShowBOQFCC = true;
-                                    }
-                                    else if(roleInfo.RoleFK == (int)Utilities.ProgramRoleFKs.SUPER_ADMIN)
-                                    {
-                                        //Super admin, all programs in all states
-                                        roleInfo.ProgramFKs = context.Program.AsNoTracking()
-                                                                    .Select(p => p.ProgramPK).ToList();
-
-                                        //All cohorts
-                                        roleInfo.CohortFKs = context.Cohort.AsNoTracking()
-                                                                    .Select(c => c.CohortPK).ToList();
-
-                                        //Don't restrict their view of the BOQs
-                                        roleInfo.ShowBOQ = true;
-                                        roleInfo.ShowBOQFCC = true;
-                                    }
-                                    else
-                                    {
-                                        //Something else, limit to the current program fk
-                                        List<int> programFKs = new List<int>();
-                                        programFKs.Add(roleInfo.CurrentProgramFK.Value);
-                                        roleInfo.ProgramFKs = programFKs;
-
-                                        //Limit to current cohort fk
-                                        List<int> cohortFKs = new List<int>();
-                                        cohortFKs.Add(currentProgram.CohortFK);
-                                        roleInfo.CohortFKs = cohortFKs;
-
-                                        //Determine if this program is a FCC program
-                                        var fccProgramTypes = currentProgram.ProgramType
-                                            .Where(pt => pt.TypeCodeFK == (int)Utilities.ProgramTypeFKs.FAMILY_CHILD_CARE 
-                                                    || pt.TypeCodeFK == (int)Utilities.ProgramTypeFKs.GROUP_FAMILY_CHILD_CARE)
-                                                    .ToList();
-
-                                        //Limit their view to the right BOQ type
-                                        if (fccProgramTypes.Count > 0)
-                                        {
-                                            roleInfo.ShowBOQ = false;
-                                            roleInfo.ShowBOQFCC = true;
-                                        }
-                                        else
-                                        {
-                                            roleInfo.ShowBOQ = true;
-                                            roleInfo.ShowBOQFCC = false;
-                                        }
-                                    }
-                                }
+                                //Get the role information for the session
+                                ProgramAndRoleFromSession roleInfo = Utilities.GetProgramRoleFromDatabase(userRole);
 
                                 //Add the role information to the session
                                 Utilities.SetProgramRoleInSession(Session, roleInfo);
 
-                                //Redirect the user
-                                Response.Redirect(Request.QueryString["ReturnUrl"] != null ? Request.QueryString["ReturnUrl"].ToString() : "/Default.aspx");
+                                //Redirect the user to the default page or return URL
+                                Response.Redirect(Request.QueryString["ReturnUrl"] != null ? 
+                                                        Request.QueryString["ReturnUrl"].ToString() : 
+                                                        "/Default.aspx");
                             }
                             break;
                         case SignInStatus.LockedOut:

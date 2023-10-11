@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="center">
         <div class="card" style="width: 18rem;">
-            <img src="../Content/images/tick.png" class="card-img-top" alt="...">
+            <img src="../Content/images/tick.png" class="card-img-top" alt="..." />
             <div class="card-body">
                 <p class="card-text">Thank You for creating your account. Please check for email for a link to confirm your account </p>
             </div>

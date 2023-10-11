@@ -43,16 +43,23 @@ namespace Pyramid.Account
                 if (user != null)
                 {
                     //Change the user's password
-                    var result = manager.ResetPassword(user.Id, code, txtPassword.Value.ToString());
+                    var passwordResult = manager.ResetPassword(user.Id, code, txtPassword.Value.ToString());
+
+                    //Set the user edit fields
+                    user.UpdatedBy = (string.IsNullOrWhiteSpace(User.Identity.Name) ? "NoLoginName" : User.Identity.Name);
+                    user.UpdateTime = DateTime.Now;
+
+                    //Update the user
+                    manager.Update(user);
 
                     //If the change succeeded, redirect the user, otherwise show an error message
-                    if (result.Succeeded)
+                    if (passwordResult.Succeeded)
                     {
                         Response.Redirect("~/Account/CreatePasswordConfirmation");
                     }
                     else
                     {
-                        msgSys.ShowMessageToUser("danger", "Error", result.Errors.FirstOrDefault(), 120000);
+                        msgSys.ShowMessageToUser("danger", "Error", passwordResult.Errors.FirstOrDefault(), 120000);
                     }
                 }
                 else

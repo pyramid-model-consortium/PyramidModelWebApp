@@ -45,7 +45,10 @@ namespace Pyramid.Account
                     //Send the reset link to the user
                     string code = manager.GeneratePasswordResetToken(user.Id);
                     string callbackUrl = IdentityHelper.GetCreatePasswordRedirectUrl(code, Request);
-                    manager.SendEmail(user.Id, "Create your password", Utilities.GetEmailHTML(callbackUrl, "Create Password", true, "Password Creation Requested", "Please create your password by clicking the Create Password link below.", Request));
+                    manager.SendEmail(user.Id, "Create your password", 
+                        Utilities.GetEmailHTML(callbackUrl, "Create Password", true, "Password Creation Requested", 
+                                "Please create your password by clicking the Create Password link below.",
+                                "This link will expire in 7 days.", Request));
 
                     //Show the email sent div and hide the create div
                     divEmailSent.Visible = true;

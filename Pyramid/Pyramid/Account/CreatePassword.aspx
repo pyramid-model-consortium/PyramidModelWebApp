@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Create Password" Language="C#" MasterPageFile="~/MasterPages/NotLoggedIn.master" AutoEventWireup="true" CodeBehind="CreatePassword.aspx.cs" Inherits="Pyramid.Account.CreatePassword" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <asp:Content runat="server" ID="ScriptContent" ContentPlaceHolderID="ScriptContent">
     <script>
@@ -65,7 +65,6 @@
                     <uc:Submit ID="submitCreatePassword" runat="server" 
                         ShowCancelButton="true" SubmitButtonText="Save Changes" 
                         ValidationGroup="vgCreatePassword"
-                        ControlCssClass="dont-center"
                         OnSubmitClick="submitCreatePassword_Click"
                         OnCancelClick="submitCreatePassword_CancelClick"
                         OnValidationFailed="submitCreatePassword_ValidationFailed" />
