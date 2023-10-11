@@ -16,7 +16,7 @@ namespace Pyramid.Admin
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
             //Only allow super admins
-            if(currentProgramRole.RoleFK.Value != (int)Utilities.ProgramRoleFKs.SUPER_ADMIN)
+            if(currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
             {
                 Response.Redirect("/Default.aspx");
             }
@@ -24,13 +24,13 @@ namespace Pyramid.Admin
             if (!IsPostBack)
             {
                 //Set the view only value
-                if (currentProgramRole.AllowedToEdit.Value)
+                if (currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
                 {
-                    hfViewOnly.Value = "False";
+                    hfViewOnly.Value = "True";
                 }
                 else
                 {
-                    hfViewOnly.Value = "True";
+                    hfViewOnly.Value = "False";
                 }
 
                 //Check for messages in the query string
@@ -72,7 +72,7 @@ namespace Pyramid.Admin
         /// <param name="e">The Click event</param>
         protected void lbDeleteReportCatalogItem_Click(object sender, EventArgs e)
         {
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (currentProgramRole.CodeProgramRoleFK.Value == (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
             {
                 //Get the PK from the hidden field
                 int? removeReportCatalogItemPK = String.IsNullOrWhiteSpace(hfDeleteReportCatalogItemPK.Value) ? (int?)null : Convert.ToInt32(hfDeleteReportCatalogItemPK.Value);

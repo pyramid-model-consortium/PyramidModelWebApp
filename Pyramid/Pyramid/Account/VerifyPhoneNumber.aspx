@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Verify Phone Number" Language="C#" MasterPageFile="~/MasterPages/LoggedIn.Master" AutoEventWireup="true" CodeBehind="VerifyPhoneNumber.aspx.cs" Inherits="Pyramid.Account.VerifyPhoneNumber" %>
 
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <asp:Content runat="server" ID="ScriptContent" ContentPlaceHolderID="ScriptContent">
     <script>
@@ -80,6 +80,12 @@
             <uc:Messaging ID="msgSys" runat="server" />
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="alert alert-primary">
+                        <i class="fas fa-info-circle"></i>&nbsp;A code has been texted to <asp:Label ID="lblPhoneNum" runat="server"></asp:Label>, please enter it below after you receive it.
+                    </div>
+                    <div id="divWarning" runat="server" class="alert alert-warning" visible="false">
+                        <i class="fas fa-exclamation-triangle"></i>&nbsp;Didn't receive a text message with a code?  Please make sure that the phone number above is correct and can receive text messages.
+                    </div>
                     <asp:HiddenField ID="hfPhoneNumber" runat="server" />
                     <dx:BootstrapTextBox ID="txtCode" runat="server" Caption="Code">
                         <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -89,9 +95,17 @@
                     </dx:BootstrapTextBox>
                     <dx:BootstrapButton ID="btnVerifyCode" runat="server" Text="Verify Code"
                         OnClick="btnVerifyCode_Click" AutoPostBack="true" ValidationGroup="vgVerifyCode"
-                        SettingsBootstrap-RenderOption="primary">
-                        <CssClasses Icon="fas fa-shield-alt" Control="mt-3" />
+                        SettingsBootstrap-RenderOption="Primary" data-validation-group="vgVerifyCode">
+                        <CssClasses Icon="fas fa-shield-alt" Control="btn-loader mt-3" />
                     </dx:BootstrapButton>
+                    <dx:BootstrapButton ID="btnResendCode" runat="server" OnClick="btnResendCode_Click" Text="Resend Code" 
+                        SettingsBootstrap-RenderOption="Secondary">
+                        <CssClasses Icon="fas fa-redo" Control="btn-loader mt-3" />
+                    </dx:BootstrapButton>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
                 </div>
             </div>
         </ContentTemplate>

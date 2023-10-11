@@ -15,6 +15,7 @@ using Twilio.Types;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Net.Mail;
+using System.Text;
 
 namespace Pyramid
 {
@@ -187,15 +188,23 @@ namespace Pyramid
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            string emailHTML = Pyramid.Code.Utilities.GetEmailHTML("", "", false, "Security Code", "Your Pyramid Model Implementation Data System security code is: <br/> <br/> {0} <br/>", System.Web.HttpContext.Current.Request);
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<PyramidUser>
-            {
-                MessageFormat = "Your Pyramid Model Implementation Data System security code is:  {0}."
-            });
+
+            //Get the email HTML for the two-factor code
+            string emailHTML = Pyramid.Code.Utilities.GetEmailHTML("", "", false, "Security Code", 
+                            "Your Pyramid Model Implementation Data System security code is: <br/><br/>{0}<br/>", 
+                            "This code will expire in 6 minutes.", System.Web.HttpContext.Current.Request);
+            
+            //Register the email
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<PyramidUser>
             {
                 Subject = "Security Code",
                 BodyFormat = emailHTML
+            });
+            
+            //Register the phone
+            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<PyramidUser>
+            {
+                MessageFormat = "Your Pyramid Model Implementation Data System security code is: {0}.  This code will expire in 6 minutes."
             });
 
             // Configure user lockout defaults

@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Admin {
-    
-    
-    public partial class EditUser {
-        
+namespace Pyramid.Admin
+{
+
+
+    public partial class EditUser
+    {
+
         /// <summary>
         /// upEditUser control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upEditUser;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
         /// <summary>
         /// txtFirstName control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtFirstName;
-        
+
         /// <summary>
         /// txtLastName control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtLastName;
-        
+
         /// <summary>
         /// txtEmail control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtEmail;
-        
+
         /// <summary>
         /// txtPhoneNumber control.
         /// </summary>
@@ -65,16 +67,61 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtPhoneNumber;
-        
+
         /// <summary>
-        /// deLockoutEndDate control.
+        /// txtWorkPhoneNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deLockoutEndDate;
-        
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtWorkPhoneNumber;
+
+        /// <summary>
+        /// txtStreet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtStreet;
+
+        /// <summary>
+        /// txtCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtCity;
+
+        /// <summary>
+        /// ddState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddState;
+
+        /// <summary>
+        /// txtZIPCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtZIPCode;
+
+        /// <summary>
+        /// txtRegionLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtRegionLocation;
+
         /// <summary>
         /// ddIdentityRole control.
         /// </summary>
@@ -83,7 +130,34 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddIdentityRole;
-        
+
+        /// <summary>
+        /// ddAccountEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddAccountEnabled;
+
+        /// <summary>
+        /// deLockoutEndDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deLockoutEndDate;
+
+        /// <summary>
+        /// divChangePassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divChangePassword;
+
         /// <summary>
         /// repeatUserRoles control.
         /// </summary>
@@ -92,7 +166,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater repeatUserRoles;
-        
+
         /// <summary>
         /// ddProgramRole control.
         /// </summary>
@@ -101,7 +175,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddProgramRole;
-        
+
         /// <summary>
         /// ddProgram control.
         /// </summary>
@@ -110,7 +184,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddProgram;
-        
+
         /// <summary>
         /// btnAddRole control.
         /// </summary>
@@ -119,7 +193,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapButton btnAddRole;
-        
+
         /// <summary>
         /// submitUser control.
         /// </summary>
@@ -128,7 +202,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.Submit submitUser;
-        
+
         /// <summary>
         /// txtPassword control.
         /// </summary>
@@ -137,7 +211,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtPassword;
-        
+
         /// <summary>
         /// txtConfirmPassword control.
         /// </summary>
@@ -146,7 +220,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtConfirmPassword;
-        
+
         /// <summary>
         /// btnSavePassword control.
         /// </summary>

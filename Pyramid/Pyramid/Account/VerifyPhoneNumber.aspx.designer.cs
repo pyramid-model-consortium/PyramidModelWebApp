@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Account {
-    
-    
-    public partial class VerifyPhoneNumber {
-        
+namespace Pyramid.Account
+{
+
+
+    public partial class VerifyPhoneNumber
+    {
+
         /// <summary>
         /// upEditUser control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upEditUser;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -29,7 +31,25 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
+        /// <summary>
+        /// lblPhoneNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPhoneNum;
+
+        /// <summary>
+        /// divWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWarning;
+
         /// <summary>
         /// hfPhoneNumber control.
         /// </summary>
@@ -38,7 +58,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfPhoneNumber;
-        
+
         /// <summary>
         /// txtCode control.
         /// </summary>
@@ -47,7 +67,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtCode;
-        
+
         /// <summary>
         /// btnVerifyCode control.
         /// </summary>
@@ -56,5 +76,14 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapButton btnVerifyCode;
+
+        /// <summary>
+        /// btnResendCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnResendCode;
     }
 }

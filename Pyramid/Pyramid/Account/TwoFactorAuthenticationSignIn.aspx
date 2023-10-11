@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Two-Factor Authentication" Language="C#" MasterPageFile="~/MasterPages/NotLoggedIn.Master" AutoEventWireup="true" CodeBehind="TwoFactorAuthenticationSignIn.aspx.cs" Inherits="Pyramid.Account.TwoFactorAuthenticationSignIn" %>
 
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <asp:Content runat="server" ID="ScriptContent" ContentPlaceHolderID="ScriptContent">
     <script>
@@ -34,7 +34,7 @@
             btnSendCode.show();
 
             //Create the click event
-            btnSendCode.on('click', function () {
+            btnSendCode.off('click').on('click', function () {
                 //Get the validation group
                 var validationGroup = 'vgSendCode';
 
@@ -134,10 +134,11 @@
             <uc:Messaging ID="msgSys" runat="server" />
             <div id="divChooseProvider" runat="server">
                 <h4>Send verification code</h4>
+                <p>Choose a delivery method from the list below and then click the 'Send Code' button to receive your security code.</p>
                 <hr />
                 <div class="row">
                     <div class="col-md-12">
-                        <dx:BootstrapComboBox ID="ddTwoFactorProviders" runat="server" Caption="Two-Factor Authentication Provider" NullText="--Select--"
+                        <dx:BootstrapComboBox ID="ddTwoFactorProviders" runat="server" Caption="Code Delivery Method" NullText="--Select--"
                             TextField="ProviderName" ValueField="ProviderName" ValueType="System.String"
                             IncrementalFilteringMode="StartsWith" AllowMouseWheel="false">
                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -155,6 +156,7 @@
             </div>
             <div id="divEnterCode" runat="server" visible="false">
                 <h4>Enter verification code</h4>
+                <p>Enter the security code you received below and then click the 'Verify Code' button.</p>
                 <hr />
                 <asp:HiddenField ID="hfSelectedProvider" runat="server" />
                 <dx:BootstrapTextBox ID="txtCode" runat="server" Caption="Code">
@@ -168,8 +170,16 @@
                 <br />
                 <dx:BootstrapButton ID="btnVerifyCode" runat="server" Text="Verify Code"
                     OnClick="btnVerifyCode_Click" AutoPostBack="true" ValidationGroup="vgVerifyCode"
-                    SettingsBootstrap-RenderOption="primary">
-                    <CssClasses Icon="fas fa-shield-alt" Control="mt-3" />
+                    SettingsBootstrap-RenderOption="primary" data-validation-group="vgVerifyCode">
+                    <CssClasses Icon="fas fa-shield-alt" Control="btn-loader mt-3" />
+                </dx:BootstrapButton>
+                <dx:BootstrapButton ID="btnResendCode" runat="server" OnClick="btnResendCode_Click" Text="Resend Code" 
+                    SettingsBootstrap-RenderOption="Secondary">
+                    <CssClasses Icon="fas fa-redo" Control="btn-loader mt-3" />
+                </dx:BootstrapButton>
+                <dx:BootstrapButton ID="btnSelectOtherMethod" runat="server" OnClick="btnSelectOtherMethod_Click" Text="Select Other Delivery Method" 
+                    SettingsBootstrap-RenderOption="Secondary">
+                    <CssClasses Icon="fas fa-exchange-alt" Control="btn-loader mt-3" />
                 </dx:BootstrapButton>
             </div>
         </ContentTemplate>

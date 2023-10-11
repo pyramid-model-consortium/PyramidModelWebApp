@@ -26,7 +26,7 @@ namespace Pyramid.Admin
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
             //Only allow super admins
-            if (currentProgramRole.RoleFK.Value != (int)Utilities.ProgramRoleFKs.SUPER_ADMIN)
+            if (currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
             {
                 Response.Redirect("/Default.aspx");
             }
@@ -78,11 +78,8 @@ namespace Pyramid.Admin
                 }
 
                 //Allow adding/editing depending on the user's role and the action
-                if (currentReportCatalog.ReportCatalogPK == 0 && currentProgramRole.AllowedToEdit.Value)
+                if (currentReportCatalog.ReportCatalogPK == 0)
                 {
-                    //Show the submit button
-                    submitReportCatalogItem.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
@@ -92,11 +89,8 @@ namespace Pyramid.Admin
                     //Set the page title
                     lblPageTitle.Text = "Add New Report Catalog Item";
                 }
-                else if (currentReportCatalog.ReportCatalogPK > 0 && action.ToLower() == "edit" && currentProgramRole.AllowedToEdit.Value)
+                else if (currentReportCatalog.ReportCatalogPK > 0 && action.ToLower() == "edit")
                 {
-                    //Show the submit button
-                    submitReportCatalogItem.ShowSubmitButton = true;
-
                     //Show certain controls
                     hfViewOnly.Value = "False";
 
@@ -108,9 +102,6 @@ namespace Pyramid.Admin
                 }
                 else
                 {
-                    //Hide the submit button
-                    submitReportCatalogItem.ShowSubmitButton = false;
-
                     //Hide certain controls
                     hfViewOnly.Value = "True";
 
@@ -138,7 +129,7 @@ namespace Pyramid.Admin
             string successMessageType = null;
 
             //Ensure user is allowed to edit
-            if (currentProgramRole.AllowedToEdit.Value)
+            if (currentProgramRole.CodeProgramRoleFK.Value == (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
             {
                 //Get the relative file path
                 string relativePath = "~/Reports/Documentation/" + txtDocumentationFileName.Value.ToString();
@@ -148,8 +139,9 @@ namespace Pyramid.Admin
                 currentReportCatalog.CriteriaDefaults = tbCriteriaDefaults.Text + ",";
                 currentReportCatalog.DocumentationLink = relativePath;
                 currentReportCatalog.Keywords = tbKeywords.Text + ",";
+                currentReportCatalog.OnlyExportAllowed = Convert.ToBoolean(ddOnlyExportAllowed.Value);
                 currentReportCatalog.OptionalCriteriaOptions = tbOptionalCriteriaOptions.Text + ",";
-                currentReportCatalog.ReportCategory = (ddReportCategory.Value.ToString().ToLower().Contains("other") ? txtReportCategorySpecify.Value.ToString() : ddReportCategory.Value.ToString());
+                currentReportCatalog.ReportCategory = (ddReportCategory.Value.ToString().ToLower() == "other" ? txtReportCategorySpecify.Value.ToString() : ddReportCategory.Value.ToString());
                 currentReportCatalog.ReportClass = txtReportClass.Value.ToString();
                 currentReportCatalog.ReportDescription = txtReportDescription.Value.ToString();
                 currentReportCatalog.ReportName = txtReportName.Value.ToString();
@@ -259,8 +251,9 @@ namespace Pyramid.Admin
                 tbCriteriaOptions.DataSource = allCriteriaOptions;
                 tbCriteriaOptions.DataBind();
 
-                //Bind the optional criteria tag box
-                tbOptionalCriteriaOptions.DataSource = allCriteriaOptions;
+                //Only include the report criteria options that are allowed to be optional
+                //in the optional criteria tag box
+                tbOptionalCriteriaOptions.DataSource = allCriteriaOptions.Where(o => o.CanBeOptional == true).ToList();
                 tbOptionalCriteriaOptions.DataBind();
 
                 //Set the hidden field for the criteria details
@@ -321,6 +314,7 @@ namespace Pyramid.Admin
             tbCriteriaOptions.Text = reportCatalog.CriteriaOptions;
             tbCriteriaDefaults.Text = reportCatalog.CriteriaDefaults;
             tbKeywords.Text = reportCatalog.Keywords;
+            ddOnlyExportAllowed.SelectedItem = ddOnlyExportAllowed.Items.FindByValue(reportCatalog.OnlyExportAllowed);
             tbOptionalCriteriaOptions.Text = reportCatalog.OptionalCriteriaOptions;
             ddReportCategory.SelectedItem = ddReportCategory.Items.FindByValue(reportCatalog.ReportCategory);
             txtReportClass.Value = reportCatalog.ReportClass;
@@ -353,6 +347,7 @@ namespace Pyramid.Admin
             tbCriteriaOptions.ClientEnabled = enabled;
             tbCriteriaDefaults.ClientEnabled = enabled;
             tbKeywords.ClientEnabled = enabled;
+            ddOnlyExportAllowed.ClientEnabled = enabled;
             tbOptionalCriteriaOptions.ClientEnabled = enabled;
             ddReportCategory.ClientEnabled = enabled;
             txtReportClass.ClientEnabled = enabled;
@@ -360,6 +355,15 @@ namespace Pyramid.Admin
             txtReportName.ClientEnabled = enabled;
             tbRolesAuthorizedToRun.ClientEnabled = enabled;
             txtDocumentationFileName.ClientEnabled = enabled;
+
+            //Show/hide the submit button
+            submitReportCatalogItem.ShowSubmitButton = enabled;
+
+            //Use cancel confirmations if the controls are enabled and
+            //the customization option for cancel confirmations is true (default to true)
+            bool? confirmationOption = UserCustomizationOption.GetBooleanCustomizationOptionFromCookie(UserCustomizationOption.CustomizationOptionCookie.CANCEL_CONFIRMATION_OPTION);
+            bool areConfirmationsEnabled = (confirmationOption.HasValue ? confirmationOption.Value : true); //Default to true
+            submitReportCatalogItem.UseCancelConfirm = enabled && areConfirmationsEnabled;
         }
 
         #endregion
@@ -376,7 +380,7 @@ namespace Pyramid.Admin
             string reportCategorySpecify = (txtReportCategorySpecify.Value == null ? null : txtReportCategorySpecify.Value.ToString());
 
             //Perform validation
-            if (ddReportCategory.SelectedItem != null && ddReportCategory.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(reportCategorySpecify))
+            if (ddReportCategory.SelectedItem != null && ddReportCategory.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(reportCategorySpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Report Category is required when the 'Other' report category is selected!";

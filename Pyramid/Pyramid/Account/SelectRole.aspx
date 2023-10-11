@@ -18,11 +18,18 @@
             //Initialize the datatable
             if (!$.fn.dataTable.isDataTable('#tblUserRoles')) {
                 $('#tblUserRoles').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [2] }
+                        { orderable: false, targets: [5] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
-                    order: [[ 1, 'asc' ], [ 0, 'asc' ]],
+                    order: [[4, 'asc'], [2, 'asc'], [1, 'asc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -44,25 +51,27 @@
                     <table id="tblUserRoles" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Role</th>
-                                <th>Program</th>
-                                <th class="all"></th>
+                                <th data-priority="1"></th>
+                                <th data-priority="2">Role</th>
+                                <th data-priority="4">Program</th>
+                                <th data-priority="5">Hub</th>
+                                <th data-priority="6">State</th>
+                                <th data-priority="3"></th>
                             </tr>
                         </thead>
                         <tbody>
                 </HeaderTemplate>
                 <ItemTemplate>
                             <tr>
+                                <td></td>
                                 <td><%# Item.CodeProgramRole.RoleName %></td>
                                 <td><%# Item.Program.ProgramName %></td>
+                                <td><%# Item.Program.Hub.Name %></td>
+                                <td><%# Item.Program.State.Name %></td>
                                 <td class="text-center">
                                     <asp:LinkButton ID="lbSelectRole" runat="server" CssClass="btn btn-loader btn-primary" OnClick="lbSelectRole_Click"><i class="fas fa-mouse-pointer"></i> Select</asp:LinkButton>
-                                    <asp:HiddenField ID="hfUserProgramRolePK" runat="server" Value='<%# Item.UserProgramRolePK %>' />
-                                    <asp:HiddenField ID="hfProgramRoleFK" runat="server" Value='<%# Item.CodeProgramRole.CodeProgramRolePK %>' />
-                                    <asp:HiddenField ID="hfProgramRoleName" runat="server" Value='<%# Item.CodeProgramRole.RoleName %>' />
-                                    <asp:HiddenField ID="hfprogramRoleAllowedToEdit" runat="server" Value='<%# Item.CodeProgramRole.AllowedToEdit %>' />
-                                    <asp:HiddenField ID="hfProgramFK" runat="server" Value='<%# Item.ProgramFK %>' />
-                                    <asp:HiddenField ID="hfProgramName" runat="server" Value='<%# Item.Program.ProgramName %>' />
+                                    <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                    <asp:Label ID="lblUserProgramRolePK" runat="server" Visible="false" Text='<%# Item.UserProgramRolePK %>'></asp:Label>
                                 </td>
                             </tr>
                 </ItemTemplate>

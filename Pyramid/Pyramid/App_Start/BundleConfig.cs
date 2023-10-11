@@ -68,14 +68,15 @@ namespace Pyramid
                 "~/Scripts/theme-dreamweaver.js"));
 
             //Put any site-wide JavaScript files here
-            bundles.Add(new ScriptBundle("~/bundles/SiteSpecific").Include("~/Scripts/AutoLogoff.js",
-                "~/Scripts/js.cookie-2.2.0.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/SiteSpecific").Include("~/Scripts/js.cookie-2.2.0.min.js"));
+
+            //Put any reports page specific JavaScript files here
+            bundles.Add(new ScriptBundle("~/bundles/ReportsPage").Include("~/Scripts/reports-page.js"));
 
             // Use the Development version of Modernizr to develop with and learn from. Then, when you’re
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //                "~/Scripts/modernizr-*"));
-            
         }
     }
 }

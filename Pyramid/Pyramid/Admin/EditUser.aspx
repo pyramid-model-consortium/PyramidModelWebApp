@@ -2,7 +2,7 @@
 
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -25,10 +25,18 @@
             //Initialize the datatable
             if (!$.fn.dataTable.isDataTable('#tblUserRoles')) {
                 $('#tblUserRoles').DataTable({
-                    responsive: true,
+                    responsive: {
+                        details: {
+                            type: 'column'
+                        }
+                    },
                     columnDefs: [
-                        { orderable: false, targets: [2] }
+                        { orderable: false, targets: [3] },
+                        { className: 'control', orderable: false, targets: 0 }
                     ],
+                    order: [[2, 'asc'], [1, 'asc']],
+                    stateSave: true,
+                    stateDuration: 60,
                     pageLength: 10,
                     dom: 'frtp',
                     language: {
@@ -177,7 +185,7 @@
                         <div class="card-header">Basic Information</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <dx:BootstrapTextBox ID="txtFirstName" runat="server" Caption="First Name">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -187,7 +195,7 @@
                                         </dx:BootstrapTextBox>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <dx:BootstrapTextBox ID="txtLastName" runat="server" Caption="Last Name">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -199,7 +207,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <dx:BootstrapTextBox ID="txtEmail" runat="server" Caption="Email">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
@@ -210,34 +218,84 @@
                                         </dx:BootstrapTextBox>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <dx:BootstrapTextBox ID="txtPhoneNumber" runat="server" Caption="Phone Number">
+                                        <dx:BootstrapTextBox ID="txtPhoneNumber" runat="server" Caption="Personal Phone Number" OnValidation="txtPhoneNumber_Validation">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                             <MaskSettings Mask="+1 (999) 999-9999" IncludeLiterals="None" ErrorText="Must be a valid phone number!" />
                                             <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
-                                                <RequiredField IsRequired="false" ErrorText="Phone Number is required!" />
+                                                <RequiredField IsRequired="false" ErrorText="Personal Phone Number is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapTextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapTextBox ID="txtWorkPhoneNumber" runat="server" Caption="Work Phone Number" OnValidation="txtWorkPhoneNumber_Validation">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <MaskSettings Mask="+1 (999) 999-9999 \e\x\t\. 999999" IncludeLiterals="None" ErrorText="Must be a valid phone number!" />
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="Work Phone Number is required!" />
                                             </ValidationSettings>
                                         </dx:BootstrapTextBox>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <dx:BootstrapDateEdit ID="deLockoutEndDate" runat="server" Caption="Lockout End Date"
-                                            EditFormatString="MM/dd/yyyy" UseMaskBehavior="true" AllowMouseWheel="false" 
-                                            PickerDisplayMode="Calendar" MinDate="01/01/1900">
+                                        <dx:BootstrapTextBox ID="txtStreet" runat="server" Caption="Street Address">
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
-                                            <SettingsAdaptivity Mode="OnWindowInnerWidth" SwitchToModalAtWindowInnerWidth="750" />
-                                            <CalendarProperties ShowClearButton="true"></CalendarProperties>
                                             <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
-                                                <RequiredField IsRequired="false" ErrorText="Lockout End Date is required!" />
+                                                <RequiredField IsRequired="false" ErrorText="Street Address is required!" />
                                             </ValidationSettings>
-                                        </dx:BootstrapDateEdit>
+                                        </dx:BootstrapTextBox>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapTextBox ID="txtCity" runat="server" Caption="City">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="City is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapTextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapComboBox ID="ddState" runat="server" Caption="State" NullText="--Select--" AllowNull="true"
+                                            TextField="Name" ValueField="Name" ValueType="System.String" ClearButton-DisplayMode="Always">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="State is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapComboBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapTextBox ID="txtZIPCode" runat="server" Caption="ZIP Code">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="ZIP Code is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapTextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapTextBox ID="txtRegionLocation" runat="server" Caption="What region are you located in?">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="Region Location is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapTextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <dx:BootstrapComboBox ID="ddIdentityRole" runat="server" Caption="Identity Role" NullText="--Select--"
                                             TextField="Name" ValueField="Id" ValueType="System.String"
@@ -249,8 +307,39 @@
                                         </dx:BootstrapComboBox>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapComboBox ID="ddAccountEnabled" runat="server" NullText="--Select--" Caption="Account Enabled?"
+                                            ValueType="System.Boolean" IncrementalFilteringMode="StartsWith">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgCoachingLog">
+                                                <RequiredField IsRequired="true" ErrorText="Account Enabled is required!" />
+                                            </ValidationSettings>
+                                            <Items>
+                                                <dx:BootstrapListEditItem Text="Yes" Value="True"></dx:BootstrapListEditItem>
+                                                <dx:BootstrapListEditItem Text="No" Value="False"></dx:BootstrapListEditItem>
+                                            </Items>
+                                        </dx:BootstrapComboBox>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <dx:BootstrapDateEdit ID="deLockoutEndDate" runat="server" Caption="Lockout End Date" AllowNull="true"
+                                            EditFormatString="MM/dd/yyyy" UseMaskBehavior="true" AllowMouseWheel="false"
+                                            PickerDisplayMode="Calendar" MinDate="01/01/1900">
+                                            <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                            <SettingsAdaptivity Mode="OnWindowInnerWidth" SwitchToModalAtWindowInnerWidth="750" />
+                                            <CalendarProperties ShowClearButton="true"></CalendarProperties>
+                                            <ValidationSettings ValidationGroup="vgEditUser" ErrorDisplayMode="ImageWithText">
+                                                <RequiredField IsRequired="false" ErrorText="Lockout End Date is required!" />
+                                            </ValidationSettings>
+                                        </dx:BootstrapDateEdit>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divChangePassword" runat="server" class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="btnChangePassword" class="control-label">Password</label>
@@ -273,15 +362,17 @@
                                     <table id="tblUserRoles" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Role</th>
+                                                <th data-priority="1"></th>
+                                                <th data-priority="2">Role</th>
                                                 <th>Program</th>
-                                                <th class="all"></th>
+                                                <th data-priority="3"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <tr>
+                                        <td></td>
                                         <td>
                                             <%# Item.CodeProgramRole.RoleName %>
                                             <asp:HiddenField ID="hfProgramRoleFK" runat="server" Value='<%# Item.ProgramRoleCodeFK %>' />
@@ -292,7 +383,8 @@
                                         </td>
                                         <td>
                                             <asp:LinkButton ID="lbDeleteRole" runat="server" CssClass="btn btn-loader btn-danger" OnClick="lbDeleteRole_Click"><i class="fas fa-trash"></i> Remove</asp:LinkButton>
-                                            <asp:HiddenField ID="hfUserProgramRolePK" runat="server" Value='<%# Item.UserProgramRolePK %>' />
+                                            <!-- Need to use labels so that values are maintained after postback (inputs get cleared because of an interaction with DataTables and the repeater) -->
+                                            <asp:Label ID="lblUserProgramRolePK" runat="server" Visible="false" Text='<%# Item.UserProgramRolePK %>'></asp:Label>
                                         </td>
                                     </tr>
                                 </ItemTemplate>
@@ -350,7 +442,10 @@
                 </div>
             </div>
             <div class="page-footer">
-                <uc:Submit ID="submitUser" runat="server" ValidationGroup="vgEditUser" OnSubmitClick="submitUser_Click" OnCancelClick="submitUser_CancelClick" OnValidationFailed="submitUser_ValidationFailed" />
+                <uc:Submit ID="submitUser" runat="server" ValidationGroup="vgEditUser"
+                    ControlCssClass="center-content"
+                    OnSubmitClick="submitUser_Click" OnCancelClick="submitUser_CancelClick"
+                    OnValidationFailed="submitUser_ValidationFailed" />
             </div>
         </ContentTemplate>
         <Triggers>

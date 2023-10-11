@@ -21,6 +21,16 @@ namespace Pyramid.Admin
             //Get the current program role
             currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
 
+            //Don't allow non-admins to use the page
+            if (currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN &&
+                    currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.APPLICATION_ADMIN &&
+                    currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.STATE_DATA_ADMIN &&
+                    currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.NATIONAL_DATA_ADMIN)
+            {
+                //Kick out any non-admins
+                Response.Redirect("/Default.aspx");
+            }
+
             if (!IsPostBack)
             {
                 //Load the user table
@@ -31,8 +41,7 @@ namespace Pyramid.Admin
                 {
                     //Get the message type
                     string messageCode = Request.QueryString["message"].ToString();
-                    string message = null;
-                    string messageType = null;
+                    string message = null, messageType = null, messageTitle = null;
 
                     // Strip the query string from action
                     Form.Action = ResolveUrl("~/Admin/UserManagement");
@@ -43,14 +52,17 @@ namespace Pyramid.Admin
                         case "CreateUserSuccess":
                             message = "User successfully created!";
                             messageType = "success";
+                            messageTitle = "Success";
                             break;
                         case "EditUserSuccess":
                             message = "User successfully edited!";
                             messageType = "success";
+                            messageTitle = "Success";
                             break;
                         case "UserNotFound":
                             message = "User could not be found or an error occurred while retrieving the user!";
                             messageType = "danger";
+                            messageTitle = "Error";
                             break;
                         default:
                             message = null;
@@ -61,7 +73,7 @@ namespace Pyramid.Admin
                     if (!string.IsNullOrWhiteSpace(message))
                     {
                         //Show the message
-                        msgSys.ShowMessageToUser(messageType, "Success", message, 15000);
+                        msgSys.ShowMessageToUser(messageType, messageTitle, message, 15000);
                     }
                 }
             }
@@ -78,7 +90,9 @@ namespace Pyramid.Admin
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 var user = context.Users.Where(x => x.Id == hfUserPK.Value).FirstOrDefault();
-                user.LockoutEndDateUtc = DateTime.Now.AddYears(100);
+                user.UpdatedBy = (string.IsNullOrWhiteSpace(User.Identity.Name) ? "NoLoginName" : User.Identity.Name);
+                user.UpdateTime = DateTime.Now;
+                user.AccountEnabled = false;
                 context.SaveChanges();
             }
 
@@ -100,7 +114,9 @@ namespace Pyramid.Admin
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 var user = context.Users.Where(x => x.Id == hfUserPK.Value).FirstOrDefault();
-                user.LockoutEndDateUtc = null;
+                user.UpdatedBy = (string.IsNullOrWhiteSpace(User.Identity.Name) ? "NoLoginName" : User.Identity.Name);
+                user.UpdateTime = DateTime.Now;
+                user.AccountEnabled = true;
                 context.SaveChanges();
             }
 
@@ -136,7 +152,14 @@ namespace Pyramid.Admin
                 //If the user exists, send the user an email to confirm their account
                 string emailcode = manager.GenerateEmailConfirmationToken(user.Id);
                 string callbackUrl = IdentityHelper.GetAccountConfirmationRedirectUrl(emailcode, user.Id, Request);
-                manager.SendEmail(user.Id, "Confirm your account", Utilities.GetEmailHTML(callbackUrl, "Confirm Account", true, "Welcome " + user.FirstName + " " + user.LastName + "!", "Your user account for the Pyramid Model Implementation Data System was created by an administrator.<br/>Your username for this system is:<br/><br/>" + user.UserName + "<br/><br/>Once you confirm your account and create your password, you will be able to start using the system.<br/>To get started, please click the link below.", Request));
+                manager.SendEmail(user.Id, "Confirm your account", 
+                        Utilities.GetEmailHTML(callbackUrl, "Confirm Account", true, 
+                            "Welcome " + user.FirstName + " " + user.LastName + "!", 
+                            "Your user account for the Pyramid Model Implementation Data System was created by an administrator.<br/><br/>" +
+                            "Your username for this system is:<br/><br/>" + user.UserName + "<br/><br/>" +
+                            "Once you confirm your account and create your password, you will be able to start using the system.<br/><br/>" +
+                            "To get started, please click the link below.",
+                            "This link will expire in 7 days.", Request));
 
                 //Show the user a success message
                 msgSys.ShowMessageToUser("success", "Email Sent", "Confirmation email successfully sent!", 5000);
@@ -163,13 +186,13 @@ namespace Pyramid.Admin
             ApplicationDbContext userContext = new ApplicationDbContext();
 
             //Get the admin role
-            IdentityRole adminRole = userContext.Roles.Where(r => r.Name == "Admin").FirstOrDefault();
-            if (currentProgramRole.RoleFK.Value == (int)Utilities.ProgramRoleFKs.SUPER_ADMIN)
+            IdentityRole adminRole = userContext.Roles.AsNoTracking().Where(r => r.Name == "Admin").FirstOrDefault();
+            if (currentProgramRole.CodeProgramRoleFK.Value == (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
             {
                 //Get all users 
-                e.QueryableSource = userContext.Users
+                e.QueryableSource = userContext.Users.AsNoTracking()
                                         .OrderBy(u => u.FirstName)
-                                        .AsNoTracking().Select(u => new {
+                                        .Select(u => new {
                                             u.Id,
                                             Name = u.FirstName + " " + u.LastName,
                                             u.UserName,
@@ -177,14 +200,15 @@ namespace Pyramid.Admin
                                             u.LockoutEndDateUtc,
                                             u.PhoneNumber,
                                             u.PhoneNumberConfirmed,
+                                            u.WorkPhoneNumber,
                                             u.Email,
                                             u.EmailConfirmed,
-                                            u.TwoFactorEnabled
+                                            u.TwoFactorEnabled,
+                                            u.AccountEnabled
                                         });
             }
             else
             {
-
                 //To hold a list of the usernames in this state
                 List<string> allStateUserNames;
 
@@ -193,7 +217,7 @@ namespace Pyramid.Admin
                 {
                     allStateUserNames = context.UserProgramRole.AsNoTracking()
                                         .Include(upr => upr.Program)
-                                        .Where(upr => upr.Program.StateFK == currentProgramRole.StateFK.Value)
+                                        .Where(upr => upr.Program.StateFK == currentProgramRole.CurrentStateFK.Value)
                                         .Select(upr => upr.Username).ToList();
                 }
 
@@ -210,9 +234,11 @@ namespace Pyramid.Admin
                                             u.LockoutEndDateUtc,
                                             u.PhoneNumber,
                                             u.PhoneNumberConfirmed,
+                                            u.WorkPhoneNumber,
                                             u.Email,
                                             u.EmailConfirmed,
-                                            u.TwoFactorEnabled
+                                            u.TwoFactorEnabled,
+                                            u.AccountEnabled
                                         });
             }
         }
@@ -230,13 +256,13 @@ namespace Pyramid.Admin
             {
                 LinkButton disableButton, enableButton;
                 Label emailLabel, phoneLabel;
-                PyramidUser user;
+                bool accountEnabled, phoneNumberConfirmed, emailConfirmed;
 
-                //Get the user that the row is for
-                using (ApplicationDbContext context = new ApplicationDbContext())
-                {
-                    user = context.Users.Find(e.GetValue("Id"));
-                }
+                //Get the row values
+                accountEnabled = (e.GetValue("AccountEnabled") == null ? false : Convert.ToBoolean(e.GetValue("AccountEnabled")));
+                phoneNumberConfirmed = (e.GetValue("PhoneNumberConfirmed") == null ? false : Convert.ToBoolean(e.GetValue("PhoneNumberConfirmed")));
+                emailConfirmed = (e.GetValue("EmailConfirmed") == null ? false : Convert.ToBoolean(e.GetValue("EmailConfirmed")));
+
 
                 //Get the necessary controls
                 disableButton = (LinkButton)bsGRUsers.FindRowCellTemplateControl(e.VisibleIndex, null, "lbDisableUser");
@@ -245,19 +271,19 @@ namespace Pyramid.Admin
                 phoneLabel = (Label)bsGRUsers.FindRowCellTemplateControl(e.VisibleIndex, null, "lblPhone");
 
                 //Show/hide the enable and disable buttons
-                if (user.LockoutEndDateUtc.HasValue && user.LockoutEndDateUtc.Value > DateTime.Now)
-                {
-                    disableButton.Visible = false;
-                    enableButton.Visible = true;
-                }
-                else
+                if (accountEnabled)
                 {
                     disableButton.Visible = true;
                     enableButton.Visible = false;
                 }
+                else
+                {
+                    disableButton.Visible = false;
+                    enableButton.Visible = true;
+                }
 
                 //Set the CSS class and popover for the email
-                if (user.EmailConfirmed)
+                if (emailConfirmed)
                 {
                     emailLabel.CssClass = "text-success";
                     emailLabel.Attributes.Add("data-content", "Email is confirmed!");
@@ -269,7 +295,7 @@ namespace Pyramid.Admin
                 }
 
                 //Set the CSS class and popover for the phone
-                if (user.PhoneNumberConfirmed)
+                if (phoneNumberConfirmed)
                 {
                     phoneLabel.CssClass = "text-success";
                     phoneLabel.Attributes.Add("data-content", "Phone is confirmed!");

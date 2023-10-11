@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="User Management" Language="C#" MasterPageFile="~/MasterPages/LoggedIn.Master" AutoEventWireup="true" CodeBehind="UserManagement.aspx.cs" Inherits="Pyramid.Admin.UserManagement" %>
-<%@ Register Assembly="DevExpress.Web.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Data.Linq" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
@@ -55,18 +55,28 @@
                             <Columns>
                                 <dx:BootstrapGridViewDataColumn FieldName="Name" Caption="Name" SortIndex="0" SortOrder="Ascending" AdaptivePriority="0" />
                                 <dx:BootstrapGridViewDataColumn FieldName="UserName" Caption="Username" AdaptivePriority="1" />
-                                <dx:BootstrapGridViewDataColumn FieldName="Email" Caption="Email" AdaptivePriority="1">
+                                <dx:BootstrapGridViewDataColumn FieldName="Email" Caption="Email" AdaptivePriority="2">
                                     <DataItemTemplate>
                                         <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("Email") %>' data-toggle="popover" data-trigger="hover"></asp:Label>
                                     </DataItemTemplate>
                                 </dx:BootstrapGridViewDataColumn>
-                                <dx:BootstrapGridViewDataColumn FieldName="PhoneNumber" Caption="Phone" AdaptivePriority="1">
+                                <dx:BootstrapGridViewDataColumn FieldName="PhoneNumber" Caption="Personal Phone" AdaptivePriority="3">
                                     <DataItemTemplate>
-                                        <asp:Label ID="lblPhone" runat="server" Text='<%# (Eval("PhoneNumber") != null && !String.IsNullOrWhiteSpace(Eval("PhoneNumber").ToString()) ? Convert.ToInt64(Eval("PhoneNumber")).ToString("+1 (###) ###-####") : "") %>' data-toggle="popover" data-trigger="hover"></asp:Label>
+                                        <asp:Label ID="lblPhone" runat="server" Text='<%# (Eval("PhoneNumber") == null ? "" : Pyramid.Code.Utilities.FormatPhoneNumber(Eval("PhoneNumber").ToString(), "US")) %>' data-toggle="popover" data-trigger="hover"></asp:Label>
                                     </DataItemTemplate>
                                 </dx:BootstrapGridViewDataColumn>
-                                <dx:BootstrapGridViewDateColumn FieldName="LockoutEndDateUtc" Caption="Lockout End Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="2" />
-                                <dx:BootstrapGridViewDataColumn FieldName="TwoFactorEnabled" Caption="Two Factor?" AdaptivePriority="3">
+                                <dx:BootstrapGridViewDataColumn FieldName="WorkPhoneNumber" Caption="Work Phone" AdaptivePriority="4">
+                                    <DataItemTemplate>
+                                        <asp:Label ID="lblWorkPhone" runat="server" Text='<%# (Eval("WorkPhoneNumber") == null ? "" : Pyramid.Code.Utilities.FormatPhoneNumber(Eval("WorkPhoneNumber").ToString(), "US")) %>' data-toggle="popover" data-trigger="hover"></asp:Label>
+                                    </DataItemTemplate>
+                                </dx:BootstrapGridViewDataColumn>
+                                <dx:BootstrapGridViewDateColumn FieldName="LockoutEndDateUtc" Caption="Lockout End Date" PropertiesDateEdit-DisplayFormatString="MM/dd/yyyy" AdaptivePriority="5" />
+                                <dx:BootstrapGridViewDataColumn FieldName="AccountEnabled" Caption="Account Enabled?" AdaptivePriority="6">
+                                    <DataItemTemplate>
+                                        <%# (Convert.ToBoolean(Eval("AccountEnabled")) ? "Yes" : "No") %>
+                                    </DataItemTemplate>
+                                </dx:BootstrapGridViewDataColumn>
+                                <dx:BootstrapGridViewDataColumn FieldName="TwoFactorEnabled" Caption="Two Factor?" AdaptivePriority="7">
                                     <DataItemTemplate>
                                         <%# (Convert.ToBoolean(Eval("TwoFactorEnabled")) ? "Yes" : "No") %>
                                     </DataItemTemplate>

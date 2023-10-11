@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Pyramid.Models;
 using DevExpress.Web;
+using Pyramid.Code;
 
 namespace Pyramid.Account
 {
@@ -37,7 +39,8 @@ namespace Pyramid.Account
 
                 //Get the valid two-factor providers and display them
                 var userFactors = manager.GetValidTwoFactorProviders(userId);
-                ddTwoFactorProviders.DataSource = userFactors.Select(uf => new {
+                ddTwoFactorProviders.DataSource = userFactors.Select(uf => new
+                {
                     ProviderName = uf
                 })
                 .OrderBy(uf => uf.ProviderName)
@@ -72,17 +75,46 @@ namespace Pyramid.Account
                         //Get the user
                         var user = manager.FindById(userID);
 
-                        //Get the user's program roles
+                        //The user successfully logged in
                         List<UserProgramRole> userProgramRoles;
+                        List<spGetUserCustomizationOptions_Result> userCustomizationOptions;
                         using (PyramidContext context = new PyramidContext())
                         {
-                            userProgramRoles = context.UserProgramRole.Where(upr => upr.Username == user.UserName).ToList();
+                            //Get the user's program roles
+                            userProgramRoles = context.UserProgramRole.AsNoTracking()
+                                                .Include(upr => upr.CodeProgramRole)
+                                                .Include(upr => upr.Program)
+                                                .Where(upr => upr.Username == user.UserName).ToList();
+
+                            //Get the user's customization options
+                            userCustomizationOptions = context.spGetUserCustomizationOptions(user.UserName).ToList();
+
+                            //Keep a record of successful logins
+                            LoginHistory history = new LoginHistory();
+                            history.Username = user.UserName;
+                            history.LoginTime = DateTime.Now;
+
+                            //If the user only has one program role, record it in the login history
+                            if (userProgramRoles.Count == 1)
+                            {
+                                history.ProgramFK = userProgramRoles.First().ProgramFK;
+                                history.Role = userProgramRoles.First().CodeProgramRole.RoleName;
+                            }
+
+                            //Save the login history
+                            context.LoginHistory.Add(history);
+                            context.SaveChanges();
+
+                            //Save the LoginHistory primary key to the session for later access
+                            Session["LoginHistoryPK"] = history.LoginHistoryPK;
                         }
+
+                        //Set the user customization options cookie
+                        UserCustomizationOption.SetCustomizationOptionCookie(userCustomizationOptions);
 
                         //Redirect the user based on the number of roles they have
                         if (userProgramRoles.Count > 1)
                         {
-                            //Redirect the user to the select role page
                             Response.Redirect(String.Format("/Account/SelectRole.aspx?ReturnUrl={0}&message={1}",
                                                         (Request.QueryString["ReturnUrl"] != null ? Request.QueryString["ReturnUrl"].ToString() : "/Default.aspx"),
                                                         "TwoFactorVerified"));
@@ -90,16 +122,18 @@ namespace Pyramid.Account
                         else
                         {
                             //Get the UserProgramRole
-                            UserProgramRole programRole = userProgramRoles.FirstOrDefault();
+                            UserProgramRole userRole = userProgramRoles.FirstOrDefault();
 
-                            //Set the session variables
-                            Session["CodeProgramRoleFK"] = programRole.CodeProgramRole.CodeProgramRolePK;
-                            Session["ProgramRoleName"] = programRole.CodeProgramRole.RoleName;
-                            Session["ProgramFK"] = programRole.ProgramFK;
-                            Session["ProgramName"] = programRole.Program.ProgramName;
+                            //Get the role information for the session
+                            ProgramAndRoleFromSession roleInfo = Utilities.GetProgramRoleFromDatabase(userRole);
 
-                            //Redirect the user
-                            Response.Redirect(Request.QueryString["ReturnUrl"] != null ? Request.QueryString["ReturnUrl"].ToString() : "/Default.aspx?message=TwoFactorVerified");
+                            //Add the role information to the session
+                            Utilities.SetProgramRoleInSession(Session, roleInfo);
+
+                            //Redirect the user to the default page or return URL
+                            Response.Redirect(Request.QueryString["ReturnUrl"] != null ?
+                                                    Request.QueryString["ReturnUrl"].ToString() :
+                                                    "/Default.aspx?message=TwoFactorVerified");
                         }
                         break;
                     case SignInStatus.LockedOut:
@@ -107,7 +141,7 @@ namespace Pyramid.Account
                         break;
                     case SignInStatus.Failure:
                     default:
-                        msgSys.ShowMessageToUser("danger", "Invalid Code", "The code you entered is invalid!", 25000);
+                        msgSys.ShowMessageToUser("danger", "Invalid Code", "The code you entered is invalid or expired!", 25000);
                         break;
                 }
             }
@@ -129,26 +163,56 @@ namespace Pyramid.Account
                     //Show an error message
                     msgSys.ShowMessageToUser("warning", "Transmission Failed", "Unable to send the two-factor code, please try again.", 25000);
                 }
-
-                //Get the user's verified ID
-                string userID = signinManager.GetVerifiedUserId<PyramidUser, string>();
-
-                //Get the user
-                var user = manager.FindById(userID);
-                if (user != null)
+                else
                 {
-                    //Generate the two factor token
-                    var code = manager.GenerateTwoFactorToken(user.Id, ddTwoFactorProviders.Value.ToString());
+
+                    //Hide the send code section and show the verify code section
+                    hfSelectedProvider.Value = ddTwoFactorProviders.Value.ToString();
+                    divEnterCode.Visible = true;
+                    divChooseProvider.Visible = false;
+
+                    //Tell the user that the code sent
+                    msgSys.ShowMessageToUser("success", "Code Sent", "Two-Factor code successfully sent!", 10000);
                 }
-
-                //Hide the send code section and show the verify code section
-                hfSelectedProvider.Value = ddTwoFactorProviders.Value.ToString();
-                divEnterCode.Visible = true;
-                divChooseProvider.Visible = false;
-
-                //Tell the user that the code sent
-                msgSys.ShowMessageToUser("success", "Code Sent", "Two-Factor code successfully sent!", 5000);
             }
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the resend code button and it
+        /// resends the code to the user
+        /// </summary>
+        /// <param name="sender">The btnResendCode BootstrapButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnResendCode_Click(object sender, EventArgs e)
+        {
+            //Try to send the two factor code
+            if (!signinManager.SendTwoFactorCode(ddTwoFactorProviders.Value.ToString()))
+            {
+                //Show an error message
+                msgSys.ShowMessageToUser("warning", "Transmission Failed", "Unable to send the two-factor code, please try again.", 25000);
+            }
+            else
+            {
+                //Show a success message
+                msgSys.ShowMessageToUser("success", "Code Sent", "Two-Factor code successfully sent!", 10000);
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the select other delivery method button and it
+        /// allows the user to select a different delivery method
+        /// </summary>
+        /// <param name="sender">The btnSelectOtherMethod BootstrapButton</param>
+        /// <param name="e">The Click event</param>
+        protected void btnSelectOtherMethod_Click(object sender, EventArgs e)
+        {
+            //Hide the enter code section and show the send code section
+            hfSelectedProvider.Value = "";
+            divEnterCode.Visible = false;
+            divChooseProvider.Visible = true;
+
+            //Clear the provider dropdown
+            ddTwoFactorProviders.Value = null;
         }
     }
 }

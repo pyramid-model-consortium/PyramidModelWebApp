@@ -45,6 +45,11 @@ namespace Pyramid.Account
                     //Change the user's password
                     var result = manager.ResetPassword(user.Id, code, txtPassword.Value.ToString());
 
+                    //Set the edit fields
+                    user.UpdatedBy = (string.IsNullOrWhiteSpace(User.Identity.Name) ? "NoLoginName" : User.Identity.Name);
+                    user.UpdateTime = DateTime.Now;
+                    manager.Update(user);
+
                     //If the change succeeded, redirect the user, otherwise show an error message
                     if (result.Succeeded)
                     {

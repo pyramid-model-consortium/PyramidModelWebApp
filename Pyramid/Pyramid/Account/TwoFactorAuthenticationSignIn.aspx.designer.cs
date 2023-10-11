@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Account {
-    
-    
-    public partial class TwoFactorAuthenticationSignIn {
-        
+namespace Pyramid.Account
+{
+
+
+    public partial class TwoFactorAuthenticationSignIn
+    {
+
         /// <summary>
         /// upEditUser control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upEditUser;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
         /// <summary>
         /// divChooseProvider control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divChooseProvider;
-        
+
         /// <summary>
         /// ddTwoFactorProviders control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddTwoFactorProviders;
-        
+
         /// <summary>
         /// btnSendCode control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapButton btnSendCode;
-        
+
         /// <summary>
         /// divEnterCode control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEnterCode;
-        
+
         /// <summary>
         /// hfSelectedProvider control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfSelectedProvider;
-        
+
         /// <summary>
         /// txtCode control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtCode;
-        
+
         /// <summary>
         /// chkRememberBrowser control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkRememberBrowser;
-        
+
         /// <summary>
         /// btnVerifyCode control.
         /// </summary>
@@ -101,5 +103,23 @@ namespace Pyramid.Account {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapButton btnVerifyCode;
+
+        /// <summary>
+        /// btnResendCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnResendCode;
+
+        /// <summary>
+        /// btnSelectOtherMethod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnSelectOtherMethod;
     }
 }

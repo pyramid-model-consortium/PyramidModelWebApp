@@ -2,7 +2,7 @@
 
 <%@ Register TagPrefix="uc" TagName="Messaging" Src="~/User_Controls/MessagingSystem.ascx" %>
 <%@ Register TagPrefix="uc" TagName="Submit" Src="~/User_Controls/Submit.ascx" %>
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v19.1, Version=19.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v22.2, Version=22.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -20,84 +20,95 @@
         //Initializes the page
         function initializePage() {
             //Set the click events for the help buttons
-            $('#btnCriteriaDescriptions, #btnOptionalCriteriaDescriptions').off('click').on('click', function (e) {
-                //Prevent postback
-                e.preventDefault();
-
-                //Get the criteria description list
-                var criteriaDescriptionList = $('[ID$="hfCriteriaDescriptions"]').val();
-
-                //Split the list into an array
-                var criteriaDescriptionArray = criteriaDescriptionList.split('*sep*');
-
-                //To hold the criteria descriptions
-                var criteriaDescriptions = '';
-
-                //Loop through each criteria description and add it to the string
-                $.each(criteriaDescriptionArray, function (index, value) {
-                    criteriaDescriptions += '<div class="mt-2">';
-                    criteriaDescriptions += criteriaDescriptionArray[index];
-                    criteriaDescriptions += '</div>';
-                });
-
-                //Show the descriptions
-                showNotification('primary', 'Criteria Descriptions', criteriaDescriptions, 30000);
+            $('#btnCriteriaDescriptions, #btnOptionalCriteriaDescriptions').popover({
+                trigger: 'hover focus',
+                title: 'Help',
+                html: true,
+                content: getCriteriaDescriptions()
             });
 
-            $('#btnDefaultDescriptions').off('click').on('click', function (e) {
-                //Prevent postback
-                e.preventDefault();
-
-                //Get the criteria default description list
-                var criteriaDefaultList = $('[ID$="hfCriteriaDefaultDescriptions"]').val();
-
-                //Split the list into an array
-                var criteriaDefaultArray = criteriaDefaultList.split('*sep*');
-
-                //To hold the criteria defaults
-                var criteriaDefaults = '';
-
-                //Add the custom criteria rules
-                criteriaDefaults += '<h4>Custom defaults:</h4>'
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RSD-M[Modifiers] - Relative Start Date.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the Start Date to 12 months in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RSD-Y[Modifiers] - Relative Start Date.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the Start Date to 1 year in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'ASD[Modifiers] - Absolute Start Date.  Modifiers: The date you want the Start Date to default to. Ex. RSD-02/01/2019 will default the Start Date to 02/01/2019.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RED-M[Modifiers] - Relative End Date.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the End Date to 12 months in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RED-Y[Modifiers] - Relative End Date.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the End Date to 1 year in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'AED[Modifiers] - Absolute End Date.  Modifiers: The date you want the End Date to default to. Ex. RSD-02/01/2019 will default the End Date to 02/01/2019.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RPIT-M[Modifiers] - Relative Point in Time.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the Point in Time to 12 months in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'RPIT-Y[Modifiers] - Relative Point in Time.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the Point in Time to 1 year in the past.';
-                criteriaDefaults += '</div>';
-                criteriaDefaults += '<div class="mt-2">';
-                criteriaDefaults += 'APIT[Modifiers] - Absolute Point in Time.  Modifiers: The date you want the Point in Time to default to. Ex. RSD-02/01/2019 will default the Point in Time to 02/01/2019.';
-                criteriaDefaults += '</div><br/>';
-                criteriaDefaults += '<h4>Preset defaults:</h4>'
-
-                //Loop through each criteria description and add it to the string
-                $.each(criteriaDefaultArray, function (index, value) {
-                    criteriaDefaults += '<div class="mt-2">';
-                    criteriaDefaults += criteriaDefaultArray[index];
-                    criteriaDefaults += '</div>';
-                });
-
-                //Show the descriptions
-                showNotification('primary', 'Criteria Default Descriptions', criteriaDefaults, 30000);
+            $('#btnDefaultDescriptions').popover({
+                trigger: 'hover focus',
+                title: 'Help',
+                html: true,
+                content: getCriteriaDefaultDescriptions()
             });
+        }
+
+        function getCriteriaDescriptions() {
+            //Get the criteria description list
+            var criteriaDescriptionList = $('[ID$="hfCriteriaDescriptions"]').val();
+
+            //Split the list into an array
+            var criteriaDescriptionArray = criteriaDescriptionList.split('*sep*');
+
+            //To hold the criteria descriptions
+            var criteriaDescriptions = '';
+
+            //Loop through each criteria description and add it to the string
+            $.each(criteriaDescriptionArray, function (index, value) {
+                criteriaDescriptions += '<div class="mt-2">';
+                criteriaDescriptions += criteriaDescriptionArray[index];
+                criteriaDescriptions += '</div>';
+            });
+
+            //Return the criteria descriptions
+            return criteriaDescriptions;
+        }
+
+        function getCriteriaDefaultDescriptions() {
+            //Get the criteria default description list
+            var criteriaDefaultList = $('[ID$="hfCriteriaDefaultDescriptions"]').val();
+
+            //Split the list into an array
+            var criteriaDefaultArray = criteriaDefaultList.split('*sep*');
+
+            //To hold the criteria defaults
+            var criteriaDefaults = '';
+
+            //Add the custom criteria rules
+            criteriaDefaults += '<h4>Custom defaults:</h4>'
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RSD-M[Modifiers] - Relative Start Date.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the Start Date to 12 months in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RSD-Y[Modifiers] - Relative Start Date.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the Start Date to 1 year in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'ASD[Modifiers] - Absolute Start Date.  Modifiers: The date you want the Start Date to default to. Ex. RSD-02/01/2019 will default the Start Date to 02/01/2019.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RED-M[Modifiers] - Relative End Date.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the End Date to 12 months in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RED-Y[Modifiers] - Relative End Date.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the End Date to 1 year in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'AED[Modifiers] - Absolute End Date.  Modifiers: The date you want the End Date to default to. Ex. RSD-02/01/2019 will default the End Date to 02/01/2019.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RPIT-M[Modifiers] - Relative Point in Time.  Modifiers: The + or - symbol and number of months to add or subtract from now.  Ex. RSD-M-12 will default the Point in Time to 12 months in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RPIT-Y[Modifiers] - Relative Point in Time.  Modifiers: The + or - symbol and number of years to add or subtract from now.  Ex. RSD-Y-1 will default the Point in Time to 1 year in the past.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'APIT[Modifiers] - Absolute Point in Time.  Modifiers: The date you want the Point in Time to default to. Ex. RSD-02/01/2019 will default the Point in Time to 02/01/2019.';
+            criteriaDefaults += '</div>';
+            criteriaDefaults += '<div class="mt-2">';
+            criteriaDefaults += 'RY[Modifiers] - Relative Year.  Modifiers: The + or - symbol and number of years to add or subtract from the current year.  Ex. RY-1 will default the year to 1 year in the past.';
+            criteriaDefaults += '</div><br/>';
+            criteriaDefaults += '<h4>Preset defaults:</h4>'
+
+            //Loop through each criteria description and add it to the string
+            $.each(criteriaDefaultArray, function (index, value) {
+                criteriaDefaults += '<div class="mt-2">';
+                criteriaDefaults += criteriaDefaultArray[index];
+                criteriaDefaults += '</div>';
+            });
+
+            //Return the criteria default descriptions
+            return criteriaDefaults;
         }
 
         //This function controls whether or not the specify field for the report category is shown
@@ -106,12 +117,12 @@
             //Get the report category
             var reportCategory = ddReportCategory.GetText();
 
-            //If the admin follow-up is other, show the specify div
-            if (reportCategory.toLowerCase().includes('other')) {
+            //If the report category is other, show the specify div
+            if (reportCategory.toLowerCase() == 'other') {
                 $('#divReportCategorySpecify').slideDown();
             }
             else {
-                //The admin follow-up is not other, clear the specify text box and hide the specify div
+                //The report category is not other, clear the specify text box and hide the specify div
                 txtReportCategorySpecify.SetValue('');
                 $('#divReportCategorySpecify').slideUp();
             }
@@ -122,7 +133,8 @@
             var reportCategorySpecify = e.value;
             var reportCategory = ddReportCategory.GetText();
 
-            if ((reportCategorySpecify == null || reportCategorySpecify == ' ') && reportCategory.toLowerCase().includes('other')) {
+            if ((reportCategorySpecify == null || reportCategorySpecify == ' ')
+                    && reportCategory.toLowerCase() == 'other') {
                 e.isValid = false;
                 e.errorText = "Specify Report Category is required when the 'Other' report category is selected!";
             }
@@ -149,7 +161,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <dx:BootstrapTextBox ID="txtReportName" runat="server" Caption="Report Name" MaxLength="100">
                                         <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                         <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgReportCatalogItem">
@@ -157,7 +169,7 @@
                                         </ValidationSettings>
                                     </dx:BootstrapTextBox>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <dx:BootstrapTextBox ID="txtReportClass" runat="server" Caption="Report Class" MaxLength="100">
                                         <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                         <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgReportCatalogItem">
@@ -165,7 +177,20 @@
                                         </ValidationSettings>
                                     </dx:BootstrapTextBox>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
+                                    <dx:BootstrapComboBox ID="ddOnlyExportAllowed" runat="server" NullText="--Select--" Caption="Only Allow Export?" 
+                                        ValueType="System.Boolean" IncrementalFilteringMode="StartsWith">
+                                        <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
+                                        <ValidationSettings ErrorDisplayMode="ImageWithText" ValidationGroup="vgReportCatalogItem">
+                                            <RequiredField IsRequired="true" ErrorText="Only Allow Export? is required!" />
+                                        </ValidationSettings>
+                                        <Items>
+                                            <dx:BootstrapListEditItem Text="Yes" Value="True"></dx:BootstrapListEditItem>
+                                            <dx:BootstrapListEditItem Text="No" Value="False"></dx:BootstrapListEditItem>
+                                        </Items>
+                                    </dx:BootstrapComboBox>
+                                </div>
+                                <div class="col-lg-3">
                                     <dx:BootstrapComboBox ID="ddReportCategory" runat="server" Caption="Report Category" NullText="--Select--"
                                         TextField="ReportCategory" ValueField="ReportCategory" ValueType="System.String"
                                         IncrementalFilteringMode="Contains" ClientInstanceName="ddReportCategory" AllowMouseWheel="false">
@@ -181,6 +206,7 @@
                                             <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                             <ClientSideEvents Validation="validateReportCategorySpecify" />
                                             <ValidationSettings ValidationGroup="vgReportCatalogItem" ErrorDisplayMode="ImageWithText" EnableCustomValidation="true">
+                                                <RequiredField IsRequired="false" ErrorText="Required!" />
                                             </ValidationSettings>
                                         </dx:BootstrapTextBox>
                                     </div>
@@ -223,7 +249,7 @@
                                             <RequiredField IsRequired="true" ErrorText="Required!" />
                                         </ValidationSettings>
                                     </dx:BootstrapTagBox>
-                                    <button id="btnCriteriaDescriptions" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
+                                    <button id="btnCriteriaDescriptions" type="button" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
                                 </div>
                                 <div class="col-lg-4">
                                     <dx:BootstrapTagBox ID="tbOptionalCriteriaOptions" runat="server" Caption="Optional Criteria"
@@ -233,7 +259,7 @@
                                             <RequiredField IsRequired="true" ErrorText="Required!" />
                                         </ValidationSettings>
                                     </dx:BootstrapTagBox>
-                                    <button id="btnOptionalCriteriaDescriptions" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
+                                    <button id="btnOptionalCriteriaDescriptions" type="button" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
                                 </div>
                                 <div class="col-lg-4">
                                     <dx:BootstrapTagBox ID="tbCriteriaDefaults" runat="server" Caption="Criteria Defaults"
@@ -243,7 +269,7 @@
                                             <RequiredField IsRequired="true" ErrorText="Required!" />
                                         </ValidationSettings>
                                     </dx:BootstrapTagBox>
-                                    <button id="btnDefaultDescriptions" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
+                                    <button id="btnDefaultDescriptions" type="button" class="btn btn-link"><i class="fas fa-question-circle"></i>&nbsp;Help</button>
                                 </div>
                             </div>
                         </div>
@@ -264,6 +290,7 @@
                                         <CaptionSettings RequiredMarkDisplayMode="Hidden" ShowColon="false" />
                                         <CssClasses Control="mw-100" Input="mw-100" />
                                         <ValidationSettings ValidationGroup="vgReportCatalogItem" ErrorDisplayMode="ImageWithText" EnableCustomValidation="true">
+                                            <RequiredField IsRequired="false" ErrorText="Required!" />
                                         </ValidationSettings>
                                     </dx:BootstrapTextBox>
                                 </div>
@@ -274,7 +301,10 @@
                 </div>
             </div>
             <div class="page-footer">
-                <uc:Submit ID="submitReportCatalogItem" runat="server" ValidationGroup="vgReportCatalogItem" OnSubmitClick="submitReportCatalogItem_Click" OnCancelClick="submitReportCatalogItem_CancelClick" OnValidationFailed="submitReportCatalogItem_ValidationFailed" />
+                <uc:Submit ID="submitReportCatalogItem" runat="server" ValidationGroup="vgReportCatalogItem"
+                    ControlCssClass="center-content"
+                    OnSubmitClick="submitReportCatalogItem_Click" OnCancelClick="submitReportCatalogItem_CancelClick" 
+                    OnValidationFailed="submitReportCatalogItem_ValidationFailed" />
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>

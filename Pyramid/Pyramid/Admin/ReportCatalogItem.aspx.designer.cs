@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.Admin {
-    
-    
-    public partial class ReportCatalogItem {
-        
+namespace Pyramid.Admin
+{
+
+
+    public partial class ReportCatalogItem
+    {
+
         /// <summary>
         /// upReportCatalogItem control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upReportCatalogItem;
-        
+
         /// <summary>
         /// lblPageTitle control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPageTitle;
-        
+
         /// <summary>
         /// hfViewOnly control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfViewOnly;
-        
+
         /// <summary>
         /// hfCriteriaDescriptions control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfCriteriaDescriptions;
-        
+
         /// <summary>
         /// hfCriteriaDefaultDescriptions control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfCriteriaDefaultDescriptions;
-        
+
         /// <summary>
         /// msgSys control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Pyramid.User_Controls.MessagingSystem msgSys;
-        
+
         /// <summary>
         /// txtReportName control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtReportName;
-        
+
         /// <summary>
         /// txtReportClass control.
         /// </summary>
@@ -83,7 +85,16 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtReportClass;
-        
+
+        /// <summary>
+        /// ddOnlyExportAllowed control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddOnlyExportAllowed;
+
         /// <summary>
         /// ddReportCategory control.
         /// </summary>
@@ -92,7 +103,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddReportCategory;
-        
+
         /// <summary>
         /// txtReportCategorySpecify control.
         /// </summary>
@@ -101,7 +112,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtReportCategorySpecify;
-        
+
         /// <summary>
         /// txtReportDescription control.
         /// </summary>
@@ -110,7 +121,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapMemo txtReportDescription;
-        
+
         /// <summary>
         /// tbKeywords control.
         /// </summary>
@@ -119,7 +130,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbKeywords;
-        
+
         /// <summary>
         /// tbRolesAuthorizedToRun control.
         /// </summary>
@@ -128,7 +139,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbRolesAuthorizedToRun;
-        
+
         /// <summary>
         /// tbCriteriaOptions control.
         /// </summary>
@@ -137,7 +148,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbCriteriaOptions;
-        
+
         /// <summary>
         /// tbOptionalCriteriaOptions control.
         /// </summary>
@@ -146,7 +157,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbOptionalCriteriaOptions;
-        
+
         /// <summary>
         /// tbCriteriaDefaults control.
         /// </summary>
@@ -155,7 +166,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTagBox tbCriteriaDefaults;
-        
+
         /// <summary>
         /// txtDocumentationFileName control.
         /// </summary>
@@ -164,7 +175,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtDocumentationFileName;
-        
+
         /// <summary>
         /// lnkExistingDocumentation control.
         /// </summary>
@@ -173,7 +184,7 @@ namespace Pyramid.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink lnkExistingDocumentation;
-        
+
         /// <summary>
         /// submitReportCatalogItem control.
         /// </summary>
