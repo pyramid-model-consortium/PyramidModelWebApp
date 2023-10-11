@@ -34,18 +34,24 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
-            DevExpress.DataAccess.Sql.StoredProcQuery storedProcQuery2 = new DevExpress.DataAccess.Sql.StoredProcQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter6 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter7 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter8 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter9 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.StoredProcQuery storedProcQuery2 = new DevExpress.DataAccess.Sql.StoredProcQuery();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter10 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter11 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter12 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter13 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter14 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter15 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter16 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter17 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter18 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RptTPOTRedFlagTrend));
             DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
             DevExpress.XtraCharts.LineSeriesView lineSeriesView1 = new DevExpress.XtraCharts.LineSeriesView();
-            this.ParamProgramFKs = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamClassroomFKs = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamStartDate = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamEndDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -81,38 +87,19 @@
             this.Detail.MultiColumn.Layout = DevExpress.XtraPrinting.ColumnLayout.AcrossThenDown;
             this.Detail.MultiColumn.Mode = DevExpress.XtraReports.UI.MultiColumnMode.UseColumnWidth;
             // 
-            // imgLogo
-            // 
-            this.imgLogo.StylePriority.UseBackColor = false;
-            this.imgLogo.StylePriority.UsePadding = false;
-            // 
-            // lblReportTitle
-            // 
-            this.lblReportTitle.StylePriority.UseBackColor = false;
-            this.lblReportTitle.StylePriority.UseBorderColor = false;
-            this.lblReportTitle.StylePriority.UseFont = false;
-            this.lblReportTitle.StylePriority.UseForeColor = false;
-            this.lblReportTitle.StylePriority.UseTextAlignment = false;
-            // 
             // lblCriteriaValues
             // 
             this.lblCriteriaValues.StylePriority.UseTextAlignment = false;
             // 
-            // lblStateCatchphrase
+            // lblCriteria
             // 
-            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
-            this.lblStateCatchphrase.StylePriority.UseFont = false;
-            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
-            this.lblStateCatchphrase.StylePriority.UsePadding = false;
-            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
+            this.lblCriteria.StylePriority.UseFont = false;
+            this.lblCriteria.StylePriority.UseTextAlignment = false;
             // 
-            // lblStateName
+            // imgLogo
             // 
-            this.lblStateName.StylePriority.UseBackColor = false;
-            this.lblStateName.StylePriority.UseFont = false;
-            this.lblStateName.StylePriority.UseForeColor = false;
-            this.lblStateName.StylePriority.UsePadding = false;
-            this.lblStateName.StylePriority.UseTextAlignment = false;
+            this.imgLogo.StylePriority.UseBackColor = false;
+            this.imgLogo.StylePriority.UsePadding = false;
             // 
             // lblAppTitle
             // 
@@ -122,93 +109,122 @@
             this.lblAppTitle.StylePriority.UsePadding = false;
             this.lblAppTitle.StylePriority.UseTextAlignment = false;
             // 
-            // masterPageInfoNum
+            // lblReportTitle
             // 
-            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
+            this.lblReportTitle.StylePriority.UseBackColor = false;
+            this.lblReportTitle.StylePriority.UseBorderColor = false;
+            this.lblReportTitle.StylePriority.UseFont = false;
+            this.lblReportTitle.StylePriority.UseForeColor = false;
+            this.lblReportTitle.StylePriority.UseTextAlignment = false;
+            // 
+            // lblStateName
+            // 
+            this.lblStateName.StylePriority.UseBackColor = false;
+            this.lblStateName.StylePriority.UseFont = false;
+            this.lblStateName.StylePriority.UseForeColor = false;
+            this.lblStateName.StylePriority.UsePadding = false;
+            this.lblStateName.StylePriority.UseTextAlignment = false;
+            // 
+            // lblStateCatchphrase
+            // 
+            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
+            this.lblStateCatchphrase.StylePriority.UseFont = false;
+            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
+            this.lblStateCatchphrase.StylePriority.UsePadding = false;
+            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
             // 
             // masterPageInfoDate
             // 
             this.masterPageInfoDate.StylePriority.UseTextAlignment = false;
+            // 
+            // masterPageInfoNum
+            // 
+            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
             // 
             // lblGenerated
             // 
             this.lblGenerated.StylePriority.UseFont = false;
             this.lblGenerated.StylePriority.UseTextAlignment = false;
             // 
-            // lblCriteria
-            // 
-            this.lblCriteria.StylePriority.UseFont = false;
-            this.lblCriteria.StylePriority.UseTextAlignment = false;
-            // 
-            // ParamProgramFKs
-            // 
-            this.ParamProgramFKs.AllowNull = true;
-            this.ParamProgramFKs.Name = "ParamProgramFKs";
-            this.ParamProgramFKs.ValueInfo = "1,2,3,4,5,6,7,8,9,10,11,12";
-            this.ParamProgramFKs.Visible = false;
-            // 
-            // ParamClassroomFKs
-            // 
-            this.ParamClassroomFKs.AllowNull = true;
-            this.ParamClassroomFKs.Name = "ParamClassroomFKs";
-            this.ParamClassroomFKs.ValueInfo = "1,2,3,4,5,6,7,8,9,10,11,12,13";
-            this.ParamClassroomFKs.Visible = false;
-            // 
-            // ParamStartDate
-            // 
-            this.ParamStartDate.AllowNull = true;
-            this.ParamStartDate.Name = "ParamStartDate";
-            this.ParamStartDate.Type = typeof(System.DateTime);
-            this.ParamStartDate.ValueInfo = "2018-01-01";
-            this.ParamStartDate.Visible = false;
-            // 
-            // ParamEndDate
-            // 
-            this.ParamEndDate.AllowNull = true;
-            this.ParamEndDate.Name = "ParamEndDate";
-            this.ParamEndDate.Type = typeof(System.DateTime);
-            this.ParamEndDate.ValueInfo = "2020-01-01";
-            this.ParamEndDate.Visible = false;
-            // 
             // sqlDataSource1
             // 
             this.sqlDataSource1.ConnectionName = "Pyramid";
             this.sqlDataSource1.Name = "sqlDataSource1";
             storedProcQuery1.Name = "rspTPOTRedFlagTrend_Details";
-            queryParameter1.Name = "@ProgramFKs";
+            queryParameter1.Name = "@StartDate";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
-            queryParameter2.Name = "@ClassroomFKs";
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
+            queryParameter2.Name = "@EndDate";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
-            queryParameter3.Name = "@StartDate";
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
+            queryParameter3.Name = "@ClassroomFKs";
             queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter3.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
-            queryParameter4.Name = "@EndDate";
+            queryParameter3.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
+            queryParameter4.Name = "@EmployeeFKs";
             queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter4.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("?ParamEmployeeFKs", typeof(string));
+            queryParameter5.Name = "@EmployeeRole";
+            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter5.Value = new DevExpress.DataAccess.Expression("?ParamEmployeeRole", typeof(string));
+            queryParameter6.Name = "@ProgramFKs";
+            queryParameter6.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter6.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
+            queryParameter7.Name = "@HubFKs";
+            queryParameter7.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter7.Value = new DevExpress.DataAccess.Expression("?ParamHubFKs", typeof(string));
+            queryParameter8.Name = "@CohortFKs";
+            queryParameter8.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter8.Value = new DevExpress.DataAccess.Expression("?ParamCohortFKs", typeof(string));
+            queryParameter9.Name = "@StateFKs";
+            queryParameter9.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter9.Value = new DevExpress.DataAccess.Expression("?ParamStateFKs", typeof(string));
             storedProcQuery1.Parameters.Add(queryParameter1);
             storedProcQuery1.Parameters.Add(queryParameter2);
             storedProcQuery1.Parameters.Add(queryParameter3);
             storedProcQuery1.Parameters.Add(queryParameter4);
+            storedProcQuery1.Parameters.Add(queryParameter5);
+            storedProcQuery1.Parameters.Add(queryParameter6);
+            storedProcQuery1.Parameters.Add(queryParameter7);
+            storedProcQuery1.Parameters.Add(queryParameter8);
+            storedProcQuery1.Parameters.Add(queryParameter9);
             storedProcQuery1.StoredProcName = "rspTPOTRedFlagTrend_Details";
             storedProcQuery2.Name = "rspTPOTRedFlagTrend_Chart";
-            queryParameter5.Name = "@ProgramFKs";
-            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter5.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
-            queryParameter6.Name = "@ClassroomFKs";
-            queryParameter6.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter6.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
-            queryParameter7.Name = "@StartDate";
-            queryParameter7.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter7.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
-            queryParameter8.Name = "@EndDate";
-            queryParameter8.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter8.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
-            storedProcQuery2.Parameters.Add(queryParameter5);
-            storedProcQuery2.Parameters.Add(queryParameter6);
-            storedProcQuery2.Parameters.Add(queryParameter7);
-            storedProcQuery2.Parameters.Add(queryParameter8);
+            queryParameter10.Name = "@StartDate";
+            queryParameter10.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter10.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
+            queryParameter11.Name = "@EndDate";
+            queryParameter11.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter11.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
+            queryParameter12.Name = "@ClassroomFKs";
+            queryParameter12.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter12.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
+            queryParameter13.Name = "@EmployeeFKs";
+            queryParameter13.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter13.Value = new DevExpress.DataAccess.Expression("?ParamEmployeeFKs", typeof(string));
+            queryParameter14.Name = "@EmployeeRole";
+            queryParameter14.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter14.Value = new DevExpress.DataAccess.Expression("?ParamEmployeeRole", typeof(string));
+            queryParameter15.Name = "@ProgramFKs";
+            queryParameter15.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter15.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
+            queryParameter16.Name = "@HubFKs";
+            queryParameter16.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter16.Value = new DevExpress.DataAccess.Expression("?ParamHubFKs", typeof(string));
+            queryParameter17.Name = "@CohortFKs";
+            queryParameter17.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter17.Value = new DevExpress.DataAccess.Expression("?ParamCohortFKs", typeof(string));
+            queryParameter18.Name = "@StateFKs";
+            queryParameter18.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter18.Value = new DevExpress.DataAccess.Expression("?ParamStateFKs", typeof(string));
+            storedProcQuery2.Parameters.Add(queryParameter10);
+            storedProcQuery2.Parameters.Add(queryParameter11);
+            storedProcQuery2.Parameters.Add(queryParameter12);
+            storedProcQuery2.Parameters.Add(queryParameter13);
+            storedProcQuery2.Parameters.Add(queryParameter14);
+            storedProcQuery2.Parameters.Add(queryParameter15);
+            storedProcQuery2.Parameters.Add(queryParameter16);
+            storedProcQuery2.Parameters.Add(queryParameter17);
+            storedProcQuery2.Parameters.Add(queryParameter18);
             storedProcQuery2.StoredProcName = "rspTPOTRedFlagTrend_Chart";
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             storedProcQuery1,
@@ -233,7 +249,7 @@
             // 
             this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[RedFlagName]")});
-            this.xrLabel1.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.xrLabel1.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F);
             this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(69.37498F, 29F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
@@ -250,7 +266,7 @@
             // 
             // xrLabel5
             // 
-            this.xrLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel5.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(0F, 29.00006F);
             this.xrLabel5.Multiline = true;
             this.xrLabel5.Name = "xrLabel5";
@@ -263,7 +279,7 @@
             // 
             // xrLabel7
             // 
-            this.xrLabel7.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel7.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLabel7.Multiline = true;
             this.xrLabel7.Name = "xrLabel7";
@@ -302,14 +318,16 @@
             xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
             xyDiagram1.AxisY.VisualRange.Auto = false;
             xyDiagram1.AxisY.VisualRange.AutoSideMargins = false;
+            xyDiagram1.AxisY.VisualRange.EndSideMargin = 0D;
             xyDiagram1.AxisY.VisualRange.MaxValueSerializable = "1";
             xyDiagram1.AxisY.VisualRange.MinValueSerializable = "0";
-            xyDiagram1.AxisY.VisualRange.SideMarginsValue = 0D;
+            xyDiagram1.AxisY.VisualRange.StartSideMargin = 0D;
             xyDiagram1.AxisY.WholeRange.Auto = false;
             xyDiagram1.AxisY.WholeRange.AutoSideMargins = false;
+            xyDiagram1.AxisY.WholeRange.EndSideMargin = 0D;
             xyDiagram1.AxisY.WholeRange.MaxValueSerializable = "1";
             xyDiagram1.AxisY.WholeRange.MinValueSerializable = "0";
-            xyDiagram1.AxisY.WholeRange.SideMarginsValue = 0D;
+            xyDiagram1.AxisY.WholeRange.StartSideMargin = 0D;
             xyDiagram1.DefaultPane.EnableAxisXScrolling = DevExpress.Utils.DefaultBoolean.False;
             xyDiagram1.DefaultPane.EnableAxisXZooming = DevExpress.Utils.DefaultBoolean.False;
             xyDiagram1.DefaultPane.EnableAxisYScrolling = DevExpress.Utils.DefaultBoolean.False;
@@ -326,7 +344,6 @@
             this.chartRedFlags.SeriesTemplate.ArgumentDataMember = "GroupingText";
             this.chartRedFlags.SeriesTemplate.LabelsVisibility = DevExpress.Utils.DefaultBoolean.False;
             this.chartRedFlags.SeriesTemplate.LegendName = "Default Legend";
-            this.chartRedFlags.SeriesTemplate.SeriesColorizer = null;
             this.chartRedFlags.SeriesTemplate.SeriesDataMember = "RedFlagType";
             this.chartRedFlags.SeriesTemplate.SeriesPointsSortingKey = DevExpress.XtraCharts.SeriesPointKey.Value_1;
             this.chartRedFlags.SeriesTemplate.ValueDataMembersSerializable = "PercentYes";
@@ -341,7 +358,7 @@
             // 
             // xrLabel4
             // 
-            this.xrLabel4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(0F, 46.00003F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
@@ -354,7 +371,7 @@
             // 
             // xrLabel14
             // 
-            this.xrLabel14.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel14.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel14.LocationFloat = new DevExpress.Utils.PointFloat(243.3334F, 0F);
             this.xrLabel14.Multiline = true;
             this.xrLabel14.Name = "xrLabel14";
@@ -365,7 +382,7 @@
             // 
             // xrLabel10
             // 
-            this.xrLabel10.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel10.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLabel10.Multiline = true;
             this.xrLabel10.Name = "xrLabel10";
@@ -400,7 +417,7 @@
             // 
             // xrLabel13
             // 
-            this.xrLabel13.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel13.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(0F, 23.00002F);
             this.xrLabel13.Multiline = true;
             this.xrLabel13.Name = "xrLabel13";
@@ -472,7 +489,10 @@
             this.PageHeader,
             this.GroupHeader1,
             this.GroupHeader2,
-            this.GroupFooter1});
+            this.GroupFooter1,
+            this.MasterReportFooter,
+            this.TopMargin,
+            this.BottomMargin});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "rspTPOTRedFlagTrend_Details";
@@ -483,11 +503,37 @@
             this.ExportOptions.Xlsx.SheetName = "Report";
             this.ExportOptions.Xlsx.ShowGridLines = true;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.ParamLogoPath,
+            this.ParamViewPrivateChildInfo,
             this.ParamProgramFKs,
-            this.ParamClassroomFKs,
+            this.ParamStateFKs,
             this.ParamStartDate,
-            this.ParamEndDate});
-            this.Version = "19.1";
+            this.ParamEndDate,
+            this.ParamPointInTime,
+            this.ParamYear,
+            this.ParamBIRProfileGroup,
+            this.ParamBIRItem,
+            this.ParamClassroomFKs,
+            this.ParamChildFKs,
+            this.ParamRaceFKs,
+            this.ParamEthnicityFKs,
+            this.ParamGenderFKs,
+            this.ParamIEP,
+            this.ParamDLL,
+            this.ParamEmployeeFKs,
+            this.ParamTeacherFKs,
+            this.ParamCoachFKs,
+            this.ParamProblemBehaviorFKs,
+            this.ParamActivityFKs,
+            this.ParamOthersInvolvedFKs,
+            this.ParamPossibleMotivationFKs,
+            this.ParamStrategyResponseFKs,
+            this.ParamAdminFollowUpFKs,
+            this.ParamViewPrivateEmployeeInfo});
+            this.Version = "21.1";
+            this.Controls.SetChildIndex(this.BottomMargin, 0);
+            this.Controls.SetChildIndex(this.TopMargin, 0);
+            this.Controls.SetChildIndex(this.MasterReportFooter, 0);
             this.Controls.SetChildIndex(this.GroupFooter1, 0);
             this.Controls.SetChildIndex(this.GroupHeader2, 0);
             this.Controls.SetChildIndex(this.GroupHeader1, 0);
@@ -504,10 +550,6 @@
 
         #endregion
 
-        private DevExpress.XtraReports.Parameters.Parameter ParamProgramFKs;
-        private DevExpress.XtraReports.Parameters.Parameter ParamClassroomFKs;
-        private DevExpress.XtraReports.Parameters.Parameter ParamStartDate;
-        private DevExpress.XtraReports.Parameters.Parameter ParamEndDate;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader2;

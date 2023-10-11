@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.User_Controls {
-    
-    
-    public partial class Submit {
-        
+namespace Pyramid.User_Controls
+{
+
+
+    public partial class Submit
+    {
+
         /// <summary>
         /// pnlSubmitControl control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSubmitControl;
-        
+
         /// <summary>
         /// hfValidationGroup control.
         /// </summary>
@@ -29,16 +31,34 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfValidationGroup;
-        
+
         /// <summary>
-        /// lbCancel control.
+        /// hfUseCancelConfirmation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbCancel;
-        
+        protected global::System.Web.UI.WebControls.HiddenField hfUseCancelConfirmation;
+
+        /// <summary>
+        /// hfUseSubmitConfirmation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfUseSubmitConfirmation;
+
+        /// <summary>
+        /// btnCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnCancel;
+
         /// <summary>
         /// btnSubmit control.
         /// </summary>
@@ -47,7 +67,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapButton btnSubmit;
-        
+
         /// <summary>
         /// lbSubmitting control.
         /// </summary>
@@ -56,5 +76,32 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbSubmitting;
+
+        /// <summary>
+        /// btnConfirmCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnConfirmCancel;
+
+        /// <summary>
+        /// lblSubmitConfirmText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSubmitConfirmText;
+
+        /// <summary>
+        /// btnConfirmSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnConfirmSubmit;
     }
 }

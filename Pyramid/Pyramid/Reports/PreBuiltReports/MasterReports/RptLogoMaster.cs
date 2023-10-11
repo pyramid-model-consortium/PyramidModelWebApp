@@ -19,7 +19,7 @@ namespace Pyramid.Reports.PreBuiltReports.MasterReports
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void imgLogo_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        private void imgLogo_BeforePrint(object sender, CancelEventArgs e)
         {
             if(ParamLogoPath.Value != null)
             {

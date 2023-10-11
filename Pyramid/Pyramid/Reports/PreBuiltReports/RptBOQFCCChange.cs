@@ -19,7 +19,7 @@ namespace Pyramid.Reports.PreBuiltReports
         /// </summary>
         /// <param name="sender">An XRLabel</param>
         /// <param name="e">The PrintEventArgs</param>
-        private void IndicatorLabel_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        private void IndicatorLabel_BeforePrint(object sender, CancelEventArgs e)
         {
             //Get the label
             XRLabel label = (XRLabel)sender;

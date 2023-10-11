@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
     <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9InJzcEJPUVRyZW5kIj48RmllbGQgTmFtZT0iQk9RUEsiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJGb3JtRGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9Ikdyb3VwaW5nVmFsdWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR3JvdXBpbmdUZXh0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlByb2dyYW1GSyIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlByb2dyYW1OYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNyaXRpY2FsRWxlbWVudEFiYnIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ3JpdGljYWxFbGVtZW50TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDcml0aWNhbEVsZW1lbnRBdmciIFR5cGU9IkRlY2ltYWwiIC8+PEZpZWxkIE5hbWU9IkNyaXRpY2FsRWxlbWVudE51bU5vdEluUGxhY2UiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJDcml0aWNhbEVsZW1lbnROdW1QYXJ0aWFsIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iQ3JpdGljYWxFbGVtZW50TnVtSW5QbGFjZSIgVHlwZT0iSW50MzIiIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
+  </data>
+  <data name="xrLabel8.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumInPlace]), sumSum([CriticalElementNumInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel7.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumNotInPlace]), sumSum([CriticalElementNumNotInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel6.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumPartial]), sumSum([CriticalElementNumPartial]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel23.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumPartial]), sumSum([CriticalElementNumPartial]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel31.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumNotInPlace]), sumSum([CriticalElementNumNotInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel32.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumInPlace]), sumSum([CriticalElementNumInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel25.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumNotInPlace]), sumSum([CriticalElementNumNotInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel26.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumPartial]), sumSum([CriticalElementNumPartial]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
+  </data>
+  <data name="xrLabel27.ExpressionBindings" xml:space="preserve">
+    <value>FormatString('{0} ({1:0%})', sumSum([CriticalElementNumInPlace]), sumSum([CriticalElementNumInPlace]) / ToFloat(sumSum([CriticalElementNumNotInPlace]) + sumSum([CriticalElementNumPartial]) + sumSum([CriticalElementNumInPlace])))</value>
   </data>
 </root>

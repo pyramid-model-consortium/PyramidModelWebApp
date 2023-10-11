@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.User_Controls {
-    
-    
-    public partial class Classroom {
-        
+namespace Pyramid.User_Controls
+{
+
+
+    public partial class Classroom
+    {
+
         /// <summary>
         /// hfClassroomPK control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfClassroomPK;
-        
+
         /// <summary>
         /// hfProgramFK control.
         /// </summary>
@@ -29,16 +31,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProgramFK;
-        
-        /// <summary>
-        /// hfUsedIDs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUsedIDs;
-        
+
         /// <summary>
         /// txtName control.
         /// </summary>
@@ -47,7 +40,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtName;
-        
+
         /// <summary>
         /// txtProgramID control.
         /// </summary>
@@ -56,7 +49,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtProgramID;
-        
+
         /// <summary>
         /// txtLocation control.
         /// </summary>
@@ -65,7 +58,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtLocation;
-        
+
         /// <summary>
         /// ddInfantToddler control.
         /// </summary>
@@ -74,7 +67,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddInfantToddler;
-        
+
         /// <summary>
         /// ddPreschool control.
         /// </summary>
@@ -83,7 +76,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddPreschool;
-        
+
         /// <summary>
         /// ddServedSubstitute control.
         /// </summary>

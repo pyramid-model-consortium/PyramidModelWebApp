@@ -66,32 +66,73 @@ namespace Pyramid.User_Controls
                 int programFK = Convert.ToInt32(hfProgramFK.Value);
 
                 //To hold the classroom object
-                Models.Classroom classroom;
+                Models.Classroom currentClassroom;
 
                 //Determine if the classroom already exists
                 if (classroomPK > 0)
                 {
                     using (PyramidContext context = new PyramidContext())
                     {
-                        classroom = context.Classroom.AsNoTracking().Where(c => c.ClassroomPK == classroomPK).FirstOrDefault();
+                        currentClassroom = context.Classroom.AsNoTracking().Where(c => c.ClassroomPK == classroomPK).FirstOrDefault();
+                    }
+
+                    if (currentClassroom == null)
+                    {
+                        currentClassroom = new Models.Classroom();
                     }
                 }
                 else
                 {
-                    classroom = new Models.Classroom();
+                    currentClassroom = new Models.Classroom();
                 }
 
                 //Set the values from the inputs
-                classroom.Name = txtName.Value.ToString();
-                classroom.ProgramSpecificID = txtProgramID.Value.ToString();
-                classroom.Location = (txtLocation.Value == null ? null : txtLocation.Value.ToString());
-                classroom.IsInfantToddler = Convert.ToBoolean(ddInfantToddler.Value);
-                classroom.IsPreschool = Convert.ToBoolean(ddPreschool.Value);
-                classroom.BeingServedSubstitute = Convert.ToBoolean(ddServedSubstitute.Value);
-                classroom.ProgramFK = programFK;
+                currentClassroom.Name = txtName.Value.ToString();
+                currentClassroom.Location = (txtLocation.Value == null ? null : txtLocation.Value.ToString());
+                currentClassroom.IsInfantToddler = Convert.ToBoolean(ddInfantToddler.Value);
+                currentClassroom.IsPreschool = Convert.ToBoolean(ddPreschool.Value);
+                currentClassroom.BeingServedSubstitute = Convert.ToBoolean(ddServedSubstitute.Value);
+                currentClassroom.ProgramFK = programFK;
+
+                string programID;
+                if (!string.IsNullOrWhiteSpace(txtProgramID.Text))
+                {
+                    //Use the ID that the user provided
+                    //Make sure to trim the input to ensure leading and trailing spaces are removed
+                    currentClassroom.ProgramSpecificID = txtProgramID.Text.Trim();
+                }
+                else
+                {
+                    //The user didn't specify an ID, generate one
+                    //Check to see if this is an edit
+                    if (currentClassroom.ClassroomPK > 0)
+                    {
+                        //This is an edit, use the current PK
+                        programID = string.Format("CLID-{0}", currentClassroom.ClassroomPK);
+                    }
+                    else
+                    {
+                        //To hold the previous PK
+                        int previousPK;
+
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the previous PK
+                            Models.Classroom newestClassroom = context.Classroom
+                                                                        .AsNoTracking()
+                                                                        .OrderByDescending(c => c.ClassroomPK)
+                                                                        .FirstOrDefault();
+                            previousPK = (newestClassroom != null ? newestClassroom.ClassroomPK : 0);
+
+                            //Set the program specific ID to the previous PK plus one
+                            programID = string.Format("CLID-{0}", (previousPK + 1));
+                        }
+                    }
+                    currentClassroom.ProgramSpecificID = programID;
+                }
 
                 //Return the object
-                return classroom;
+                return currentClassroom;
             }
             else
             {
@@ -114,16 +155,6 @@ namespace Pyramid.User_Controls
             {
                 //Set the program fk hidden field
                 hfProgramFK.Value = programFK.ToString();
-
-                //Fill the used IDs hidden field
-                var usedIDs = context.Classroom
-                                .AsNoTracking()
-                                .Where(cp => cp.ProgramFK == programFK && cp.ClassroomPK != classroomPK)
-                                .OrderBy(cp => cp.ProgramSpecificID)
-                                .Select(cp => cp.ProgramSpecificID)
-                                .ToList();
-                hfUsedIDs.Value = string.Join(",", usedIDs);
-
 
                 if (classroomPK > 0)
                 {
@@ -162,19 +193,40 @@ namespace Pyramid.User_Controls
         protected void txtProgramID_Validation(object sender, ValidationEventArgs e)
         {
             //Get the program ID
-            string programID = (txtProgramID.Value == null ? null : txtProgramID.Value.ToString());
-            string[] programIDArray = hfUsedIDs.Value.Split(',');
+            string programID = txtProgramID.Text;
 
             //Perform validation
-            if (String.IsNullOrWhiteSpace(programID))
+            if (!string.IsNullOrWhiteSpace(programID))
             {
-                e.IsValid = false;
-                e.ErrorText = "ID Number is required!";
-            }
-            else if (programIDArray.Contains(programID))
-            {
-                e.IsValid = false;
-                e.ErrorText = "That ID Number is already taken!";
+                //To hold the necessary values
+                int programFK, classroomPK;
+
+                if (int.TryParse(hfClassroomPK.Value, out classroomPK) && int.TryParse(hfProgramFK.Value, out programFK))
+                {
+                    bool isAlreadyUsed;
+
+                    //Check to see if the ID is already used
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        isAlreadyUsed = context.Classroom
+                                        .AsNoTracking()
+                                        .Where(cp => cp.ProgramFK == programFK &&
+                                                     cp.ClassroomPK != classroomPK &&
+                                                     cp.ProgramSpecificID.ToLower().Trim() == programID.ToLower().Trim())
+                                        .Count() > 0;
+                    }
+
+                    if (isAlreadyUsed)
+                    {
+                        e.IsValid = false;
+                        e.ErrorText = "That ID Number is already taken!";
+                    }
+                }
+                else
+                {
+                    e.IsValid = false;
+                    e.ErrorText = "Unable to determine ID Number validity, please try again.  If this continues to fail, please contact support via ticket.";
+                }
             }
         }
     }

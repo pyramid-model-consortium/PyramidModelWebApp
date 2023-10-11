@@ -7,11 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pyramid.User_Controls {
-    
-    
-    public partial class Child {
-        
+namespace Pyramid.User_Controls
+{
+
+
+    public partial class Child
+    {
+
+        /// <summary>
+        /// childControlMsgSys control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Pyramid.User_Controls.MessagingSystem childControlMsgSys;
+
         /// <summary>
         /// hfChildPK control.
         /// </summary>
@@ -20,7 +31,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfChildPK;
-        
+
         /// <summary>
         /// hfChildProgramPK control.
         /// </summary>
@@ -29,7 +40,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfChildProgramPK;
-        
+
         /// <summary>
         /// hfProgramFK control.
         /// </summary>
@@ -38,16 +49,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfProgramFK;
-        
-        /// <summary>
-        /// hfUsedIDs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfUsedIDs;
-        
+
         /// <summary>
         /// txtFirstName control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtFirstName;
-        
+
         /// <summary>
         /// txtLastName control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtLastName;
-        
+
         /// <summary>
         /// deDOB control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deDOB;
-        
+
         /// <summary>
         /// txtProgramID control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtProgramID;
-        
+
         /// <summary>
         /// deEnrollmentDate control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deEnrollmentDate;
-        
+
         /// <summary>
         /// ddGender control.
         /// </summary>
@@ -101,7 +103,16 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddGender;
-        
+
+        /// <summary>
+        /// txtGenderSpecify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtGenderSpecify;
+
         /// <summary>
         /// ddEthnicity control.
         /// </summary>
@@ -110,7 +121,16 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddEthnicity;
-        
+
+        /// <summary>
+        /// txtEthnicitySpecify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtEthnicitySpecify;
+
         /// <summary>
         /// ddRace control.
         /// </summary>
@@ -119,7 +139,16 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddRace;
-        
+
+        /// <summary>
+        /// txtRaceSpecify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtRaceSpecify;
+
         /// <summary>
         /// ddDLL control.
         /// </summary>
@@ -128,7 +157,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddDLL;
-        
+
         /// <summary>
         /// ddIEP control.
         /// </summary>
@@ -137,7 +166,70 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddIEP;
-        
+
+        /// <summary>
+        /// ddHasParentPermission control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddHasParentPermission;
+
+        /// <summary>
+        /// hfHasParentPermissionDocument control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfHasParentPermissionDocument;
+
+        /// <summary>
+        /// bucParentPermissionDocument control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapUploadControl bucParentPermissionDocument;
+
+        /// <summary>
+        /// btnCancelDocumentUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnCancelDocumentUpdate;
+
+        /// <summary>
+        /// lnkDisplayParentPermissionFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkDisplayParentPermissionFile;
+
+        /// <summary>
+        /// btnUpdateDocument control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnUpdateDocument;
+
+        /// <summary>
+        /// btnDeletePermissionFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton btnDeletePermissionFile;
+
         /// <summary>
         /// deDischargeDate control.
         /// </summary>
@@ -146,7 +238,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapDateEdit deDischargeDate;
-        
+
         /// <summary>
         /// ddDischargeReason control.
         /// </summary>
@@ -155,7 +247,7 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapComboBox ddDischargeReason;
-        
+
         /// <summary>
         /// txtDischargeReasonSpecify control.
         /// </summary>
@@ -164,5 +256,14 @@ namespace Pyramid.User_Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapTextBox txtDischargeReasonSpecify;
+
+        /// <summary>
+        /// lbConfirmPermissionFileDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbConfirmPermissionFileDelete;
     }
 }

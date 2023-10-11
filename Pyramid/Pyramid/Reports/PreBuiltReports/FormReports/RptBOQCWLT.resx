@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel148.Text" xml:space="preserve">
+    <value>The CLT guides implementation sites in identifying resources to support the provision of practice-based coaching to practitioners for the high-fidelity implementation and sustainability of the Pyramid Model.</value>
+  </data>
+  <data name="xrLabel152.Text" xml:space="preserve">
+    <value>Training, materials, and support are available to program implementation coaches and implementation sites on the data collection process, data submission, data analysis, and data-based decision-making for improving outcomes for children, families, practitioners, programs, and communities. </value>
+  </data>
+  <data name="xrLabel160.Text" xml:space="preserve">
+    <value>The CLT establishes a process to systematically collect and review data on the use of exclusionary or harsh discipline practices by participating sites and receives data from sites that is disaggregated by gender, race, ethnicity, DLL, and IEP status.</value>
+  </data>
+  <data name="xrLabel173.Text" xml:space="preserve">
+    <value>The CLT prepares an annual evaluation report that includes a summary on the extent to which program-wide implementation is being achieved and sustained, the impact of program-wide implementation on child, practitioner, and program outcomes, and the impact of training and coaching. </value>
+  </data>
+  <data name="xrLabel116.Text" xml:space="preserve">
+    <value>The CLT develops guidance or a policy statement for community programs to eliminate the use of exclusionary and harsh discipline practices and encourage the use of the Pyramid Model to promote social and emotional skill development and prevent challenging behavior.</value>
+  </data>
+  <data name="xrLabel120.Text" xml:space="preserve">
+    <value>The CLT identifies community resources for the provision of behavior supports, mental health services, and other specialized services that might be needed to assist children with social, emotional, and behavioral support needs and their families. </value>
+  </data>
+  <data name="xrLabel129.Text" xml:space="preserve">
+    <value>The CLT supports the provision of training in Pyramid Model practices, anti-bias and culturally responsive practices, the inclusion of children with or at-risk for disabilities, practice-based coaching, behavior support facilitation, data decision-making tools, and training program-wide leadership teams in the implementation process.</value>
+  </data>
+  <data name="xrLabel133.Text" xml:space="preserve">
+    <value>The CLT ensures that the professional development network of program implementation coaches have training and technical assistance competence in the Pyramid Model, collaborative teaming, practice-based coaching, data decision-making, culturally responsive practices and addressing implicit bias in early childhood programs and classrooms.</value>
+  </data>
+  <data name="xrLabel76.Text" xml:space="preserve">
+    <value>The CLT engages in community outreach to programs and neighborhoods that serve children and families from historically marginalized groups. Outreach efforts include building partnerships with community leaders and using cultural brokering strategies to increase participation from these programs.</value>
+  </data>
+  <data name="xrLabel100.Text" xml:space="preserve">
+    <value>The CLT develops a written communication process for regular feedback from staff who are charged with Program-Wide Pyramid Model Implementation, including program implementation coaches and implementation sites. </value>
+  </data>
+  <data name="xrLabel48.Text" xml:space="preserve">
+    <value>The CLT develops a written action plan that addresses all critical elements and guides the work of the team. This plan includes strategies for sustainability and scale-up for community-wide implementation of the Pyramid Model. The team reviews the plan and updates their progress at each meeting.</value>
+  </data>
+  <data name="xrLabel41.Text" xml:space="preserve">
+    <value>Members of the CLT have clear roles and responsibilities, including a data coordinator, for contributing to the functioning of the team and achievement of the mission. The CLT uses effective teaming strategies to ensure meetings are productive and builds a sense of ownership among all team members.</value>
+  </data>
+  <data name="xrLabel29.Text" xml:space="preserve">
+    <value>The CLT includes members that can assist in outreach to programs serving children and families who may be historically marginalized and increase the diversity of children and families who receive services from Pyramid Model programs.</value>
+  </data>
+  <data name="xrLabel24.Text" xml:space="preserve">
+    <value>The Community Leadership Team (CLT) has representation from key stakeholders (e.g., practitioner, family members, program administrators) and program agencies (Head Start, childcare, school district, early childhood mental health, and other organizations) invested in promoting the social-emotional skills of young children. The CLT includes member(s) that represent the diverse families in the community.</value>
+  </data>
+  <data name="xrLabel85.Text" xml:space="preserve">
+    <value>CLT has a recruitment and selection process for demonstration sites and partners with them to provide data that demonstrate effectiveness of Program-Wide Pyramid Model Implementation. These sites serve as a model for interested community programs, policy makers and other stakeholders and support scale-up of Pyramid Model efforts.  Demonstration sites are selected from implementation sites.</value>
+  </data>
+  <data name="xrLabel89.Text" xml:space="preserve">
+    <value>CLT develops formal agreements for programs participating in the initiative as implementation sites. The agreement includes the criteria for a Program Leadership team, at least one practitioner coach, and the collection of data.</value>
+  </data>
+  <data name="xrLabel93.Text" xml:space="preserve">
+    <value>The CLT implements a process to identify and select new implementation sites. This process should include an intentional plan to expand the diversity of programs that are included and recruit programs that serve children and communities that are historically marginalized.</value>
+  </data>
+  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9InJzcEJPUUNXTFQiPjxGaWVsZCBOYW1lPSJCZW5jaG1hcmtPZlF1YWxpdHlDV0xUUEsiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJGb3JtRGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjciIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yOCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjExIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjM5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ikh1Yk5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVhbU1lbWJlck5hbWVzIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
+  </data>
+  <data name="cfTotalInPlace.Expression" xml:space="preserve">
+    <value>Iif([Indicator1] == 'In Place', 1, 0) + Iif([Indicator2] == 'In Place', 1, 0) + 
+Iif([Indicator3] == 'In Place', 1, 0) + Iif([Indicator4] == 'In Place', 1, 0) +
+Iif([Indicator5] == 'In Place', 1, 0) + Iif([Indicator6] == 'In Place', 1, 0) + 
+Iif([Indicator7] == 'In Place', 1, 0) + Iif([Indicator8] == 'In Place', 1, 0) +
+Iif([Indicator9] == 'In Place', 1, 0) + Iif([Indicator10] == 'In Place', 1, 0) + Iif([Indicator11] == 'In Place', 1, 0) + Iif([Indicator12] == 'In Place', 1, 0) +
+Iif([Indicator13] == 'In Place', 1, 0) + Iif([Indicator14] == 'In Place', 1, 0) + Iif([Indicator15] == 'In Place', 1, 0) + Iif([Indicator16] == 'In Place', 1, 0) +
+Iif([Indicator17] == 'In Place', 1, 0) + Iif([Indicator18] == 'In Place', 1, 0) + Iif([Indicator19] == 'In Place', 1, 0) + Iif([Indicator20] == 'In Place', 1, 0) +
+Iif([Indicator21] == 'In Place', 1, 0) + Iif([Indicator22] == 'In Place', 1, 0) + Iif([Indicator23] == 'In Place', 1, 0) + Iif([Indicator24] == 'In Place', 1, 0) +
+Iif([Indicator25] == 'In Place', 1, 0) + Iif([Indicator26] == 'In Place', 1, 0) + Iif([Indicator27] == 'In Place', 1, 0) + Iif([Indicator28] == 'In Place', 1, 0) +
+Iif([Indicator29] == 'In Place', 1, 0) + Iif([Indicator30] == 'In Place', 1, 0) + Iif([Indicator31] == 'In Place', 1, 0) + Iif([Indicator32] == 'In Place', 1, 0) +
+Iif([Indicator33] == 'In Place', 1, 0) + Iif([Indicator34] == 'In Place', 1, 0) + Iif([Indicator35] == 'In Place', 1, 0) + Iif([Indicator36] == 'In Place', 1, 0) +
+Iif([Indicator37] == 'In Place', 1, 0) + Iif([Indicator38] == 'In Place', 1, 0) + Iif([Indicator39] == 'In Place', 1, 0)</value>
+  </data>
+</root>

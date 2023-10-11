@@ -34,13 +34,12 @@
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter6 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter7 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RptASQSEPercentByMonth));
             DevExpress.XtraCharts.XYDiagram xyDiagram1 = new DevExpress.XtraCharts.XYDiagram();
             DevExpress.XtraCharts.StackedBarSeriesView stackedBarSeriesView1 = new DevExpress.XtraCharts.StackedBarSeriesView();
-            this.ParamProgramFKs = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamClassroomFKs = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamStartDate = new DevExpress.XtraReports.Parameters.Parameter();
-            this.ParamEndDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.xrChart1 = new DevExpress.XtraReports.UI.XRChart();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -73,19 +72,7 @@
             this.xrLabel12,
             this.xrLabel13,
             this.xrLabel2});
-            this.PageHeader.HeightF = 207.1666F;
-            this.PageHeader.Controls.SetChildIndex(this.imgLogo, 0);
-            this.PageHeader.Controls.SetChildIndex(this.lblAppTitle, 0);
-            this.PageHeader.Controls.SetChildIndex(this.lblReportTitle, 0);
-            this.PageHeader.Controls.SetChildIndex(this.lblStateName, 0);
-            this.PageHeader.Controls.SetChildIndex(this.lblStateCatchphrase, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel2, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel13, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel12, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel11, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel10, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel14, 0);
-            this.PageHeader.Controls.SetChildIndex(this.xrLabel3, 0);
+            this.PageHeader.HeightF = 59.54168F;
             // 
             // Detail
             // 
@@ -98,10 +85,51 @@
             this.Detail.MultiColumn.ColumnWidth = 200F;
             this.Detail.MultiColumn.Mode = DevExpress.XtraReports.UI.MultiColumnMode.UseColumnWidth;
             // 
+            // lblCriteriaValues
+            // 
+            this.lblCriteriaValues.LocationFloat = new DevExpress.Utils.PointFloat(0F, 546.2883F);
+            this.lblCriteriaValues.SizeF = new System.Drawing.SizeF(1000F, 145.7083F);
+            this.lblCriteriaValues.StylePriority.UseTextAlignment = false;
+            // 
+            // lblCriteria
+            // 
+            this.lblCriteria.LocationFloat = new DevExpress.Utils.PointFloat(0F, 511.7883F);
+            this.lblCriteria.SizeF = new System.Drawing.SizeF(1000F, 23F);
+            this.lblCriteria.StylePriority.UseFont = false;
+            this.lblCriteria.StylePriority.UseTextAlignment = false;
+            // 
+            // MasterReportFooter
+            // 
+            this.MasterReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrPageBreak1,
+            this.xrChart1,
+            this.xrLabel7});
+            this.MasterReportFooter.HeightF = 691.9966F;
+            this.MasterReportFooter.Controls.SetChildIndex(this.xrLabel7, 0);
+            this.MasterReportFooter.Controls.SetChildIndex(this.MasterFooterLine, 0);
+            this.MasterReportFooter.Controls.SetChildIndex(this.xrChart1, 0);
+            this.MasterReportFooter.Controls.SetChildIndex(this.lblCriteria, 0);
+            this.MasterReportFooter.Controls.SetChildIndex(this.lblCriteriaValues, 0);
+            this.MasterReportFooter.Controls.SetChildIndex(this.xrPageBreak1, 0);
+            // 
+            // MasterFooterLine
+            // 
+            this.MasterFooterLine.LocationFloat = new DevExpress.Utils.PointFloat(0F, 496.08F);
+            this.MasterFooterLine.SizeF = new System.Drawing.SizeF(1000F, 15.70831F);
+            // 
             // imgLogo
             // 
             this.imgLogo.StylePriority.UseBackColor = false;
             this.imgLogo.StylePriority.UsePadding = false;
+            // 
+            // lblAppTitle
+            // 
+            this.lblAppTitle.SizeF = new System.Drawing.SizeF(830F, 34F);
+            this.lblAppTitle.StylePriority.UseBackColor = false;
+            this.lblAppTitle.StylePriority.UseFont = false;
+            this.lblAppTitle.StylePriority.UseForeColor = false;
+            this.lblAppTitle.StylePriority.UsePadding = false;
+            this.lblAppTitle.StylePriority.UseTextAlignment = false;
             // 
             // lblReportTitle
             // 
@@ -112,48 +140,33 @@
             this.lblReportTitle.StylePriority.UseForeColor = false;
             this.lblReportTitle.StylePriority.UseTextAlignment = false;
             // 
-            // lblCriteriaValues
-            // 
-            this.lblCriteriaValues.LocationFloat = new DevExpress.Utils.PointFloat(0F, 566.2916F);
-            this.lblCriteriaValues.SizeF = new System.Drawing.SizeF(1000F, 145.7083F);
-            this.lblCriteriaValues.StylePriority.UseTextAlignment = false;
-            // 
-            // lblStateCatchphrase
-            // 
-            this.lblStateCatchphrase.SizeF = new System.Drawing.SizeF(870F, 25.625F);
-            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
-            this.lblStateCatchphrase.StylePriority.UseFont = false;
-            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
-            this.lblStateCatchphrase.StylePriority.UsePadding = false;
-            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
-            // 
             // lblStateName
             // 
-            this.lblStateName.SizeF = new System.Drawing.SizeF(870F, 25.62501F);
+            this.lblStateName.SizeF = new System.Drawing.SizeF(830F, 33F);
             this.lblStateName.StylePriority.UseBackColor = false;
             this.lblStateName.StylePriority.UseFont = false;
             this.lblStateName.StylePriority.UseForeColor = false;
             this.lblStateName.StylePriority.UsePadding = false;
             this.lblStateName.StylePriority.UseTextAlignment = false;
             // 
-            // lblAppTitle
+            // lblStateCatchphrase
             // 
-            this.lblAppTitle.SizeF = new System.Drawing.SizeF(870F, 28.74998F);
-            this.lblAppTitle.StylePriority.UseBackColor = false;
-            this.lblAppTitle.StylePriority.UseFont = false;
-            this.lblAppTitle.StylePriority.UseForeColor = false;
-            this.lblAppTitle.StylePriority.UsePadding = false;
-            this.lblAppTitle.StylePriority.UseTextAlignment = false;
-            // 
-            // masterPageInfoNum
-            // 
-            this.masterPageInfoNum.LocationFloat = new DevExpress.Utils.PointFloat(871.7917F, 22.99999F);
-            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
+            this.lblStateCatchphrase.SizeF = new System.Drawing.SizeF(830F, 33F);
+            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
+            this.lblStateCatchphrase.StylePriority.UseFont = false;
+            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
+            this.lblStateCatchphrase.StylePriority.UsePadding = false;
+            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
             // 
             // masterPageInfoDate
             // 
             this.masterPageInfoDate.LocationFloat = new DevExpress.Utils.PointFloat(853.0417F, 45.99994F);
             this.masterPageInfoDate.StylePriority.UseTextAlignment = false;
+            // 
+            // masterPageInfoNum
+            // 
+            this.masterPageInfoNum.LocationFloat = new DevExpress.Utils.PointFloat(871.7917F, 22.99999F);
+            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
             // 
             // lblGenerated
             // 
@@ -165,79 +178,39 @@
             // 
             this.footerLine.SizeF = new System.Drawing.SizeF(1000F, 23F);
             // 
-            // lblCriteria
-            // 
-            this.lblCriteria.LocationFloat = new DevExpress.Utils.PointFloat(0F, 531.7916F);
-            this.lblCriteria.SizeF = new System.Drawing.SizeF(1000F, 23F);
-            this.lblCriteria.StylePriority.UseFont = false;
-            this.lblCriteria.StylePriority.UseTextAlignment = false;
-            // 
-            // MasterReportFooter
-            // 
-            this.MasterReportFooter.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrPageBreak1,
-            this.xrChart1,
-            this.xrLabel7});
-            this.MasterReportFooter.HeightF = 711.9999F;
-            this.MasterReportFooter.Controls.SetChildIndex(this.xrLabel7, 0);
-            this.MasterReportFooter.Controls.SetChildIndex(this.MasterFooterLine, 0);
-            this.MasterReportFooter.Controls.SetChildIndex(this.xrChart1, 0);
-            this.MasterReportFooter.Controls.SetChildIndex(this.lblCriteria, 0);
-            this.MasterReportFooter.Controls.SetChildIndex(this.lblCriteriaValues, 0);
-            this.MasterReportFooter.Controls.SetChildIndex(this.xrPageBreak1, 0);
-            // 
-            // MasterFooterLine
-            // 
-            this.MasterFooterLine.LocationFloat = new DevExpress.Utils.PointFloat(0F, 516.0833F);
-            this.MasterFooterLine.SizeF = new System.Drawing.SizeF(1000F, 15.70831F);
-            // 
-            // ParamProgramFKs
-            // 
-            this.ParamProgramFKs.Name = "ParamProgramFKs";
-            this.ParamProgramFKs.ValueInfo = "1,2,3,4,5,6,7,8,9,10,11,12,13,14";
-            this.ParamProgramFKs.Visible = false;
-            // 
-            // ParamClassroomFKs
-            // 
-            this.ParamClassroomFKs.Name = "ParamClassroomFKs";
-            this.ParamClassroomFKs.ValueInfo = "1,2,3,4,5,6,7,8,9,10,11,12,13,14";
-            this.ParamClassroomFKs.Visible = false;
-            // 
-            // ParamStartDate
-            // 
-            this.ParamStartDate.Name = "ParamStartDate";
-            this.ParamStartDate.Type = typeof(System.DateTime);
-            this.ParamStartDate.ValueInfo = "2010-01-01";
-            this.ParamStartDate.Visible = false;
-            // 
-            // ParamEndDate
-            // 
-            this.ParamEndDate.Name = "ParamEndDate";
-            this.ParamEndDate.Type = typeof(System.DateTime);
-            this.ParamEndDate.ValueInfo = "2020-01-01";
-            this.ParamEndDate.Visible = false;
-            // 
             // sqlDataSource1
             // 
             this.sqlDataSource1.ConnectionName = "Pyramid";
             this.sqlDataSource1.Name = "sqlDataSource1";
             storedProcQuery1.Name = "rspASQSEPercentByMonth";
-            queryParameter1.Name = "@ProgramFKs";
+            queryParameter1.Name = "@ClassroomFKs";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
-            queryParameter2.Name = "@ClassroomFKs";
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
+            queryParameter2.Name = "@StartDate";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamClassroomFKs", typeof(string));
-            queryParameter3.Name = "@StartDate";
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
+            queryParameter3.Name = "@EndDate";
             queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter3.Value = new DevExpress.DataAccess.Expression("?ParamStartDate", typeof(System.DateTime));
-            queryParameter4.Name = "@EndDate";
+            queryParameter3.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
+            queryParameter4.Name = "@ProgramFKs";
             queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter4.Value = new DevExpress.DataAccess.Expression("?ParamEndDate", typeof(System.DateTime));
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
+            queryParameter5.Name = "@HubFKs";
+            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter5.Value = new DevExpress.DataAccess.Expression("?ParamHubFKs", typeof(string));
+            queryParameter6.Name = "@CohortFKs";
+            queryParameter6.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter6.Value = new DevExpress.DataAccess.Expression("?ParamCohortFKs", typeof(string));
+            queryParameter7.Name = "@StateFKs";
+            queryParameter7.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter7.Value = new DevExpress.DataAccess.Expression("?ParamStateFKs", typeof(string));
             storedProcQuery1.Parameters.Add(queryParameter1);
             storedProcQuery1.Parameters.Add(queryParameter2);
             storedProcQuery1.Parameters.Add(queryParameter3);
             storedProcQuery1.Parameters.Add(queryParameter4);
+            storedProcQuery1.Parameters.Add(queryParameter5);
+            storedProcQuery1.Parameters.Add(queryParameter6);
+            storedProcQuery1.Parameters.Add(queryParameter7);
             storedProcQuery1.StoredProcName = "rspASQSEPercentByMonth";
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             storedProcQuery1});
@@ -255,14 +228,16 @@
             xyDiagram1.AxisY.VisibleInPanesSerializable = "-1";
             xyDiagram1.AxisY.VisualRange.Auto = false;
             xyDiagram1.AxisY.VisualRange.AutoSideMargins = false;
+            xyDiagram1.AxisY.VisualRange.EndSideMargin = 0D;
             xyDiagram1.AxisY.VisualRange.MaxValueSerializable = "1.1";
             xyDiagram1.AxisY.VisualRange.MinValueSerializable = "0";
-            xyDiagram1.AxisY.VisualRange.SideMarginsValue = 0D;
+            xyDiagram1.AxisY.VisualRange.StartSideMargin = 0D;
             xyDiagram1.AxisY.WholeRange.Auto = false;
             xyDiagram1.AxisY.WholeRange.AutoSideMargins = false;
+            xyDiagram1.AxisY.WholeRange.EndSideMargin = 0D;
             xyDiagram1.AxisY.WholeRange.MaxValueSerializable = "1.1";
             xyDiagram1.AxisY.WholeRange.MinValueSerializable = "0";
-            xyDiagram1.AxisY.WholeRange.SideMarginsValue = 0D;
+            xyDiagram1.AxisY.WholeRange.StartSideMargin = 0D;
             xyDiagram1.DefaultPane.EnableAxisXScrolling = DevExpress.Utils.DefaultBoolean.False;
             xyDiagram1.DefaultPane.EnableAxisXZooming = DevExpress.Utils.DefaultBoolean.False;
             xyDiagram1.DefaultPane.EnableAxisYScrolling = DevExpress.Utils.DefaultBoolean.False;
@@ -281,13 +256,13 @@
             this.xrChart1.SeriesTemplate.SeriesDataMember = "ScoreType";
             this.xrChart1.SeriesTemplate.ValueDataMembersSerializable = "PercentForIntervalScoreType";
             this.xrChart1.SeriesTemplate.View = stackedBarSeriesView1;
-            this.xrChart1.SizeF = new System.Drawing.SizeF(1000F, 491.0834F);
+            this.xrChart1.SizeF = new System.Drawing.SizeF(1000F, 471.08F);
             // 
             // xrLabel1
             // 
             this.xrLabel1.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ScoreType]")});
-            this.xrLabel1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel1.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(16.00001F, 0F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
@@ -303,7 +278,7 @@
             this.xrLabel4.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "FormatString(\'{0} ({1:0%})\', [NumIntervalScoreTypeForms], [PercentForIntervalScor" +
                     "eType])")});
-            this.xrLabel4.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F);
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(116F, 0F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
@@ -316,7 +291,7 @@
             // 
             // xrLabel7
             // 
-            this.xrLabel7.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.xrLabel7.Font = new DevExpress.Drawing.DXFont("Arial", 11F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel7.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLabel7.Multiline = true;
             this.xrLabel7.Name = "xrLabel7";
@@ -346,7 +321,7 @@
             this.xrLabel6.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Tag", "[IntervalDescription]"),
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Concat([IntervalMonth], \' Month ASQ:SE\')")});
-            this.xrLabel6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel6.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(16.00001F, 0F);
             this.xrLabel6.Multiline = true;
             this.xrLabel6.Name = "xrLabel6";
@@ -377,8 +352,8 @@
             // 
             // xrLabel14
             // 
-            this.xrLabel14.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel14.LocationFloat = new DevExpress.Utils.PointFloat(296.4584F, 119.4999F);
+            this.xrLabel14.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.xrLabel14.LocationFloat = new DevExpress.Utils.PointFloat(602.2083F, 0F);
             this.xrLabel14.Multiline = true;
             this.xrLabel14.Name = "xrLabel14";
             this.xrLabel14.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -389,8 +364,8 @@
             // 
             // xrLabel10
             // 
-            this.xrLabel10.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(0F, 119.4999F);
+            this.xrLabel10.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLabel10.Multiline = true;
             this.xrLabel10.Name = "xrLabel10";
             this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -403,7 +378,7 @@
             // 
             this.xrLabel11.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[FirstFormDate]")});
-            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(144.9999F, 119.4999F);
+            this.xrLabel11.LocationFloat = new DevExpress.Utils.PointFloat(144.9999F, 0F);
             this.xrLabel11.Multiline = true;
             this.xrLabel11.Name = "xrLabel11";
             this.xrLabel11.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -416,7 +391,7 @@
             // 
             this.xrLabel12.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[LastFormDate]")});
-            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(144.9999F, 142.5F);
+            this.xrLabel12.LocationFloat = new DevExpress.Utils.PointFloat(447.2083F, 0F);
             this.xrLabel12.Multiline = true;
             this.xrLabel12.Name = "xrLabel12";
             this.xrLabel12.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -427,8 +402,8 @@
             // 
             // xrLabel13
             // 
-            this.xrLabel13.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
-            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(0F, 142.5F);
+            this.xrLabel13.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(302.2084F, 0F);
             this.xrLabel13.Multiline = true;
             this.xrLabel13.Name = "xrLabel13";
             this.xrLabel13.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -441,7 +416,7 @@
             // 
             this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
             new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[TotalForms]")});
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(516.2501F, 119.4999F);
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(822F, 0F);
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -454,8 +429,8 @@
             // xrLabel3
             // 
             this.xrLabel3.Borders = DevExpress.XtraPrinting.BorderSide.None;
-            this.xrLabel3.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 171.0416F);
+            this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Arial", 11F, DevExpress.Drawing.DXFontStyle.Bold);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 36.54169F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
             this.xrLabel3.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -469,7 +444,7 @@
             // 
             // xrPageBreak1
             // 
-            this.xrPageBreak1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 514.0834F);
+            this.xrPageBreak1.LocationFloat = new DevExpress.Utils.PointFloat(0F, 494.08F);
             this.xrPageBreak1.Name = "xrPageBreak1";
             // 
             // RptASQSEPercentByMonth
@@ -479,7 +454,9 @@
             this.PageFooter,
             this.PageHeader,
             this.GroupHeader1,
-            this.MasterReportFooter});
+            this.MasterReportFooter,
+            this.TopMargin,
+            this.BottomMargin});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "rspASQSEPercentByMonth";
@@ -493,11 +470,36 @@
             this.PageHeight = 850;
             this.PageWidth = 1100;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.ParamLogoPath,
+            this.ParamViewPrivateChildInfo,
             this.ParamProgramFKs,
-            this.ParamClassroomFKs,
+            this.ParamStateFKs,
             this.ParamStartDate,
-            this.ParamEndDate});
-            this.Version = "19.1";
+            this.ParamEndDate,
+            this.ParamPointInTime,
+            this.ParamYear,
+            this.ParamBIRProfileGroup,
+            this.ParamBIRItem,
+            this.ParamClassroomFKs,
+            this.ParamChildFKs,
+            this.ParamRaceFKs,
+            this.ParamEthnicityFKs,
+            this.ParamGenderFKs,
+            this.ParamIEP,
+            this.ParamDLL,
+            this.ParamEmployeeFKs,
+            this.ParamTeacherFKs,
+            this.ParamCoachFKs,
+            this.ParamProblemBehaviorFKs,
+            this.ParamActivityFKs,
+            this.ParamOthersInvolvedFKs,
+            this.ParamPossibleMotivationFKs,
+            this.ParamStrategyResponseFKs,
+            this.ParamAdminFollowUpFKs,
+            this.ParamViewPrivateEmployeeInfo});
+            this.Version = "21.1";
+            this.Controls.SetChildIndex(this.BottomMargin, 0);
+            this.Controls.SetChildIndex(this.TopMargin, 0);
             this.Controls.SetChildIndex(this.MasterReportFooter, 0);
             this.Controls.SetChildIndex(this.GroupHeader1, 0);
             this.Controls.SetChildIndex(this.PageHeader, 0);
@@ -513,10 +515,6 @@
 
         #endregion
 
-        private DevExpress.XtraReports.Parameters.Parameter ParamProgramFKs;
-        private DevExpress.XtraReports.Parameters.Parameter ParamClassroomFKs;
-        private DevExpress.XtraReports.Parameters.Parameter ParamStartDate;
-        private DevExpress.XtraReports.Parameters.Parameter ParamEndDate;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.XRChart xrChart1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;

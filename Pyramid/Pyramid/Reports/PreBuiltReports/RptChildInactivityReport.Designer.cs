@@ -32,8 +32,10 @@
             DevExpress.DataAccess.Sql.StoredProcQuery storedProcQuery1 = new DevExpress.DataAccess.Sql.StoredProcQuery();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter1 = new DevExpress.DataAccess.Sql.QueryParameter();
             DevExpress.DataAccess.Sql.QueryParameter queryParameter2 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter3 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter4 = new DevExpress.DataAccess.Sql.QueryParameter();
+            DevExpress.DataAccess.Sql.QueryParameter queryParameter5 = new DevExpress.DataAccess.Sql.QueryParameter();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RptChildInactivityReport));
-            this.ParamProgramFKs = new DevExpress.XtraReports.Parameters.Parameter();
             this.sqlDataSource1 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -51,12 +53,7 @@
             this.xrLabel14 = new DevExpress.XtraReports.UI.XRLabel();
             this.GroupHeader1 = new DevExpress.XtraReports.UI.GroupHeaderBand();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
-            this.ParamPointInTime = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
-            // 
-            // PageHeader
-            // 
-            this.PageHeader.HeightF = 122.7916F;
             // 
             // Detail
             // 
@@ -69,77 +66,15 @@
             this.xrLabel7});
             this.Detail.HeightF = 27.25008F;
             // 
-            // imgLogo
-            // 
-            this.imgLogo.StylePriority.UseBackColor = false;
-            this.imgLogo.StylePriority.UsePadding = false;
-            // 
-            // lblReportTitle
-            // 
-            this.lblReportTitle.SizeF = new System.Drawing.SizeF(1000F, 34.45834F);
-            this.lblReportTitle.StylePriority.UseBackColor = false;
-            this.lblReportTitle.StylePriority.UseBorderColor = false;
-            this.lblReportTitle.StylePriority.UseFont = false;
-            this.lblReportTitle.StylePriority.UseForeColor = false;
-            this.lblReportTitle.StylePriority.UseTextAlignment = false;
-            // 
             // lblCriteriaValues
             // 
             this.lblCriteriaValues.LocationFloat = new DevExpress.Utils.PointFloat(0F, 50.70832F);
             this.lblCriteriaValues.SizeF = new System.Drawing.SizeF(1000F, 111.0001F);
             this.lblCriteriaValues.StylePriority.UseTextAlignment = false;
             // 
-            // lblStateCatchphrase
-            // 
-            this.lblStateCatchphrase.SizeF = new System.Drawing.SizeF(870F, 25.625F);
-            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
-            this.lblStateCatchphrase.StylePriority.UseFont = false;
-            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
-            this.lblStateCatchphrase.StylePriority.UsePadding = false;
-            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
-            // 
-            // lblStateName
-            // 
-            this.lblStateName.SizeF = new System.Drawing.SizeF(870F, 25.62501F);
-            this.lblStateName.StylePriority.UseBackColor = false;
-            this.lblStateName.StylePriority.UseFont = false;
-            this.lblStateName.StylePriority.UseForeColor = false;
-            this.lblStateName.StylePriority.UsePadding = false;
-            this.lblStateName.StylePriority.UseTextAlignment = false;
-            // 
-            // lblAppTitle
-            // 
-            this.lblAppTitle.SizeF = new System.Drawing.SizeF(870F, 28.74998F);
-            this.lblAppTitle.StylePriority.UseBackColor = false;
-            this.lblAppTitle.StylePriority.UseFont = false;
-            this.lblAppTitle.StylePriority.UseForeColor = false;
-            this.lblAppTitle.StylePriority.UsePadding = false;
-            this.lblAppTitle.StylePriority.UseTextAlignment = false;
-            // 
             // PageFooter
             // 
             this.PageFooter.HeightF = 71.87505F;
-            // 
-            // masterPageInfoNum
-            // 
-            this.masterPageInfoNum.LocationFloat = new DevExpress.Utils.PointFloat(842.7086F, 22.99999F);
-            this.masterPageInfoNum.SizeF = new System.Drawing.SizeF(128.2083F, 23F);
-            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
-            // 
-            // masterPageInfoDate
-            // 
-            this.masterPageInfoDate.LocationFloat = new DevExpress.Utils.PointFloat(833.9587F, 48.87505F);
-            this.masterPageInfoDate.StylePriority.UseTextAlignment = false;
-            // 
-            // lblGenerated
-            // 
-            this.lblGenerated.LocationFloat = new DevExpress.Utils.PointFloat(755.7502F, 48.87505F);
-            this.lblGenerated.StylePriority.UseFont = false;
-            this.lblGenerated.StylePriority.UseTextAlignment = false;
-            // 
-            // footerLine
-            // 
-            this.footerLine.SizeF = new System.Drawing.SizeF(1000F, 23F);
             // 
             // lblCriteria
             // 
@@ -155,24 +90,93 @@
             // 
             this.MasterFooterLine.SizeF = new System.Drawing.SizeF(1000F, 15.70832F);
             // 
-            // ParamProgramFKs
+            // imgLogo
             // 
-            this.ParamProgramFKs.Name = "ParamProgramFKs";
-            this.ParamProgramFKs.Visible = false;
+            this.imgLogo.StylePriority.UseBackColor = false;
+            this.imgLogo.StylePriority.UsePadding = false;
+            // 
+            // lblAppTitle
+            // 
+            this.lblAppTitle.SizeF = new System.Drawing.SizeF(830F, 34F);
+            this.lblAppTitle.StylePriority.UseBackColor = false;
+            this.lblAppTitle.StylePriority.UseFont = false;
+            this.lblAppTitle.StylePriority.UseForeColor = false;
+            this.lblAppTitle.StylePriority.UsePadding = false;
+            this.lblAppTitle.StylePriority.UseTextAlignment = false;
+            // 
+            // lblReportTitle
+            // 
+            this.lblReportTitle.SizeF = new System.Drawing.SizeF(1000F, 34.45834F);
+            this.lblReportTitle.StylePriority.UseBackColor = false;
+            this.lblReportTitle.StylePriority.UseBorderColor = false;
+            this.lblReportTitle.StylePriority.UseFont = false;
+            this.lblReportTitle.StylePriority.UseForeColor = false;
+            this.lblReportTitle.StylePriority.UseTextAlignment = false;
+            // 
+            // lblStateName
+            // 
+            this.lblStateName.SizeF = new System.Drawing.SizeF(830F, 33F);
+            this.lblStateName.StylePriority.UseBackColor = false;
+            this.lblStateName.StylePriority.UseFont = false;
+            this.lblStateName.StylePriority.UseForeColor = false;
+            this.lblStateName.StylePriority.UsePadding = false;
+            this.lblStateName.StylePriority.UseTextAlignment = false;
+            // 
+            // lblStateCatchphrase
+            // 
+            this.lblStateCatchphrase.SizeF = new System.Drawing.SizeF(830F, 33F);
+            this.lblStateCatchphrase.StylePriority.UseBackColor = false;
+            this.lblStateCatchphrase.StylePriority.UseFont = false;
+            this.lblStateCatchphrase.StylePriority.UseForeColor = false;
+            this.lblStateCatchphrase.StylePriority.UsePadding = false;
+            this.lblStateCatchphrase.StylePriority.UseTextAlignment = false;
+            // 
+            // masterPageInfoDate
+            // 
+            this.masterPageInfoDate.LocationFloat = new DevExpress.Utils.PointFloat(833.9587F, 48.87505F);
+            this.masterPageInfoDate.StylePriority.UseTextAlignment = false;
+            // 
+            // masterPageInfoNum
+            // 
+            this.masterPageInfoNum.LocationFloat = new DevExpress.Utils.PointFloat(842.7086F, 22.99999F);
+            this.masterPageInfoNum.SizeF = new System.Drawing.SizeF(128.2083F, 23F);
+            this.masterPageInfoNum.StylePriority.UseTextAlignment = false;
+            // 
+            // lblGenerated
+            // 
+            this.lblGenerated.LocationFloat = new DevExpress.Utils.PointFloat(755.7502F, 48.87505F);
+            this.lblGenerated.StylePriority.UseFont = false;
+            this.lblGenerated.StylePriority.UseTextAlignment = false;
+            // 
+            // footerLine
+            // 
+            this.footerLine.SizeF = new System.Drawing.SizeF(1000F, 23F);
             // 
             // sqlDataSource1
             // 
             this.sqlDataSource1.ConnectionName = "Pyramid";
             this.sqlDataSource1.Name = "sqlDataSource1";
             storedProcQuery1.Name = "rspChildInactiivityReport";
-            queryParameter1.Name = "@ProgramFKs";
+            queryParameter1.Name = "@PointInTime";
             queryParameter1.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
-            queryParameter2.Name = "@PointInTime";
+            queryParameter1.Value = new DevExpress.DataAccess.Expression("?ParamPointInTime", typeof(System.DateTime));
+            queryParameter2.Name = "@ProgramFKs";
             queryParameter2.Type = typeof(DevExpress.DataAccess.Expression);
-            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamPointInTime", typeof(System.DateTime));
+            queryParameter2.Value = new DevExpress.DataAccess.Expression("?ParamProgramFKs", typeof(string));
+            queryParameter3.Name = "@HubFKs";
+            queryParameter3.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter3.Value = new DevExpress.DataAccess.Expression("?ParamHubFKs", typeof(string));
+            queryParameter4.Name = "@CohortFKs";
+            queryParameter4.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter4.Value = new DevExpress.DataAccess.Expression("?ParamCohortFKs", typeof(string));
+            queryParameter5.Name = "@StateFKs";
+            queryParameter5.Type = typeof(DevExpress.DataAccess.Expression);
+            queryParameter5.Value = new DevExpress.DataAccess.Expression("?ParamStateFKs", typeof(string));
             storedProcQuery1.Parameters.Add(queryParameter1);
             storedProcQuery1.Parameters.Add(queryParameter2);
+            storedProcQuery1.Parameters.Add(queryParameter3);
+            storedProcQuery1.Parameters.Add(queryParameter4);
+            storedProcQuery1.Parameters.Add(queryParameter5);
             storedProcQuery1.StoredProcName = "rspChildInactivityReport";
             this.sqlDataSource1.Queries.AddRange(new DevExpress.DataAccess.Sql.SqlQuery[] {
             storedProcQuery1});
@@ -180,7 +184,7 @@
             // 
             // xrLabel2
             // 
-            this.xrLabel2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel2.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 36.58339F);
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
@@ -191,7 +195,7 @@
             // 
             // xrLabel1
             // 
-            this.xrLabel1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel1.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel1.LocationFloat = new DevExpress.Utils.PointFloat(100F, 36.58339F);
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
@@ -202,7 +206,7 @@
             // 
             // xrLabel4
             // 
-            this.xrLabel4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel4.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(348.542F, 36.58339F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
@@ -213,7 +217,7 @@
             // 
             // xrLabel5
             // 
-            this.xrLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel5.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(471.4587F, 36.58339F);
             this.xrLabel5.Multiline = true;
             this.xrLabel5.Name = "xrLabel5";
@@ -224,7 +228,7 @@
             // 
             // xrLabel6
             // 
-            this.xrLabel6.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel6.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(827.2919F, 36.58339F);
             this.xrLabel6.Multiline = true;
             this.xrLabel6.Name = "xrLabel6";
@@ -253,7 +257,7 @@
             // xrLabel8
             // 
             this.xrLabel8.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[ChildName]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(?ParamViewPrivateChildInfo == True, [ChildName], \'HIDDEN\')")});
             this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(100F, 0F);
             this.xrLabel8.Multiline = true;
             this.xrLabel8.Name = "xrLabel8";
@@ -275,14 +279,14 @@
             // xrLabel10
             // 
             this.xrLabel10.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[BirthDate]")});
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "Iif(?ParamViewPrivateChildInfo == True, FormatString(\'{0:MM/dd/yyyy}\', [BirthDate" +
+                    "]), \'HIDDEN\')")});
             this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(348.542F, 0F);
             this.xrLabel10.Multiline = true;
             this.xrLabel10.Name = "xrLabel10";
             this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel10.SizeF = new System.Drawing.SizeF(122.9168F, 23F);
             this.xrLabel10.Text = "xrLabel10";
-            this.xrLabel10.TextFormatString = "{0:MM/dd/yyyy}";
             // 
             // xrLabel11
             // 
@@ -310,7 +314,7 @@
             // 
             // xrLabel13
             // 
-            this.xrLabel13.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xrLabel13.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold, DevExpress.Drawing.DXGraphicsUnit.Point, new DevExpress.Drawing.DXFontAdditionalProperty[] {new DevExpress.Drawing.DXFontAdditionalProperty("GdiCharSet", ((byte)(0)))});
             this.xrLabel13.LocationFloat = new DevExpress.Utils.PointFloat(619.1668F, 36.58339F);
             this.xrLabel13.Multiline = true;
             this.xrLabel13.Name = "xrLabel13";
@@ -350,7 +354,7 @@
             // 
             // xrLabel3
             // 
-            this.xrLabel3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold);
+            this.xrLabel3.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F, DevExpress.Drawing.DXFontStyle.Bold);
             this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
             this.xrLabel3.Multiline = true;
             this.xrLabel3.Name = "xrLabel3";
@@ -359,12 +363,6 @@
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.Text = "Program:";
             // 
-            // ParamPointInTime
-            // 
-            this.ParamPointInTime.Name = "ParamPointInTime";
-            this.ParamPointInTime.Type = typeof(System.DateTime);
-            this.ParamPointInTime.Visible = false;
-            // 
             // RptChildInactivityReport
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -372,7 +370,9 @@
             this.PageFooter,
             this.PageHeader,
             this.GroupHeader1,
-            this.MasterReportFooter});
+            this.MasterReportFooter,
+            this.TopMargin,
+            this.BottomMargin});
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.sqlDataSource1});
             this.DataMember = "rspChildInactiivityReport";
@@ -386,9 +386,36 @@
             this.PageHeight = 850;
             this.PageWidth = 1100;
             this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.ParamLogoPath,
+            this.ParamViewPrivateChildInfo,
             this.ParamProgramFKs,
-            this.ParamPointInTime});
-            this.Version = "19.1";
+            this.ParamStateFKs,
+            this.ParamStartDate,
+            this.ParamEndDate,
+            this.ParamPointInTime,
+            this.ParamYear,
+            this.ParamBIRProfileGroup,
+            this.ParamBIRItem,
+            this.ParamClassroomFKs,
+            this.ParamChildFKs,
+            this.ParamRaceFKs,
+            this.ParamEthnicityFKs,
+            this.ParamGenderFKs,
+            this.ParamIEP,
+            this.ParamDLL,
+            this.ParamEmployeeFKs,
+            this.ParamTeacherFKs,
+            this.ParamCoachFKs,
+            this.ParamProblemBehaviorFKs,
+            this.ParamActivityFKs,
+            this.ParamOthersInvolvedFKs,
+            this.ParamPossibleMotivationFKs,
+            this.ParamStrategyResponseFKs,
+            this.ParamAdminFollowUpFKs,
+            this.ParamViewPrivateEmployeeInfo});
+            this.Version = "21.1";
+            this.Controls.SetChildIndex(this.BottomMargin, 0);
+            this.Controls.SetChildIndex(this.TopMargin, 0);
             this.Controls.SetChildIndex(this.MasterReportFooter, 0);
             this.Controls.SetChildIndex(this.GroupHeader1, 0);
             this.Controls.SetChildIndex(this.PageHeader, 0);
@@ -401,7 +428,6 @@
 
         #endregion
 
-        private DevExpress.XtraReports.Parameters.Parameter ParamProgramFKs;
         private DevExpress.DataAccess.Sql.SqlDataSource sqlDataSource1;
         private DevExpress.XtraReports.UI.XRLine xrLine1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel6;
@@ -419,6 +445,5 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel14;
         private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel3;
-        private DevExpress.XtraReports.Parameters.Parameter ParamPointInTime;
     }
 }

@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel213.Text" xml:space="preserve">
+    <value>The SLT annually prepares an evaluation report that describes: a) the extent to which program- and community-wide high-fidelity adoption is being implemented, sustained, and scaled-up; b) the impact of program-wide adoption and/or community-wide adoption on child, provider, and program outcomes; and c) the impact of training and coaching. The SLT uses the evaluation report for their own progress monitoring and planning as well as for providing a public report on outcomes [Every Stage]</value>
+  </data>
+  <data name="xrLabel217.Text" xml:space="preserve">
+    <value>A process is in place for the SLT to access the data or summaries of the data described above. The SLT uses these data as part of their action plan for regular evaluation as well as the annual evaluation report. [Every Stage]</value>
+  </data>
+  <data name="xrLabel201.Text" xml:space="preserve">
+    <value>Training, materials, and support are available to Program Coaches, programs, and communities on what data to collect, why, and how to use the data for making decisions for improving outcomes for children, providers, programs, and communities as well as how to submit the data. [Every Stage]</value>
+  </data>
+  <data name="xrLabel183.Text" xml:space="preserve">
+    <value>A Program Coach is available to meet at least monthly by distance and quarterly face to face with Program Leadership Teams who have been implementing the Pyramid Model for at least one year with high fidelity. [Sustainability planning]</value>
+  </data>
+  <data name="xrLabel187.Text" xml:space="preserve">
+    <value>A Program Coach is available to meet at least twice a month with each emerging Program Leadership Team (emerging teams are teams that have not met the high-fidelity implementation criteria) face to face or by distance. [Implementation Stage]</value>
+  </data>
+  <data name="xrLabel191.Text" xml:space="preserve">
+    <value>The SLT employs a technical-assistance plan for ongoing support and resources for the Program Coaches, demonstration sites, implementation sites and communities to ensure high-fidelity implementation and sustainability. Such support includes planning for turn-over and succession of key individuals. [Sustainability planning &amp; Scale-up Stage]</value>
+  </data>
+  <data name="xrLabel140.Text" xml:space="preserve">
+    <value>SLT members engage in activities within their agency that result in support for the Pyramid Model iitiative (e.g., succession planning, presenting annual reports, orientation presentations). [Every Stage]</value>
+  </data>
+  <data name="xrLabel137.Text" xml:space="preserve">
+    <value>The SLT develops written communication protocols for regular feedback from staff who are charged with implementing the Pyramid Model as well as the Program Coaches, demonstration sites, implementation sites, and communities. The protocols focus on bringing to light any challenges that need to be attended to by the SLT and that cannot be resolved by individual programs or staff. [Initial Implementation Stage]</value>
+  </data>
+  <data name="xrLabel112.Text" xml:space="preserve">
+    <value>The SLT develops a written awareness and marketing plan that includes a presentation (e.g., presentation based on annual data and report) to policy makers and current and potential funders. It is used to recruit programs and individuals to participate in the Pyramid Model initiative. [Initial Implementation Stage]</value>
+  </data>
+  <data name="xrLabel180.Text" xml:space="preserve">
+    <value>The SLT establishes a statewide network of professional-development (PD) experts to build and sustain high-fidelity implementation to serve as Program Coaches and to support Practitioner Coaches. [Implementation Stage]</value>
+  </data>
+  <data name="xrLabel173.Text" xml:space="preserve">
+    <value>The SLT develops statewide Pyramid Model training capacity that includes providing ongoing training and support for Program Coaches who, in turn, train and support community and program staff and Leadership Teams. [Implementation Stage]</value>
+  </data>
+  <data name="xrLabel169.Text" xml:space="preserve">
+    <value>The SLT creates and puts in place a quality-assurance mechanism (e.g., certification, approval) to ensure that Program Coaches are able to provide training in the Pyramid Model accurately and effectively; and that Practitioner Coaches are able to coach practitioners to implementation fidelity resulting in success for children, families and providers [Implementation Stage]</value>
+  </data>
+  <data name="xrLabel165.Text" xml:space="preserve">
+    <value>The SLT implements a plan ensuring that programs and communities statewide have access to Program Coaches, including necessary resources and on-site coaching that result in high-fidelity implementation and sustainability of the Pyramid Model. [Implementation Stage]</value>
+  </data>
+  <data name="xrLabel160.Text" xml:space="preserve">
+    <value>The SLT develops statewide capacity (funding, staffing) for training and supporting new Program and Community Leadership Teams and Program Coaches in the high-fidelity adoption and implementation process while continuing to support the high fidelity of the original implementation and demonstration programs. [Implementation &amp; Scale-up Stage]</value>
+  </data>
+  <data name="xrLabel156.Text" xml:space="preserve">
+    <value>The SLT (where appropriate) develops readiness criteria, recruitment and acceptance procedures, and MOUs for community entities to participate in the initiative. All participating communities agree to have a Community Leadership Team and Program Coaches to support Program Leadership Teams and Practitioner Coaches. [Scale-up Stage]</value>
+  </data>
+  <data name="xrLabel152.Text" xml:space="preserve">
+    <value>The SLT has recruitment and selection process and MOUs for Demonstration Programs/Sites and partners with them to provide data that show the effectiveness of the Pyramid Model. The sites provide tours and information for interested parties. Demonstration sites are selected from the Implementation programs/sites [Initial Implementation Stage]</value>
+  </data>
+  <data name="xrLabel148.Text" xml:space="preserve">
+    <value>The SLT develops readiness criteria, recruitment and selection procedures, and MOUs for programs participating in the initiative as Implementation Programs/Sites. Implementation Programs/Sites have a Program Leadership Team and at least one Practitioner coach [Initial Implementation Stage]</value>
+  </data>
+  <data name="xrLabel24.Text" xml:space="preserve">
+    <value>The SLT has written criteria for membership which ensures broad representation from a range of stakeholders, programs, and agencies (e.g., early childhood special education, early intervention, higher education, Head Start, families, child care, mental health). [Planning Stage]</value>
+  </data>
+  <data name="xrLabel37.Text" xml:space="preserve">
+    <value>The SLT adopts written ground rules and logistics including criteria for membership, no substitutes at meetings, agreeing to decisions made in ones’ absence, all agencies will share resources, all members attend Pyramid Model training, uses effective meeting strategies to ensure meetings are engaging and all members’ voices are heard [Planning Stage]</value>
+  </data>
+  <data name="xrLabel56.Text" xml:space="preserve">
+    <value>The SLT has a process in place for membership succession within their own agencies (replacing themselves) that ensures continued commitment, understanding, and progress of State Team work. [Sustainability planning, beginning with the Planning Stage]</value>
+  </data>
+  <data name="xrLabel100.Text" xml:space="preserve">
+    <value>A SLT member serves as Team Coordinator or Chair (i.e., lead contact) to represent the Team and work with staff to facilitate the work of the SLT and to coordinate Practitioner and Program communication. [Planning Stage]</value>
+  </data>
+  <data name="xrLabel80.Text" xml:space="preserve">
+    <value>The SLT annually reviews its mission/vision statement, action-plan outcomes and other evaluation data, SLT membership, ground rules, and logistics, and makes revisions as necessary. The annual review includes a celebration of accomplishments. [Every Stage]</value>
+  </data>
+  <data name="xrLabel76.Text" xml:space="preserve">
+    <value>The SLT action plan includes strategies for institutionalizing and embedding the Pyramid Model into state infrastructures such as Quality Rating Systems and Early Learning Guidelines, etc. [Sustainability planning &amp; Scale-up Stage]</value>
+  </data>
+  <data name="xrLabel72.Text" xml:space="preserve">
+    <value>The SLT includes in the action plan sustainability and scale-up objectives and strategies for increasing the number of settings and services using the Pyramid Model with the goal of achieving statewide, high-fidelity implementation over time. [Every Stage]</value>
+  </data>
+  <data name="xrLabel68.Text" xml:space="preserve">
+    <value>The SLT reviews the action plan and updates their progress at each meeting. The action plan has an evaluation component for each action item and the evaluation is reviewed at each meeting. [Every Stage]</value>
+  </data>
+  <data name="xrLabel65.Text" xml:space="preserve">
+    <value>SLT develops an action plan that includes objectives related to all critical elements of these benchmarks. The action plan guides the work of the Team including designation of work groups, if necessary. The action plan has both short- and long-term objectives. [Every Stage]</value>
+  </data>
+  <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9InJzcEJPUVNMVCI+PEZpZWxkIE5hbWU9IkJlbmNobWFya09mUXVhbGl0eVNMVFBLIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iRm9ybURhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxMCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxNyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxOCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IxOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyMCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyNyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyOCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IyOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzMCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzMSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzMyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzNCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzNyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzOCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0MCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0MSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0MiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0MyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0NCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0NSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0NiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0NyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0OCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I0OSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTdGF0ZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iVGVhbU1lbWJlck5hbWVzIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
+  </data>
+  <data name="cfTotalInPlace.Expression" xml:space="preserve">
+    <value>Iif([Indicator1] == 'In Place', 1, 0) + Iif([Indicator2] == 'In Place', 1, 0) + Iif([Indicator3] == 'In Place', 1, 0) + Iif([Indicator4] == 'In Place', 1, 0) +
+Iif([Indicator5] == 'In Place', 1, 0) + Iif([Indicator6] == 'In Place', 1, 0) + Iif([Indicator7] == 'In Place', 1, 0) + Iif([Indicator8] == 'In Place', 1, 0) +
+Iif([Indicator9] == 'In Place', 1, 0) + Iif([Indicator10] == 'In Place', 1, 0) + Iif([Indicator11] == 'In Place', 1, 0) + Iif([Indicator12] == 'In Place', 1, 0) +
+Iif([Indicator13] == 'In Place', 1, 0) + Iif([Indicator14] == 'In Place', 1, 0) + Iif([Indicator15] == 'In Place', 1, 0) + Iif([Indicator16] == 'In Place', 1, 0) +
+Iif([Indicator17] == 'In Place', 1, 0) + Iif([Indicator18] == 'In Place', 1, 0) + Iif([Indicator19] == 'In Place', 1, 0) + Iif([Indicator20] == 'In Place', 1, 0) +
+Iif([Indicator21] == 'In Place', 1, 0) + Iif([Indicator22] == 'In Place', 1, 0) + Iif([Indicator23] == 'In Place', 1, 0) + Iif([Indicator24] == 'In Place', 1, 0) +
+Iif([Indicator25] == 'In Place', 1, 0) + Iif([Indicator26] == 'In Place', 1, 0) + Iif([Indicator27] == 'In Place', 1, 0) + Iif([Indicator28] == 'In Place', 1, 0) +
+Iif([Indicator29] == 'In Place', 1, 0) + Iif([Indicator30] == 'In Place', 1, 0) + Iif([Indicator31] == 'In Place', 1, 0) + Iif([Indicator32] == 'In Place', 1, 0) +
+Iif([Indicator33] == 'In Place', 1, 0) + Iif([Indicator34] == 'In Place', 1, 0) + Iif([Indicator35] == 'In Place', 1, 0) + Iif([Indicator36] == 'In Place', 1, 0) +
+Iif([Indicator37] == 'In Place', 1, 0) + Iif([Indicator38] == 'In Place', 1, 0) + Iif([Indicator39] == 'In Place', 1, 0) + Iif([Indicator40] == 'In Place', 1, 0) +
+Iif([Indicator41] == 'In Place', 1, 0) + Iif([Indicator42] == 'In Place', 1, 0) +
+Iif([Indicator43] == 'In Place', 1, 0) + Iif([Indicator44] == 'In Place', 1, 0) +
+Iif([Indicator45] == 'In Place', 1, 0) + Iif([Indicator46] == 'In Place', 1, 0) +
+Iif([Indicator47] == 'In Place', 1, 0) + Iif([Indicator48] == 'In Place', 1, 0) +
+Iif([Indicator49] == 'In Place', 1, 0)</value>
+  </data>
+</root>

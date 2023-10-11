@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel105.Text" xml:space="preserve">
+    <value>Strategies for responding to children’s challenging behavior are developed. Provider and staff use evidence-based approaches that are positive, sensitive to family values, culture, and home language, and provide the child with guidance about the desired appropriate behavior and program-wide expectations.</value>
+  </data>
+  <data name="xrLabel116.Text" xml:space="preserve">
+    <value>A team-based process for addressing individual children with persistent challenging behavior is developed. Provider and staff can identify the steps for the process including fostering the participation of the family in the development of a plan.</value>
+  </data>
+  <data name="xrLabel72.Text" xml:space="preserve">
+    <value>Instruction on expectations is embedded throughout the day using a variety of teaching strategies within large group activities, small group activities, and individual interactions with children. Instruction occurs daily.</value>
+  </data>
+  <data name="xrLabel89.Text" xml:space="preserve">
+    <value>Provider and program staff respond to children’s challenging behavior appropriately using evidence-based approaches that are positive and provide the child with guidance about the desired appropriate behavior.</value>
+  </data>
+  <data name="xrLabel48.Text" xml:space="preserve">
+    <value>Family engagement is supported through a variety of mechanisms including home teaching suggestions, information on supporting social-emotional development, and the strategies used in the program. Information is shared through a variety of formats (e.g., meetings, home visits, discussions, newsletters, open house, websites or social media, family friendly handouts, workshops, roll-out events).</value>
+  </data>
+  <data name="xrLabel52.Text" xml:space="preserve">
+    <value>Families are involved in planning for individual children in a meaningful and proactive way. Families are encouraged to team with FCCH staff in the development of individualized plans of support for children including the development of strategies that might be used in the home and community.</value>
+  </data>
+  <data name="xrLabel41.Text" xml:space="preserve">
+    <value>Provider has a child discipline policy that includes the promotion of social and emotional skills and the use of positive guidance and prevention practices and makes a commitment to the elimination of suspension and expulsion.</value>
+  </data>
+  <data name="xrLabel37.Text" xml:space="preserve">
+    <value>Provider (and staff when applicable) are supportive of the use of the Pyramid Model promotion, prevention, and intervention practices in a manner that is culturally responsive and includes examining implicit bias.</value>
+  </data>
+  <data name="xrLabel33.Text" xml:space="preserve">
+    <value>An implementation plan that includes all critical elements is established. A written implementation plan guides the work of the FCCH. The plan is reviewed and updated on a regular basis (planning with staff in large FCCH). Action steps are identified to ensure achievement of the goals.</value>
+  </data>
+  <data name="xrLabel29.Text" xml:space="preserve">
+    <value>Provider has established a clear mission or purpose related to the Pyramid Model and developed a written mission statement. All staff (when applicable in large FCCH) can clearly communicate the purpose of the Pyramid Model.</value>
+  </data>
+  <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9InJzcEJPUUZDQ1YyIj48RmllbGQgTmFtZT0iQmVuY2htYXJrT2ZRdWFsaXR5RkNDUEsiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJGb3JtRGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3IzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjciIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSW5kaWNhdG9yOCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJJbmRpY2F0b3I5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjExIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjEzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjE5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjIzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI2IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjI5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMwIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkluZGljYXRvcjMxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRlYW1NZW1iZXJzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlByb2dyYW1Mb2NhdGlvbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQcm9ncmFtTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>
+  </data>
+  <data name="cfTotalInPlace.Expression" xml:space="preserve">
+    <value>Iif([Indicator1] == 'In Place', 1, 0) + Iif([Indicator2] == 'In Place', 1, 0) + 
+Iif([Indicator3] == 'In Place', 1, 0) + Iif([Indicator4] == 'In Place', 1, 0) +
+Iif([Indicator5] == 'In Place', 1, 0) + Iif([Indicator6] == 'In Place', 1, 0) + 
+Iif([Indicator7] == 'In Place', 1, 0) + Iif([Indicator8] == 'In Place', 1, 0) +
+Iif([Indicator9] == 'In Place', 1, 0) + Iif([Indicator10] == 'In Place', 1, 0) + Iif([Indicator11] == 'In Place', 1, 0) + Iif([Indicator12] == 'In Place', 1, 0) +
+Iif([Indicator13] == 'In Place', 1, 0) + Iif([Indicator14] == 'In Place', 1, 0) + Iif([Indicator15] == 'In Place', 1, 0) + Iif([Indicator16] == 'In Place', 1, 0) +
+Iif([Indicator17] == 'In Place', 1, 0) + Iif([Indicator18] == 'In Place', 1, 0) + Iif([Indicator19] == 'In Place', 1, 0) + Iif([Indicator20] == 'In Place', 1, 0) +
+Iif([Indicator21] == 'In Place', 1, 0) + Iif([Indicator22] == 'In Place', 1, 0) + Iif([Indicator23] == 'In Place', 1, 0) + Iif([Indicator24] == 'In Place', 1, 0) +
+Iif([Indicator25] == 'In Place', 1, 0) + Iif([Indicator26] == 'In Place', 1, 0) + Iif([Indicator27] == 'In Place', 1, 0) + Iif([Indicator28] == 'In Place', 1, 0) +
+Iif([Indicator29] == 'In Place', 1, 0) + Iif([Indicator30] == 'In Place', 1, 0) + Iif([Indicator31] == 'In Place', 1, 0)</value>
+  </data>
+</root>

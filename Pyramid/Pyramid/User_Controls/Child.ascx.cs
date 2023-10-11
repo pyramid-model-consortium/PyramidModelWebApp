@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.Entity;
+using Pyramid.Code;
+using System.IO;
 
 namespace Pyramid.User_Controls
 {
@@ -61,10 +63,13 @@ namespace Pyramid.User_Controls
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Set the max dates for the DateEdits (min dates are declared in markup)
-            deDOB.MaxDate = DateTime.Now;
-            deEnrollmentDate.MaxDate = DateTime.Now;
-            deDischargeDate.MaxDate = DateTime.Now;
+            if (!IsPostBack)
+            {
+                //Set the max dates for the DateEdits (min dates are declared in markup)
+                deDOB.MaxDate = DateTime.Now;
+                deEnrollmentDate.MaxDate = DateTime.Now;
+                deDischargeDate.MaxDate = DateTime.Now;
+            }
         }
 
         /// <summary>
@@ -108,16 +113,21 @@ namespace Pyramid.User_Controls
                 child.LastName = txtLastName.Value.ToString();
                 child.BirthDate = Convert.ToDateTime(deDOB.Value);
                 child.GenderCodeFK = Convert.ToInt32(ddGender.Value);
+                child.GenderSpecify = (string.IsNullOrWhiteSpace(txtGenderSpecify.Text) ? null : txtGenderSpecify.Text);
                 child.EthnicityCodeFK = Convert.ToInt32(ddEthnicity.Value);
+                child.EthnicitySpecify = (string.IsNullOrWhiteSpace(txtEthnicitySpecify.Text) ? null : txtEthnicitySpecify.Text);
                 child.RaceCodeFK = Convert.ToInt32(ddRace.Value);
+                child.RaceSpecify = (string.IsNullOrWhiteSpace(txtRaceSpecify.Text) ? null : txtRaceSpecify.Text);
 
                 //Return the object
                 return child;
             }
             else
             {
-                if(String.IsNullOrWhiteSpace(ValidationMessageToDisplay))
+                if (String.IsNullOrWhiteSpace(ValidationMessageToDisplay))
+                {
                     ValidationMessageToDisplay = "Validation failed, see above for details!";
+                }
                 return null;
             }
         }
@@ -126,8 +136,9 @@ namespace Pyramid.User_Controls
         /// This method returns the ChildProgram object filled with information from
         /// the inputs in this control so that the content page can interact with it
         /// </summary>
+        /// <param name="uploadPermissionFile">A boolean that indicates if the permission file should be uploaded.</param>
         /// <returns>The filled ChildProgram object if validation succeeds, null otherwise</returns>
-        public Models.ChildProgram GetChildProgram()
+        public Models.ChildProgram GetChildProgram(bool uploadPermissionFile)
         {
             if (ASPxEdit.AreEditorsValid(this, ValidationGroup))
             {
@@ -135,38 +146,114 @@ namespace Pyramid.User_Controls
                 int childProgramPK = Convert.ToInt32(hfChildProgramPK.Value);
 
                 //To hold the ChildProgram object
-                Models.ChildProgram childProgram;
+                Models.ChildProgram currentChildProgram;
 
                 //Determine if the object already exists
-                if(childProgramPK > 0)
+                if (childProgramPK > 0)
                 {
-                    using(PyramidContext context = new PyramidContext())
+                    using (PyramidContext context = new PyramidContext())
                     {
-                        childProgram = context.ChildProgram.AsNoTracking().Where(cp => cp.ChildProgramPK == childProgramPK).FirstOrDefault();
+                        currentChildProgram = context.ChildProgram.AsNoTracking().Where(cp => cp.ChildProgramPK == childProgramPK).FirstOrDefault();
+                    }
+
+                    if (currentChildProgram == null)
+                    {
+                        currentChildProgram = new Models.ChildProgram();
                     }
                 }
                 else
                 {
-                    childProgram = new Models.ChildProgram();
+                    currentChildProgram = new Models.ChildProgram();
                 }
 
                 //Set the values
-                childProgram.ProgramFK = Convert.ToInt32(hfProgramFK.Value);
-                childProgram.EnrollmentDate = Convert.ToDateTime(deEnrollmentDate.Value);
-                childProgram.DischargeDate = (deDischargeDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deDischargeDate.Value));
-                childProgram.DischargeCodeFK = (ddDischargeReason.Value == null ? (int?)null : Convert.ToInt32(ddDischargeReason.Value));
-                childProgram.DischargeReasonSpecify = (txtDischargeReasonSpecify.Value == null ? null : txtDischargeReasonSpecify.Value.ToString());
-                childProgram.ProgramSpecificID = txtProgramID.Value.ToString();
-                childProgram.HasIEP = Convert.ToBoolean(ddIEP.Value);
-                childProgram.IsDLL = Convert.ToBoolean(ddDLL.Value);
+                currentChildProgram.ProgramFK = Convert.ToInt32(hfProgramFK.Value);
+                currentChildProgram.EnrollmentDate = Convert.ToDateTime(deEnrollmentDate.Value);
+                currentChildProgram.DischargeDate = (deDischargeDate.Value == null ? (DateTime?)null : Convert.ToDateTime(deDischargeDate.Value));
+                currentChildProgram.DischargeCodeFK = (ddDischargeReason.Value == null ? (int?)null : Convert.ToInt32(ddDischargeReason.Value));
+                currentChildProgram.DischargeReasonSpecify = (txtDischargeReasonSpecify.Value == null ? null : txtDischargeReasonSpecify.Value.ToString());
+                currentChildProgram.HasIEP = Convert.ToBoolean(ddIEP.Value);
+                currentChildProgram.IsDLL = Convert.ToBoolean(ddDLL.Value);
+                currentChildProgram.HasParentPermission = Convert.ToBoolean(ddHasParentPermission.Value);
+
+                string programID;
+                if (!string.IsNullOrWhiteSpace(txtProgramID.Text))
+                {
+                    //Use the ID that the user provided
+                    //Make sure to trim the input to ensure leading and trailing spaces are removed
+                    currentChildProgram.ProgramSpecificID = txtProgramID.Text.Trim();
+                }
+                else
+                {
+                    //The user didn't specify an ID, generate one
+                    //Check to see if this is an edit
+                    if (currentChildProgram.ChildProgramPK > 0)
+                    {
+                        //This is an edit, use the current PK
+                        programID = string.Format("CID-{0}", currentChildProgram.ChildProgramPK);
+                    }
+                    else
+                    {
+                        //To hold the previous PK
+                        int previousPK;
+
+                        using (PyramidContext context = new PyramidContext())
+                        {
+                            //Get the previous PK
+                            Models.ChildProgram newestChildProgram = context.ChildProgram
+                                                                                .AsNoTracking()
+                                                                                .OrderByDescending(pe => pe.ChildProgramPK)
+                                                                                .FirstOrDefault();
+                            previousPK = (newestChildProgram != null ? newestChildProgram.ChildProgramPK : 0);
+
+                            //Set the program specific ID to the previous PK plus one
+                            programID = string.Format("CID-{0}", (previousPK + 1));
+                        }
+                    }
+                    currentChildProgram.ProgramSpecificID = programID;
+                }
+
+
+                //Check to see whether the parent permission file should be uploaded
+                if (uploadPermissionFile)
+                {
+                    //Get the permission file to upload
+                    UploadedFile uploadedPermissionFile = bucParentPermissionDocument.UploadedFiles[0];
+
+                    //Check to see if the file is valid
+                    if (uploadedPermissionFile.ContentLength > 0 && uploadedPermissionFile.IsValid)
+                    {
+                        //If there is an existing file, delete it
+                        if (!string.IsNullOrWhiteSpace(currentChildProgram.ParentPermissionDocumentFileName))
+                        {
+                            Utilities.DeleteFileFromAzureStorage(currentChildProgram.ParentPermissionDocumentFileName,
+                                Utilities.ConstantAzureStorageContainerName.CHILD_FORM_UPLOADS.ToString());
+                        }
+
+                        //Get the actual file name
+                        string fileName = Path.GetFileNameWithoutExtension(uploadedPermissionFile.FileName) + "-" +
+                            Path.GetRandomFileName().Substring(0, 6) +
+                            Path.GetExtension(uploadedPermissionFile.FileName);
+
+                        //Upload the file to Azure storage
+                        string filePath = Utilities.UploadFileToAzureStorage(uploadedPermissionFile.FileBytes, fileName,
+                                            Utilities.ConstantAzureStorageContainerName.CHILD_FORM_UPLOADS.ToString());
+
+                        //Set the file name and path
+                        currentChildProgram.ParentPermissionDocumentFileName = fileName;
+                        currentChildProgram.ParentPermissionDocumentFilePath = filePath;
+                    }
+                }
 
                 //Return the object
-                return childProgram;
+                return currentChildProgram;
             }
             else
             {
-                if (String.IsNullOrWhiteSpace(ValidationMessageToDisplay))
+                if (string.IsNullOrWhiteSpace(ValidationMessageToDisplay))
+                {
                     ValidationMessageToDisplay = "Validation failed, see above for details!";
+                }
                 return null;
             }
         }
@@ -178,7 +265,8 @@ namespace Pyramid.User_Controls
         /// <param name="childProgramPK">The primary key of the ChildProgram record</param>
         /// <param name="programFK">The primary key for the program which this child will be in</param>
         /// <param name="readOnly">True if the user is only allowed to view the values</param>
-        public void InitializeWithData(int childProgramPK, int programFK, bool readOnly)
+        /// <param name="showPrivateInfo">True if the user is allowed to view private info</param>
+        public void InitializeWithData(int childProgramPK, int programFK, bool readOnly, bool showPrivateInfo)
         {
             using (PyramidContext context = new PyramidContext())
             {
@@ -202,15 +290,6 @@ namespace Pyramid.User_Controls
                 ddDischargeReason.DataSource = dischargeReasons;
                 ddDischargeReason.DataBind();
 
-                //Fill the used IDs hidden field
-                var usedIDs = context.ChildProgram
-                                .AsNoTracking()
-                                .Where(cp => cp.ProgramFK == programFK && cp.ChildProgramPK != childProgramPK)
-                                .OrderBy(cp => cp.ProgramSpecificID)
-                                .Select(cp => cp.ProgramSpecificID)
-                                .ToList();
-                hfUsedIDs.Value = string.Join(",", usedIDs);
-
                 //Set the program fk hidden field
                 hfProgramFK.Value = programFK.ToString();
 
@@ -229,35 +308,131 @@ namespace Pyramid.User_Controls
                     hfChildProgramPK.Value = childProgram.ChildProgramPK.ToString();
 
                     //Fill the input fields
-                    txtFirstName.Value = child.FirstName;
-                    txtLastName.Value = child.LastName;
-                    deDOB.Value = child.BirthDate.ToString("MM/dd/yyyy");
+                    txtFirstName.Value = (showPrivateInfo ? child.FirstName : "HIDDEN");
+                    txtLastName.Value = (showPrivateInfo ? child.LastName : "HIDDEN");
+                    if (showPrivateInfo)
+                    {
+                        //Set the DOB
+                        deDOB.Value = child.BirthDate;
+                    }
+                    else
+                    {
+                        //Hide the DOB control, null out the value, and set to not required
+                        deDOB.CssClasses.Control = "hidden";
+                        deDOB.Value = null;
+                        deDOB.ValidationSettings.RequiredField.IsRequired = false;
+                    }
                     txtProgramID.Value = childProgram.ProgramSpecificID;
-                    deEnrollmentDate.Value = childProgram.EnrollmentDate.ToString("MM/dd/yyyy");
+                    deEnrollmentDate.Value = childProgram.EnrollmentDate;
                     ddGender.SelectedItem = ddGender.Items.FindByValue(child.GenderCodeFK);
+                    txtGenderSpecify.Text = child.GenderSpecify;
                     ddEthnicity.SelectedItem = ddEthnicity.Items.FindByValue(child.EthnicityCodeFK);
+                    txtEthnicitySpecify.Text = child.EthnicitySpecify;
                     ddRace.SelectedItem = ddRace.Items.FindByValue(child.RaceCodeFK);
+                    txtRaceSpecify.Text = child.RaceSpecify;
                     ddDLL.SelectedItem = ddDLL.Items.FindByValue(childProgram.IsDLL);
                     ddIEP.SelectedItem = ddIEP.Items.FindByValue(childProgram.HasIEP);
-                    deDischargeDate.Value = (childProgram.DischargeDate.HasValue ? childProgram.DischargeDate.Value.ToString("MM/dd/yyyy") : "");
+                    ddHasParentPermission.SelectedItem = ddHasParentPermission.Items.FindByValue(childProgram.HasParentPermission);
+                    deDischargeDate.Value = childProgram.DischargeDate;
                     ddDischargeReason.SelectedItem = ddDischargeReason.Items.FindByValue(childProgram.DischargeCodeFK);
                     txtDischargeReasonSpecify.Value = childProgram.DischargeReasonSpecify;
+
+                    if (!string.IsNullOrWhiteSpace(childProgram.ParentPermissionDocumentFileName))
+                    {
+                        //Get the file URL from Azure storage
+                        string fileLink = Utilities.GetFileLinkFromAzureStorage(childProgram.ParentPermissionDocumentFileName,
+                            childProgram.ParentPermissionDocumentFileName.Contains(".pdf"),
+                            Utilities.ConstantAzureStorageContainerName.CHILD_FORM_UPLOADS.ToString(), 10);
+
+                        //Set the link URL
+                        lnkDisplayParentPermissionFile.NavigateUrl = fileLink;
+
+                        //Set div display
+                        hfHasParentPermissionDocument.Value = "true";
+                    }
+                    else
+                    {
+                        //Set div display
+                        hfHasParentPermissionDocument.Value = "false";
+                    }
+                }
+                else
+                {
+                    hfHasParentPermissionDocument.Value = "false";
                 }
 
-                //Set the controls usability
+                //Set the control usability
                 txtFirstName.ReadOnly = readOnly;
                 txtLastName.ReadOnly = readOnly;
                 deDOB.ReadOnly = readOnly;
                 txtProgramID.ReadOnly = readOnly;
                 deEnrollmentDate.ReadOnly = readOnly;
                 ddGender.ReadOnly = readOnly;
+                txtGenderSpecify.ReadOnly = readOnly;
                 ddEthnicity.ReadOnly = readOnly;
+                txtEthnicitySpecify.ReadOnly = readOnly;
                 ddRace.ReadOnly = readOnly;
+                txtRaceSpecify.ReadOnly = readOnly;
                 ddDLL.ReadOnly = readOnly;
                 ddIEP.ReadOnly = readOnly;
+                ddHasParentPermission.ReadOnly = readOnly;
+                lnkDisplayParentPermissionFile.Visible = showPrivateInfo;
+                bucParentPermissionDocument.ClientEnabled = (readOnly == true ? false : true);
+                btnDeletePermissionFile.Visible = (readOnly == true ? false : true);
+                lbConfirmPermissionFileDelete.Visible = (readOnly == true ? false : true);
+                btnUpdateDocument.Visible = (readOnly == true ? false : true);
                 deDischargeDate.ReadOnly = readOnly;
                 ddDischargeReason.ReadOnly = readOnly;
                 txtDischargeReasonSpecify.ReadOnly = readOnly;
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the user clicks the button to confirm deletion of the parent permission document.
+        /// </summary>
+        /// <param name="sender">The lbConfirmPermissionFileDelete LinkButton</param>
+        /// <param name="e">The click event</param>
+        protected void lbConfirmPermissionFileDelete_Click(object sender, EventArgs e)
+        {
+            //Get the ChildProgram pk
+            int childProgramPK = Convert.ToInt32(hfChildProgramPK.Value);
+
+            //To hold the ChildProgram object
+            Models.ChildProgram currentChildProgram;
+
+            //Determine if the object already exists
+            if (childProgramPK > 0)
+            {
+                using (PyramidContext context = new PyramidContext())
+                {
+                    //Get the ChildProgram object
+                    currentChildProgram = context.ChildProgram.Where(cp => cp.ChildProgramPK == childProgramPK).FirstOrDefault();
+
+                    //Check to see if the file exists
+                    if (!string.IsNullOrWhiteSpace(currentChildProgram.ParentPermissionDocumentFileName))
+                    {
+                        //Delete the file
+                        Utilities.DeleteFileFromAzureStorage(currentChildProgram.ParentPermissionDocumentFileName,
+                            Utilities.ConstantAzureStorageContainerName.CHILD_FORM_UPLOADS.ToString());
+
+                        //Clear the fields
+                        currentChildProgram.ParentPermissionDocumentFileName = null;
+                        currentChildProgram.ParentPermissionDocumentFilePath = null;
+
+                        //Save the changes
+                        context.SaveChanges();
+
+                        //Set the div display
+                        hfHasParentPermissionDocument.Value = "false";
+
+                        //Show a message
+                        childControlMsgSys.ShowMessageToUser("success", "Document Deleted", "The Parent/Guardian Permission Document was successfully deleted!", 10000);
+                    }
+                }
+            }
+            else
+            {
+                childControlMsgSys.ShowMessageToUser("danger", "Delete Failed", "The Parent/Guardian Permission Document could not be deleted!  If you continue to experience this error, please contact technical support via a support ticket.", 20000);
             }
         }
 
@@ -329,6 +504,63 @@ namespace Pyramid.User_Controls
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the validation for the txtGenderSpecify DevExpress
+        /// Bootstrap TextBox fires and it validates that control's value
+        /// </summary>
+        /// <param name="sender">The txtGenderSpecify TextBox</param>
+        /// <param name="e">ValidationEventArgs</param>
+        protected void txtGenderSpecify_Validation(object sender, ValidationEventArgs e)
+        {
+            //Get the specify text
+            string genderSpecify = txtGenderSpecify.Text;
+
+            //Perform validation
+            if (ddGender.SelectedItem != null && ddGender.SelectedItem.Text.ToLower() == "other" && string.IsNullOrWhiteSpace(genderSpecify))
+            {
+                e.IsValid = false;
+                e.ErrorText = "Specify Gender is required when the 'Other' gender is selected!";
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the validation for the txtEthnicitySpecify DevExpress
+        /// Bootstrap TextBox fires and it validates that control's value
+        /// </summary>
+        /// <param name="sender">The txtEthnicitySpecify TextBox</param>
+        /// <param name="e">ValidationEventArgs</param>
+        protected void txtEthnicitySpecify_Validation(object sender, ValidationEventArgs e)
+        {
+            //Get the specify text
+            string ethnicitySpecify = txtEthnicitySpecify.Text;
+
+            //Perform validation
+            if (ddEthnicity.SelectedItem != null && ddEthnicity.SelectedItem.Text.ToLower() == "other" && string.IsNullOrWhiteSpace(ethnicitySpecify))
+            {
+                e.IsValid = false;
+                e.ErrorText = "Specify Ethnicity is required when the 'Other' ethnicity is selected!";
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the validation for the txtRaceSpecify DevExpress
+        /// Bootstrap TextBox fires and it validates that control's value
+        /// </summary>
+        /// <param name="sender">The txtRaceSpecify TextBox</param>
+        /// <param name="e">ValidationEventArgs</param>
+        protected void txtRaceSpecify_Validation(object sender, ValidationEventArgs e)
+        {
+            //Get the specify text
+            string raceSpecify = txtRaceSpecify.Text;
+
+            //Perform validation
+            if (ddRace.SelectedItem != null && ddRace.SelectedItem.Text.ToLower() == "other" && string.IsNullOrWhiteSpace(raceSpecify))
+            {
+                e.IsValid = false;
+                e.ErrorText = "Specify Race is required when the 'Other' race is selected!";
             }
         }
 
@@ -432,19 +664,41 @@ namespace Pyramid.User_Controls
         protected void txtProgramID_Validation(object sender, ValidationEventArgs e)
         {
             //Get the program ID
-            string programID = (txtProgramID.Value == null ? null : txtProgramID.Value.ToString());
-            string[] programIDArray = hfUsedIDs.Value.Split(',');
+            string programID = txtProgramID.Text;
 
-            //Perform validation
-            if (String.IsNullOrWhiteSpace(programID))
+            if (!string.IsNullOrWhiteSpace(programID))
             {
-                e.IsValid = false;
-                e.ErrorText = "ID Number is required!";
-            }
-            else if(programIDArray.Contains(programID))
-            {
-                e.IsValid = false;
-                e.ErrorText = "That ID Number is already taken!";
+                //To hold the necessary values
+                int programFK, childProgramPK;
+
+                //Parse the necessary values
+                if (int.TryParse(hfChildProgramPK.Value, out childProgramPK) && int.TryParse(hfProgramFK.Value, out programFK))
+                {
+                    bool isAlreadyUsed;
+
+                    //Check to see if the ID is already used
+                    using (PyramidContext context = new PyramidContext())
+                    {
+                        isAlreadyUsed = context.ChildProgram
+                                       .AsNoTracking()
+                                       .Where(cp => cp.ProgramFK == programFK &&
+                                                    cp.ChildProgramPK != childProgramPK &&
+                                                    cp.ProgramSpecificID.ToLower().Trim() == programID.ToLower().Trim())
+                                       .Count() > 0;
+                    }
+
+                    //Set the validation message
+                    if (isAlreadyUsed)
+                    {
+                        e.IsValid = false;
+                        e.ErrorText = "That ID Number is already taken!";
+                    }
+                }
+                else
+                {
+                    e.IsValid = false;
+                    e.ErrorText = "Unable to determine ID Number validity, please try again.  If this continues to fail, please contact support via ticket.";
+                }
             }
         }
 
@@ -460,10 +714,51 @@ namespace Pyramid.User_Controls
             string dischargeReasonSpecify = (txtDischargeReasonSpecify.Value == null ? null : txtDischargeReasonSpecify.Value.ToString());
 
             //Perform validation
-            if(ddDischargeReason.SelectedItem != null && ddDischargeReason.SelectedItem.Text.ToLower().Contains("other") && String.IsNullOrWhiteSpace(dischargeReasonSpecify))
+            if (ddDischargeReason.SelectedItem != null && ddDischargeReason.SelectedItem.Text.ToLower() == "other" && String.IsNullOrWhiteSpace(dischargeReasonSpecify))
             {
                 e.IsValid = false;
                 e.ErrorText = "Specify Discharge Reason is required when the 'Other' discharge reason is selected!";
+            }
+        }
+
+        /// <summary>
+        /// This method fires when the validation for the txtDischargeReasonSpecify DevExpress
+        /// Bootstrap TextBox fires and it validates that control's value
+        /// </summary>
+        /// <param name="sender">The ddHasParentPermission BootstrapComboBox</param>
+        /// <param name="e">ValidationEventArgs</param>
+        protected void ddHasParentPermission_Validation(object sender, ValidationEventArgs e)
+        {
+            //Validate the combo box
+            bool hasParentPermission;
+
+            //Make sure the answer is yes
+            if (bool.TryParse(ddHasParentPermission.Text, out hasParentPermission))
+            {
+                if (hasParentPermission == false)
+                {
+                    e.IsValid = false;
+                    e.ErrorText = "Parent/Guardian Permission must be answered yes in order to continue!";
+                }
+            }
+
+            //Validate the file
+            //Get the parent permission file to upload
+            UploadedFile uploadedPermissionFile = bucParentPermissionDocument.UploadedFiles[0];
+
+            //Check if a file was uploaded
+            if (uploadedPermissionFile.ContentLength > 0)
+            {
+                //A file was uploaded, check validity
+                if (uploadedPermissionFile.IsValid == false)
+                {
+                    //Set the validation error
+                    e.IsValid = false;
+                    e.ErrorText = "The Parent/Guardian Permission document is invalid and could not be uploaded!  It is likely too large or of an incorrect type.";
+
+                    //Show an error message
+                    childControlMsgSys.ShowMessageToUser("danger", "Invalid Document", "The Parent/Guardian Permission document is invalid and could not be uploaded!  It is likely too large or of an incorrect type.", 20000);
+                }
             }
         }
     }

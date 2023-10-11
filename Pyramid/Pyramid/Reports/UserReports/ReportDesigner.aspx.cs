@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using Pyramid.Code;
+using System;
 
 namespace Pyramid.Reports.UserReports
 {
@@ -11,7 +7,12 @@ namespace Pyramid.Reports.UserReports
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //Get the current program role
+            ProgramAndRoleFromSession currentProgramRole = Utilities.GetProgramRoleFromSession(Session);
+            if (currentProgramRole.CodeProgramRoleFK.Value != (int)Utilities.CodeProgramRoleFKs.SUPER_ADMIN)
+            {
+                Response.Redirect("/Default.aspx");
+            }
         }
     }
 }
